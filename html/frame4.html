@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>个人中心</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+	    html,body{
+            background-color: transparent !important;
+        }
+	    .header{
+		    width:6.4rem;
+		    float:left;
+		    border-bottom:0.12rem solid #f4f4f4;
+		    padding:0
+	    }
+        .header .head_box{
+        	width:6.4rem;
+        	height:1.11rem;
+        	margin:0;
+        	position: relative;
+        }
+        .head_box .set{
+        	position:absolute;
+        	width:0.8rem;
+        	height:0.8rem;
+        	right:0.2rem;
+        }
+        .head_box .set:active{
+        	background:rgba(244,244,244,.5)
+        }
+        .head_box .set img{
+        	width:50%;
+        	height:50%;
+        	margin-top:25%;
+        	margin-left:25%;
+        }
+        .header .head_pic{
+        	width: 0.87rem;
+        	height: 0.87rem;
+        	border-radius:100%;
+        	border: 2px solid white;
+        	margin-left:2.77rem;
+       		display:block;
+        	padding:0;
+        	overflow:hidden;
+        }
+        .header .head_pic img{
+        	width: 100%;
+        	height:100%;
+        }
+        .header .name{
+        	width:1.66rem;
+        	height:0.37rem;
+        	line-height:0.4rem;
+        	margin:0.1rem auto;
+        	border-radius: 0.16rem;
+        	color: #2897d7;
+        	text-align: center;
+        	background:white;
+        }
+        .header .order_box{
+        	margin-top:0.25rem;
+        	width:6.04rem;
+        /*	border-top:1px solid white;*/
+        	margin-left:0.19rem;
+        }
+        .header .order_item{
+        	width: 25%;
+        	height:100%;
+        	float:left;
+        	text-align:center;
+        	position: relative;
+        	color:white
+        }
+        .header .order_item .number{
+        	position:absolute;
+        	right:0.35rem;
+        	top:0.1rem;
+        	width:20px;
+        	height:20px;
+        	line-height:20px;
+        	text-align:center;
+        	border-radius:100%;
+        	background:#f47771;
+        }
+        .header .order_item:active{
+			background:rgba(244,244,244,.4)
+		}
+        .header .order_item img{
+        	width: 0.44rem;
+        	height:0.38rem;
+        	margin:0.2rem auto;
+        	margin-bottom:0.1rem
+        }
+        .header .order_item .order_name{
+        	color:white;
+        	text-align:center;
+        	width: 100%;  
+        	margin-bottom:0.2rem;
+        }
+        .header .order_item .rightline{
+        	width: 1px;
+        	height:0.6rem;
+        	position:absolute;
+        	top:0.2rem;
+        	right:0rem;
+        	background:white;
+        }
+        .box{
+        	width: 6.4rem;
+        	border-bottom:0.12rem solid #f4f4f4;
+        }
+        .yajin:active{
+        	background:rgba(244,244,244,.7)
+        }
+        .box .smlImg{
+        	width: 0.4rem;
+        	height:0.4rem;
+        	float:left;
+        	margin-top:0.13rem;
+        	margin-left:0.2rem;
+        }
+        .box .title{
+        	color:#8d8c8b;
+        	font-size: 0.24rem;
+        	float:left;
+        	margin-left:0.15rem;
+        	line-height: 0.7rem;
+        }
+        .box .more{
+        	color:#8d8c8b;
+        	font-size: 0.24rem;
+        	float:right;
+        	margin-right:0.2rem;
+        	line-height: 0.7rem;
+        }
+        .box .s_box{
+        	width: 2.06rem;
+        	height:2.27rem;
+        	float: left;
+        	border-right:0.07rem solid #f4f4f4;
+        	border-bottom:0.07rem solid #f4f4f4;
+        	text-align:center;
+        	position:relative;
+        }
+        .box .s_box:active{
+			background:rgba(244,244,244,.7)
+		}
+        .box .s_box img{
+        	width: 0.57rem;
+        	height:0.57rem;
+        	margin:0.51rem auto;
+        	margin-bottom:0.3rem;
+        }
+        .box .s_box p{
+        	font-size: 0.24rem;
+        	color:#959595;
+        }
+        .box .s_box .number{
+        	position:absolute;
+        	right:0.6rem;
+        	top:0.4rem;
+        	width:20px;
+        	height:20px;
+        	line-height:20px;
+        	background:#f47771;
+        	color:white;
+        	border-radius:100%;
+        	text-align:center;
+        }
+        .noborder-right{
+        	border-right:0
+        }
+    </style>
+</head>
+<body>
+	<div class="warp">
+	<!--头部-->
+	    <div class="header mainColor ">
+	    	<div class="head_box">
+	    		<div class="set" @click="gotoSetting">
+		    		<img src="../image/setting.png"/>
+		    	</div>
+	    		<div class="head_pic" style="padding:0">
+	    			<img :src="userData.avatar  "/>
+	    		</div>
+	    	</div>
+	    	<div class="name" @click="gotoUserInfo" v-if="state==1">{{userData.name}}</div>
+	    	<div class="name" @click="gotoLogin" v-if="state==0">{{userData.name}}</div>
+	<!--订单信息-->    	
+	    	<div class="order_box" >
+	    		<div class="order_item" @click="gotoOrder(1)">
+	    			<img src="../image/order1.png"/>
+	    			<p class="order_name" >待付款</p>
+	    			<p class="rightline"></p>
+	    			<div class="number" v-if="info.order.status1!=0">{{info.order.status1}}</div>
+	    		</div>
+	    		<div class="order_item" @click="gotoOrder(2)">
+	    			<img src="../image/order2.png"/>
+	    			<p class="order_name">待发货</p>
+	    			<p class="rightline"></p>
+	    			<div class="number" v-if="info.order.status2!=0">{{info.order.status2}}</div>
+	    		</div>
+	    		<div class="order_item" @click="gotoOrder(3)">
+	    			<img src="../image/order3.png"/>
+	    			<p class="order_name">待收货</p>
+	    			<p class="rightline"></p>
+	    			<div class="number" v-if="info.order.status3!=0">{{info.order.status3}}</div>
+	    		</div>
+	    		<div class="order_item" @click="gotoOrder(4)">
+	    			<img src="../image/order4.png"/>
+	    			<p class="order_name">待返还</p>
+	    			<div class="number" v-if="info.order.status4!=0">{{info.order.status4}}</div>
+	    		</div>
+	    	</div>
+	    </div>
+	<!--芝麻信用免押金-->    
+	    <div class="box clear yajin" @click="gotoCard" v-if='renzhengShow==1'>
+	    	<img src="../image/yajin.png" class="smlImg"/>
+	    	<p class="title">免押金认证</p>
+	    	<p class="more" >剩余{{parseInt(userData.total_quota)-parseInt(userData.used_quota)}}元 ></p>
+	
+	    </div>
+	<!--下发导航-->
+	   <div class="box clear" style="padding:0;width: 6.4rem">
+	    	<div class="s_box" @click="gotoSub">
+	    		<img src="../image/nav1.png" />
+	    		<p>发布设备</p>
+	    	</div>
+	    	<div class="s_box" @click="gotoMyDevice">
+	    		<img src="../image/nav2.png" />
+	    		<p>我的设备</p>
+	    	</div>
+	    	<div class="s_box" style="border-right:0" @click="gotomysold">
+	    		<img src="../image/nav3.png" />
+	    		<p>出租订单</p>
+	    	</div>
+	    	<div class="s_box" @click="gotoMyEarn" v-if="shouruShow==1">
+	    		<img src="../image/nav4.png" />
+	    		<p>我的收入</p>
+	    	</div>
+	    	<div class="s_box" @click="gotoShopCar">
+	    		<img src="../image/nav5.png" />
+	    		<p>购物车</p>
+	    		<div class="number" v-if="info.carts!=0">{{info.carts}}</div>
+	    	</div>
+	    	<div class="s_box" :class='shouruShow==1?"noborder-right":""' @click="telnum">
+	    		<img src="../image/nav6.png" />
+	    		<p>服务中心</p>
+	    	</div>
+	    	<div class="s_box" :class='shouruShow==0?"noborder-right":""' @click="telnum" v-if="shouruShow==0">
+	    		
+	    	</div>
+	    </div>
+	  
+    </div>
+</body>
+
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	userData:{
+  		name:"请登录",
+  		avatar:"../image/head_icon.png",
+  		is_verify_credit:"F",
+  		total_quota:0,
+  		used_quota:0
+  	},
+  	info:{
+  		"order": {
+	        "status1": 0,
+	        "status2": 0,
+	        "status3": 0,
+	        "status4": 0
+	    }
+  	},
+  	state:0,
+  	renzhengShow:0,
+    shouruShow:0
+  },
+  mounted: function() {
+  	var self = this;
+  	apiready = function(){
+		//IOS  onclick卡顿解决
+		
+		api.showProgress({
+		    title: '努力加载中...',
+		    text: '先休息一下...',
+		    modal: false
+		});
+		setTimeout('api.hideProgress()',1000);
+		sethead();
+        iflog();
+        self.askUserInfo();
+  		self.info=api.pageParam.data;
+		api.ajax({
+		    url: baseUrl+'/api/hidden',
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+		}, function(ret, err) {
+		    if (ret) {
+		    	self.renzhengShow=ret.verify;
+		    	self.shouruShow=ret.income;
+		    	api.hideProgress();
+		    	//api.alert({ msg: JSON.stringify(ret) });
+		    } else {
+				api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+				api.hideProgress();
+				
+		    }
+		});
+		
+  		
+	}	
+  },
+  methods:{
+  	openWin:function(obj,value){
+  		api.openWin({
+            name:obj,
+            url:obj+'.html',
+            pageParam: value,
+            bounces:false,
+            animation:{
+                type:'movein'
+            }
+        })
+  	},
+  	ajaxorder:function(){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/center',
+		    method: 'get',
+            timeout:200,
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            },
+            dataType:"json",
+		}, function(result, err) {
+		    if (result) { 
+		    	api.hideProgress();
+		    	self.info=result
+		    } else {
+		    	api.hideProgress();
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});	
+  	},
+  	//请求用户数据
+  	askUserInfo:function(){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/user',
+		    method: 'get',
+            timeout:200,
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            },
+            dataType:"json",
+		}, function(ret, err) {
+		    if (ret) { 
+		    	api.hideProgress();
+		    	self.state = 1
+		    	self.userData=ret; 
+		    } else {
+		    	api.hideProgress();
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});	
+  	},
+  	telnum:function(){
+  	 	var self = this;
+		api.confirm({
+		    title: '客服电话',
+		    msg: '确定拨打客服电话'+self.info.tel,
+		    buttons: [ '取消','确定']
+		},function(ret,err){
+			if(ret.buttonIndex == 2){
+		         api.call({
+				    type: 'tel',
+				    number: self.info.tel
+				 });
+		    }
+		});
+	},
+  	//点击订单信息
+  	gotoOrder:function(status){
+  		value={
+	 		name:'我的订单',
+	 		frame:'order',
+	 		data: {
+	 			status: status
+	 		}
+	 	}
+		this.openWin('all',value)
+  		
+  	},
+  	//点击登陆
+  	gotoLogin:function(){
+  		this.openWin('login')
+  	},
+  	//点击个人信息
+  	gotoUserInfo:function(){
+  		this.openWin("userInfo")
+  	},
+  	gotoCard:function(){
+  		value={
+	 		name:'认证中心',
+	 		frame:'free_list'
+	 	}
+		this.openWin('all',value)
+  	},
+  	//点击我的设备
+	 gotoMyDevice:function(){
+//	 	value={
+//	 		name:'我的设备',
+//	 		frame:'myDevice'
+//	 	}
+//		this.openWin('all',value)
+		  api.openWin({
+	            name: 'myDevice',
+	            url: 'myDevice.html',
+	           
+	        });
+	},
+	//点击设置
+	gotoSetting:function(){
+	 	value={
+	 		name:'设置',
+	 		frame:'setting'
+	 	}
+		this.openWin('all',value)
+	},
+	//点击发布商品
+	gotoSub:function(){
+		//this.openWin('frame2')
+		api.openFrame({
+		    name: 'fabu',
+		    url: 'fabu.html',
+		    rect: {
+		        x: 0,
+		        y: 0,
+		        w: 'auto',
+		        h: 'auto'
+		    },
+		    bounces:false,
+		    bgColor:"rgba(0,0,0,0)",
+		   	animation:{
+                type:'movein',
+                subType:"from_bottom", 
+            }
+		});
+	},
+	//点击购物车
+	gotoShopCar:function(){
+		value={
+	 		name:'购物车',
+	 		frame:'shopCar'
+	 	}
+		this.openWin('all',value)
+	},
+	//点击出售订单
+	gotomysold:function(){
+		value={
+	 		name:'出租订单',
+	 		frame:'mysold'
+	 	}
+		this.openWin('all',value)
+	},
+	//删除购物车商品
+	delcarts:function(){
+		var self = this;
+		//self.info.carts=self.info.carts-1；
+		self.ajaxorder()
+	},
+	logout:function(){
+		this.userData={
+	  		name:"请登录",
+	  		avatar:"../image/icon.png",
+	  		is_verify:"F",
+	  		credit_score:0
+	  	}
+		this.state=0
+	},
+	//点击我的收入
+	gotoMyEarn:function(){
+		value={
+	 		name:'我的收入',
+	 		frame:'myearn'
+	 	}
+		this.openWin('all',value)
+	}
+  }
+})
+
+
+
+
+
+
+</script>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	.warp{
+    		height:100vh;
+    		background:#f8f8f8;
+    		position: relactive;
+    	}
+        header{  
+        	width:6.4rem;
+        	padding-top:30px;
+        	color:white;
+        	text-align:center;
+        	font-size: 18px; 
+        }
+        header p{
+        	line-height: 50px;
+        	position: relative;
+        }
+      	.row{
+      		width:6.4rem;
+      		background:white;
+      		border-bottom:1px solid #f6f6f6;
+      	}
+      	.row:active{
+      		background:rgba(244,244,244,.5)
+      	}
+      	.row .title{
+      		float:left;
+      		height:0.85rem;
+      		line-height:0.85rem;
+      		margin-left:0.2rem;
+      		color:#515658;
+      		font-weight: bold;
+      	}
+      	
+      	.row .icon{
+      		float:left;
+      		width:0.5rem;
+      		margin-left:0.2rem;
+      		margin-top:0.12rem;
+      	}
+      	.row .rightarror{
+      		float:right;
+      		width:0.3rem;
+      		height:0.3rem;
+      		margin:0.2rem;
+      		margin-top:0.3rem;
+      		margin-left:0;
+      	}
+      	.logOut{
+        	width:4rem;
+        	text-align:center;
+        	color:#F92672;
+        	border-radius:3px;
+        	height:0.5rem;
+        	line-height: 0.5rem;
+        	position: absolute;
+        	bottom:0.2rem;
+        	left:1.2rem;
+        	text-decoration:underline;
+        }
+    </style>
+</head>
+<body>
+	<div class="warp">
+	   <div class="row clear"  @click='gotoUserInfo'>
+	   		<img class="icon" src="../image/icon1.png"/>
+	   		<p class="title">个人信息</p>
+	   		<img src="../image/rightarror.png" class="rightarror"/>
+	   </div>
+	   <div class="row clear" @click='gotoChangePassword'>
+	   		<img class="icon" src="../image/icon2.png"/>
+	   		<p class="title">修改密码</p>
+	   		<img src="../image/rightarror.png" class="rightarror"/>
+	   </div>
+	   <div class="row clear" @click='gotoAddressList()'>
+	   		<img class="icon" src="../image/icon3.png"/>
+	   		<p class="title">收货地址</p>
+	   		<img src="../image/rightarror.png" class="rightarror"/>
+	   </div>
+	   <div class="row clear" @click='gotoAbout'>
+	   		<img class="icon" src="../image/icon4.png"/>
+	   		<p class="title">关于一简租</p>
+	   		<img src="../image/rightarror.png" class="rightarror"/>
+	   </div>
+	   <div class="row clear" @click="clear">
+	   		<img class="icon" src="../image/icon5.png"/>
+	   		<p class="title">清理缓存</p>
+	   		<img src="../image/rightarror.png" class="rightarror"/>
+	   </div>
+	   <!--推出登录-->	
+	   <div class="logOut" @click="logOut">退出登录</div> 
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	choosed:0,
+  	head:"../image/top_img.png",
+  	userInfo:{}
+  },
+  mounted:function(){
+  	var self=this;
+  	apiready = function(){
+	    sethead();
+	    self.userInfo=api.pageParam.userData
+	}
+  },
+  methods:{
+  	closeWin:function(){
+  		api.closeWin();
+  	},
+  	openWin:function(obj){
+  		api.openWin({
+            name:obj,
+            url:obj+'.html',
+            bounces:false,
+            animation:{
+                type:'movein'
+            },
+            vScrollBarEnabled:false,
+            hScrollBarEnabled:false
+        })
+  	},
+  	gotoAbout:function(){
+  		var jsfun2 = 'vm.setName("关于一简租");';
+		api.execScript({
+		    name: 'all',
+		    script: jsfun2
+		});
+		var winWidth = api.winWidth;
+        var winHeight = api.winHeight - 70;
+        api.openFrame({
+            name: 'about',
+            url: 'about.html',
+            rect: {
+                x: 0,
+                y: 70,
+                w: winWidth,
+                h: winHeight
+            },
+		    bounces:true,
+            vScrollBarEnabled: false,
+    		hScrollBarEnabled: false
+        });
+        api.closeFrame({
+		    name: 'setting'
+		});
+  	},
+  	gotoUserInfo:function(){
+  		this.openWin("userInfo")
+  	},
+  	gotoChangePassword:function(){
+  		this.openWin("changePassword")
+  	},
+  	gotoAddressList:function(){
+  		var jsfun2 = 'vm.setName("管理收获地址");';
+		api.execScript({
+		    name: 'all',
+		    script: jsfun2
+		});
+		var winWidth = api.winWidth;
+        var winHeight = api.winHeight - 70;
+        api.openFrame({
+            name: 'addressList',
+            url: 'addressList.html',
+            rect: {
+                x: 0,
+                y: 70,
+                w: winWidth,
+                h: winHeight
+            },
+            pageParam: {
+		        data:{status: '3'}
+		    },
+		    bounces:true,
+            vScrollBarEnabled: false,
+    		hScrollBarEnabled: false
+        });
+        api.closeFrame({
+		    name: 'setting'
+		});
+  		
+  	},
+  	clear:function(){
+  		api.confirm({
+		    title: '清理缓存',
+		    msg: '确定清理缓存？',
+		    buttons: [ '取消','确定']
+		},function(ret,err){
+			if(ret.buttonIndex == 2){
+		         $api.clearStorage();
+		         api.toast({
+	                 msg:'清除成功'
+                 });
+                 $api.setStorage('first','1');
+                 api.execScript({
+				    name: 'index',
+				    script: 'open0()'
+				 });
+				 api.closeWin();
+		    }
+		});
+  	},
+  	logOut:function(){
+  		api.confirm({
+		    title: '退出登陆',
+		    msg: '确定退出登陆？',
+		    buttons: ['取消','确定']
+		},function(ret,err){
+			if(ret.buttonIndex == 2){
+		         $api.clearStorage();
+		         api.toast({
+	                 msg:'已退出登陆'
+                 });
+                 $api.setStorage('first','1');
+                 api.execScript({
+				    name: 'index',
+				    script: 'open0()'
+				 });
+				 api.closeWin();
+		    }
+		});
+  	}
+  }
+})
+</script>
+</html>

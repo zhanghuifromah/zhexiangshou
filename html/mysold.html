@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+         header{  
+        	width:6.4rem;
+       		position:fixed;
+        	top:0;
+        	padding-top:30px;
+        	color:white;
+        	text-align:center;
+        	font-size: 18px; 
+        }
+        header p{
+        	line-height: 50px;
+        }
+      
+    	.list_box{
+    		width:6.4rem;
+    		border-bottom:0.15rem solid #e7e7e7;
+    	}
+    	.list_box .title .icon{
+    		
+    		font-size: 0.3rem;
+    		margin:0.2rem;
+    		float:left;
+    	}
+    	.list_box .title .order_id{
+    		font-size: 0.24rem;
+    		color:#a0a0a0;
+    		margin-top:0.25rem;
+    		float:left;
+    	}
+    	.list_box .content{
+    		width:6.4rem;
+    
+    		background:#f5f5f5;
+    		border-bottom: 0.09rem solid white;
+    	}
+    	.list_box .content img{
+    		width:1.36rem;
+    		height:1.36rem;
+    		margin-top:0.15rem;
+    		margin-left:0.21rem;
+    		float:left;
+    	}
+    	.list_box .content .info{
+    		width:4.6rem;
+    		float:left;
+    		margin-top:0.15rem;
+    		margin-left:0.15rem;
+    	}
+    	.list_box .content .info .name{
+    		width:3.19rem;
+    		display: -webkit-box;
+	        overflow: hidden;
+	        text-overflow: ellipsis;
+	        word-wrap: break-word;
+	        white-space: normal !important;
+	        -webkit-line-clamp: 2;
+	        -webkit-box-orient: vertical;
+			color:#3f4447;
+			font-size: 0.22rem;
+			font-weight:bold;
+			float:left;	
+    	}
+    	.list_box .content .info .price{
+    		width:1.2rem;
+    		
+    		float:left;
+    
+    		color:#d46987;
+			font-size: 0.26rem;
+			font-weight:bold;
+			text-align:right;
+    	}
+    	.list_box .content .info .time{
+    		color:#a0a0a0;
+    		font-size:0.2rem;
+    		width:3.19rem;
+    		margin-top:0.1rem;
+    		float:left;
+    	}
+    	.list_box .content .info .number{
+    		width:1rem;
+    		height:0.5rem;
+    		line-height: 0.5rem;
+    		color:#a0a0a0;
+    		font-size:0.23rem;
+			text-align:right;                                    
+			float:left;
+    	}
+    	.list_box .content .info .address{
+    		margin-bottom:0.05rem;
+    		width:100%;
+    		overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+    	}
+    	.list_box .total{
+    		width:6.4rem;
+    		height:0.68rem;
+    		line-height:0.68rem;
+    		text-align:left;
+    		border-bottom:1px solid #dddddd;
+    		color:#a0a0a0
+    	}
+    	.list_box .total p{
+    		margin-left:0.2rem;
+    		display: inline-block;
+    	}
+    	.list_box .total .btn{
+    		color:#2897D7;
+			text-decoration:underline;
+    	}
+		.noInfo{
+			text-align:center;
+			line-height: 2rem;
+			color:#545454;
+		}
+    </style>
+</head>
+<body>
+	<div class="warp">
+	   
+	    <div  class="noInfo first" v-if="info.rents.length==0">暂无订单信息</div>
+	   <div class="list_box"  v-for="(item,index) in info.rents" v-if="info.rents.length>0">
+	   		<div class="title clear">
+	   			<span class="icon">&#xe62f;</span>
+	   			<p class="order_id">订单号：{{item.order.out_trade_no}}</p>
+	   		</div>
+	   		<div class="content clear">
+	   			<img :src="item.goods.cover" />
+	   			<div class="info">
+	   				<p class="name">{{item.goods.name}}</p>
+	   				<p class="price">￥{{item.goods.price}}</p>
+	   				<p class="time">租赁时间：{{item.order.start.substring(0,4)}}.{{item.order.start.substring(5,7)}}.{{item.order.start.substring(8,10)}}-{{item.order.end.substring(0,4)}}.{{item.order.end.substring(5,7)}}.{{item.order.end.substring(8,10)}}</p>
+	   				<p class="number">x{{item.number}}</p>
+	   				<p class="time address" style="">寄回地址：{{item.order.address}}</p>
+	   			</div>
+	   		</div>
+	   		<div class="total">
+	   			<p>快递单号：<span class="icon" v-if="item.send" @click='gotoOther(item.send)'>{{item.send}} &#xe605;</span><span class="btn" v-else @click="inputSend(item.send,index)">点击输入</span></p>
+	   		</div>
+	   </div>
+	   
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	info:{
+		rents:[]
+}
+  },
+  mounted:function(){
+    var self = this;
+  	apiready = function(){
+		//IOS  onclick卡顿解决
+		sethead();
+  		api.ajax({
+		    url: baseUrl+'/api/rents',
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            }  
+		}, function(ret, err) {
+		    if (ret) { 
+		   		 self.info=ret
+		    } else {
+				 api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				 });
+		    }
+		});	
+	}
+  },
+  methods:{
+  	closeWin:function(){
+  		api.closeWin();
+  	},
+  	gotoOther:function(other){
+  		var url = 'https://m.kuaidi100.com/result.jsp?com=&nu='+other;
+  		var jsfun2 = 'vm.setName("快递查询");';
+		api.execScript({
+		    name: 'all',
+		    script: jsfun2
+		});
+		var winWidth = api.winWidth;
+        var winHeight = api.winHeight - 70;
+        api.openFrame({
+            name: 'mail',
+            url: 'mail.html',
+            rect: {
+                x: 0,
+                y: 70,
+                w: winWidth,
+                h: winHeight
+            },
+            pageParam:{
+            	data:{
+            		url:url
+            	}
+            },
+		    bounces:true,
+            vScrollBarEnabled: false,
+    		hScrollBarEnabled: false
+        });
+//      api.closeFrame({
+//		    name: 'mysold'
+//		});
+  	},
+  	inputSend:function(send,index){
+  		var self=this;
+  		var id = this.info.rents[index].id
+  		api.prompt({
+  			title:"输入快递单号",
+  			text:send,
+		    buttons: ['取消','确定' ]
+		}, function(ret, err) {
+		    if(ret.buttonIndex==2){
+		    	api.ajax({
+				    url: baseUrl+'/api/rents/send/'+id,
+				    method: 'post',
+		            timeout:200,
+		            dataType:"json",
+		            data: {
+					        values: {
+					            send: ret.text
+					        }
+					    },
+		            headers:{
+		            	Authorization:'Bearer '+$api.getStorage('token')
+		            }  
+				}, function(result, err) {
+				    if (result) { 
+						 self.info.rents[index].send=ret.text
+						 var newitem = self.info.rents[index]
+						 self.info.rents.splice(index,1,newitem)
+				    } else {
+				    	 api.toast({
+						    msg: '网络异常，稍后重试',
+						    duration: 2000,
+						    location: 'middle'
+						 });
+				    }
+				});	
+		    }
+		});
+  	}
+  }
+})
+</script>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>消息</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	 header{  
+        	width:6.4rem;
+       		position:fixed;
+        	top:0;
+        	padding-top:30px;
+        	color:white;
+        	text-align:center;
+        	font-size: 18px; 
+        	z-index:999
+        	
+        }
+      
+        header p{
+        	line-height: 50px;
+        	color:#fff!important;
+        }
+        .row{
+        	height:1.2rem;
+        	width:6.4rem;
+        }
+        .row:active{
+        	background:rgba(244,244,244,.7)
+        }
+        .row .img{
+        	width:0.79rem;
+        	height:0.79rem;
+        	border-radius: 100%;
+        	float:left;
+        	margin-left:0.2rem;
+        	margin-top:0.19rem;
+        }
+        .row .img img{
+        	width: 60%;
+        	height:60%;
+        	margin:20%;
+        }
+        .row .info{
+        	width:4.96rem;
+        	height:1.2rem;
+        	margin-left:0.19rem;
+        	float:left;
+        	border-bottom:1px solid #ebebeb;
+   
+        }
+        .row .info .name{
+        	width:2.3rem;
+        	margin-top:0.2rem;
+        	float:left;
+        	overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+        }
+        .row .info .time{
+        	width:2.4rem;
+        	float:right;
+        	margin-top:0.2rem;
+        	color: #c9c7c7;
+        	overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+        }
+        .row .info .detail{
+        	margin-top:0.2rem;
+        	width:4.14rem;
+        	overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+			color:#b3b3b3;
+			float:left;
+        }
+        .row .info .number{
+        	float:right;
+        	width:25px;
+        	height:25px;
+        	border-radius:100%;
+        	color:white;
+        	background:#f47771;
+        	text-align:center;
+        	line-height: 25px;
+        	margin-top:0.1rem;
+        }
+        .noInfo{
+			text-align:center;
+			line-height: 2rem;
+			color:#545454;
+			margin-top:1rem;
+		}
+    </style>
+</head>
+<body>
+	<div class="warp">
+		<div v-if="list.length==0||typeof list=='undefined'" class="noInfo">暂无消息</div>
+		<div v-if='type=="send"'>
+			<div class="row clear"  v-for="(item,index) in list" v-if="list.length>0" @click="gotoOrder">
+		    	<div class="img" style="background:#FE9405">
+		    		<img src="../image/message3.png"/>
+		    	</div>
+		    	<div class="info">
+		    		<p class="name">{{item.data.out_trade_no}}</p>
+		    		<p class="time">{{item.created_at}}</p>
+		    		<div class="clear"></div>
+		    		<p class="detail">{{item.data.title}}</p>
+		    	</div>
+		    </div>
+		</div>
+		<div v-if='type=="outRent"'>
+			<div class="row clear"  v-for="(item,index) in list" v-if="list.length>0" @click="gotoMysold">
+		    	<div class="img" style="background:#FE9405">
+		    		<img src="../image/message2.png"/>
+		    	</div>
+		    	<div class="info">
+		    		<p class="name">{{item.data.out_trade_no}}</p>
+		    		<p class="time">{{item.created_at}}</p>
+		    		<div class="clear"></div>
+		    		<p class="detail">{{item.data.title}}</p>
+		    	</div>
+		    </div>
+		</div>
+		<div v-if='type=="system"'>
+			<div class="row clear"  v-for="(item,index) in list" v-if="list.length>0">
+				<div v-if="item.push_type=='App\\Models\\Goods'" @click="gotoDetail(item.goods.id)" >
+					<div class="img">
+			    		<img :src="item.goods.cover"/>
+			    	</div>
+			    	<div class="info">
+			    		<p class="name">{{item.title}}</p>
+			    		<p class="time">{{item.created_at}}</p>
+			    		<div class="clear"></div>
+			    		<p class="detail">{{item.goods.name}}</p>
+			    	</div>
+				</div>
+		    	
+		    	<div v-if="item.push_type=='App\\Models\\Post'" @click="gotoPost(item.post.id)">
+					<div class="img">
+			    		<img :src="item.post.cover"/>
+			    	</div>
+			    	<div class="info">
+			    		<p class="name">{{item.title}}</p>
+			    		<p class="time">{{item.created_at}}</p>
+			    		<div class="clear"></div>
+			    		<p class="detail">{{item.post.title}}</p>
+			    	</div>
+				</div>
+		    </div>
+		</div>
+	    
+	</div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+var vm = new Vue({
+	  el: '.warp',
+	  data: {
+	  	list:[],
+	  	type:''
+	  },
+	  mounted:function(){
+	  	var self=this;
+	  	apiready = function(){
+	   		//IOS  onclick卡顿解决
+		    sethead();
+		   	self.ajaxMessage();
+		   	self.type=api.pageParam.data.type
+		   	var jsfun2 = 'vm.ajaxMessage()'
+			api.execScript({
+			    name: 'index',
+   			    frameName: 'frame3',
+   			    script: jsfun2
+			});
+		   	if(typeof $api.getStorage('token')!='undefined'&&$api.getStorage('token')!=''){
+		    	api.execScript({
+	               name: 'index',
+				   frameName: 'frame3',
+				    script: 'vm.ajaxMessage()'
+	            });
+		    }
+		   	
+            
+		}
+	  },
+	  methods:{
+	  	closeWin:function(){
+	  		api.closeWin();
+	  	},
+	  	ajaxMessage:function(){
+	  		var self = this;
+	  		var type=api.pageParam.data.type
+	  		api.ajax({
+			    url: baseUrl+'/api/message/'+type,
+			    method: 'get',
+	            timeout:200,
+	            headers:{
+	            	Authorization:'Bearer '+$api.getStorage('token')
+	            },
+	            dataType:"json",
+			}, function(ret, err) {
+			    if (ret) { 
+			    	if(type=="send"||type=="outRent"){
+			    		self.list=ret.data
+			    	}else{
+			    		self.list=ret
+			    	}
+			    } else {
+			    	if(typeof $api.getStorage('token')=='undefined'||$api.getStorage('token')==''){
+				        api.toast({
+						    msg: '请先登录',
+						    duration: 2000,
+						    location: 'middle'
+						});
+						api.openWin({
+					        name:'login',
+					        url:'login.html',
+					        bounces:true,
+					        animation:{
+					            type:'movein'
+					        }
+					    })
+					}
+			    }
+			});	
+	  	},
+	  	gotoDetail:function(id){
+	  		api.openWin({
+		        name:'detail',
+		        url:'detail.html',
+		        bounces:true,
+		        pageParam: {
+			        id: id
+			    },
+		        animation:{
+		            type:'movein'
+		        }
+		    })
+	  	},
+	  	gotoOrder:function(){
+	  		var jsfun2 = 'vm.setName("我的订单");';
+			api.execScript({
+			    name: 'all',
+			    script: jsfun2
+			});
+			var winWidth = api.winWidth;
+	        var winHeight = api.winHeight - 70;
+	        api.openFrame({
+	            name: 'order',
+	            url: 'order.html',
+	            rect: {
+	                x: 0,
+	                y: 70,
+	                w: winWidth,
+	                h: winHeight
+	            },
+	            pageParam: {
+			        data:{status: '3'}
+			    },
+			    bounces:true,
+	            vScrollBarEnabled: false,
+	    		hScrollBarEnabled: false
+	        });
+	        api.closeFrame({
+			    name: 'messageDetail'
+			});
+	  	},
+	  	gotoMysold:function(){
+	  		var jsfun2 = 'vm.setName("出租订单");';
+			api.execScript({
+			    name: 'all',
+			    script: jsfun2
+			});
+			var winWidth = api.winWidth;
+	        var winHeight = api.winHeight - 70;
+	        api.openFrame({
+	            name: 'mysold',
+	            url: 'mysold.html',
+	            rect: {
+	                x: 0,
+	                y: 70,
+	                w: winWidth,
+	                h: winHeight
+	            },
+			    bounces:true,
+	            vScrollBarEnabled: false,
+	    		hScrollBarEnabled: false
+	        });
+	        api.closeFrame({
+			    name: 'messageDetail'
+			});
+	  	},
+	  	gotoPost:function(id){
+	  		var jsfun2 = 'vm.setName("一简租");';
+			api.execScript({
+			    name: 'all',
+			    script: jsfun2
+			});
+	  		var winWidth = api.winWidth;
+	        var winHeight = api.winHeight - 70;
+	        api.openFrame({
+	            name: 'other',
+	            url: 'other.html',
+	            pageParam: {
+			        data:{url:baseUrl+'/post/mobile/'+id}
+			    },
+	            rect: {
+	                x: 0,
+	                y: 70,
+	                w: winWidth,
+	                h: winHeight
+	            },
+	            vScrollBarEnabled: false,
+	    		hScrollBarEnabled: false
+	        });  		
+	  		
+			api.closeFrame({name:'messageDetail'})
+	  	}
+	 }
+	})
+</script>
+</html>

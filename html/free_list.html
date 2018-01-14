@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+        body{
+            background: #f8f8f8;
+            height: 100vh;
+        }
+    	.free_top{
+            width: 100%;
+            height: 2.81rem;
+            background: #2797d7;
+        }
+        .free_top p{
+            width: 100%;
+            color: #fff;
+            text-align: center;
+        }
+        .free_top p:nth-child(2){
+            font-size: 0.3rem;
+            margin-top: 0.7rem;
+        }
+        .free_top p:nth-child(3){
+            font-size: 0.5rem;
+            font-weight: bold;
+            letter-spacing: 0.1rem;
+        }
+        .free_top p:nth-child(4){
+            font-size: 0.25rem;
+            text-align: right;
+            margin-top: 0.4rem;
+        }
+        .free_content{
+            width: 100%;
+            height: 0.79rem;
+            background-color: #fff;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .free_content:active{
+        	background:rgba(244,244,244,.7)
+        }
+        .free_content img{
+            width: 0.4rem;
+            height: 0.4rem;
+            margin-left: 0.25rem;
+            margin-top: 0.195rem;
+            display: inline-block;
+            float: left;
+        }
+        .free_content p{
+            width: 5.4rem;
+            font-size: 0.25rem;
+            color: #000;
+            line-height: 0.79rem;
+            float: left;
+            text-indent: 0.1rem;
+        }
+        .free_content p span{
+            color: #2797d7;
+            float: right;
+            line-height: 0.79rem;
+        }
+        .free_content_text{
+            width: 100%;
+        }
+        .free_content_text p{
+            width: 93%;
+            height: 0.3rem;
+            line-height: 0.3rem;
+            color: #bababa;
+            font-size: 0.25rem;
+            margin-top: 0.64rem;
+            padding: 0 3.5%;
+            margin-bottom: 0.1rem;
+        }
+        .free_content_text p span{
+            float: right;
+        }
+    </style>
+</head>
+<body>
+	<div class="warp">
+		<div class="free_top">
+	        <div style="width: 100%;height: 1px;"></div>
+	        <p>剩余免压额度(元)</p>
+	        <p>{{userData.total_quota-userData.used_quota}}</p>
+	        <p>总额度 {{userData.total_quota}}元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+	    </div>
+	    <div class="free_content_text">
+	        <p>芝麻信用分认证<span>免额度(元)</span></p>
+	    </div>
+	    <div class="free_content">
+	        <img src="../image/free_1.png">
+	        <p>芝麻信用
+	        	<span v-if='userData.is_verify_credit=="F"' @click="gotoZhima">去认证</span>
+	        	<span v-if='userData.is_verify_credit=="T"' @click="gotoZhima">{{userData.credit_quota}}</span>
+	        </p>
+	    </div>
+	    <div class="free_content_text">
+	        <p>身份认证<span>免额度(元)</span></p>
+	    </div>
+	    <div class="free_content" >
+	        <img src="../image/free_3.png">
+	        <p>学生认证
+	        	<span v-if='!userData.student' @click='gotoStudentCard(1,"")'>去认证 (500)</span>
+	        	<span v-if='userData.student&&userData.student.status==0'>审核中</span>
+	        	<span v-if='userData.student&&userData.student.status==1'>{{userData.student.quota}}</span>
+	        	<span v-if='userData.student&&userData.student.status==2' @click='gotoStudentCard(2,userData.student.id)'>审核失败，重新认证</span>
+	        </p>
+	    </div>
+	    <div class="free_content" >
+	        <img src="../image/free_2.png">
+	        <p>身份证认证
+	        	<span v-if='!userData.card' @click='gotoCard(1,"")'>去认证 (1000)</span>
+	        	<span v-if='userData.card&&userData.card.status==0'>审核中</span>
+	        	<span v-if='userData.card&&userData.card.status==1'>{{userData.card.quota}}</span>
+	        	<span v-if='userData.card&&userData.card.status==2' @click='gotoCard(2,userData.card.id)'>审核失败，重新认证</span>
+	        </p>
+	    </div>
+	    <div class="free_content" >
+	        <img src="../image/free_4.png">
+	        <p>申请面签
+	        	<span v-if='!userData.face' @click='face'>去申请(5000)</span>
+	        	<span v-if='userData.face&&userData.face.status==0' >审核中</span>
+	        	<span v-if='userData.face&&userData.face.status==1'>{{userData.face.quota}}</span>
+	        	<span v-if='userData.face&&userData.face.status==2' @click='face'>审核失败，重新审核</span>
+	        </p>
+	    </div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	userData:{
+  		is_verify_credit:'F',
+  		card:{
+  			status:0
+  		},
+  		total_quota:0,
+  		used_quota:0,
+  		student:{
+  			status:0
+  		},
+  		face:{}
+  	}
+  },
+  mounted: function() {
+  	var self = this;
+  	apiready = function(){
+		//IOS  onclick卡顿解决
+		 self.askUserInfo();
+	}
+  },
+  methods:{
+  	openWin:function(obj,value){
+  		api.openWin({
+            name:obj,
+            url:obj+'.html',
+            pageParam: value,
+            bounces:false,
+            animation:{
+                type:'movein'
+            }
+        })
+  	},
+  //请求用户数据
+  	askUserInfo:function(){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/user',
+		    method: 'get',
+            timeout:200,
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            },
+            dataType:"json",
+		}, function(ret, err) {
+		    if (ret) { 
+		    	self.userData=ret; 
+		    } else {
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});	
+  	},
+  	gotoCard:function(type,id){
+//		var winWidth = api.winWidth;
+//      var winHeight = api.winHeight - 70;
+//      api.openFrame({
+//          name: 'card',
+//          url: 'card.html',
+//          pageParam: {
+//				type:type,
+//				id:id
+//		    },
+//          rect: {
+//              x: 0,
+//              y: 70,
+//              w: winWidth,
+//              h: winHeight
+//          },
+//          vScrollBarEnabled: false,
+//  		hScrollBarEnabled: false
+//      });  		
+//		
+//		api.closeFrame({name:'free_list'})
+		value={
+	 		
+	 			type:type,
+				id:id
+	 		
+	 	}
+		this.openWin('card',value)
+  	},
+  	gotoStudentCard:function(type,id){
+//		var winWidth = api.winWidth;
+//      var winHeight = api.winHeight - 70;
+//      api.openFrame({
+//          name: 'studentcard',
+//          url: 'studentcard.html',
+//          pageParam: {
+//				type:type,
+//				id:id
+//		    },
+//          rect: {
+//              x: 0,
+//              y: 70,
+//              w: winWidth,
+//              h: winHeight
+//          },
+//          vScrollBarEnabled: false,
+//  		hScrollBarEnabled: false
+//      });  		
+//		
+//		api.closeFrame({name:'free_list'})
+		value={
+	 		
+	 			type:type,
+				id:id
+	 		
+	 	}
+		this.openWin('studentcard',value)
+		
+  	},
+  	face:function(){
+  		var self = this;
+  		api.confirm({
+		    title: '申请面签',
+		    msg: '确定申请面签',
+		    buttons: [ '取消','确定']
+		},function(ret,err){
+			if(ret.buttonIndex == 2){
+		         api.ajax({
+				    url: baseUrl+'/api/verify/face',
+				    method: 'get',
+		            timeout:200,
+		            headers:{
+		            	Authorization:'Bearer '+$api.getStorage('token')
+		            },
+		            dataType:"json",
+				}, function(ret, err) {
+				    if (ret) { 
+				    	if(ret.success){
+				    		api.toast({
+							    msg: ret.success,
+							    duration: 2000,
+							    location: 'middle'
+							});
+							 self.askUserInfo();
+				    	}
+				    	
+				    } else {
+				    	api.toast({
+						    msg: '网络异常，稍后重试',
+						    duration: 2000,
+						    location: 'middle'
+						});
+				    }
+				});	
+		    }
+		});
+  		
+  	},
+  	gotoZhima:function(){
+//		var winWidth = api.winWidth;
+//      var winHeight = api.winHeight - 70;
+//      api.openFrame({
+//          name: 'zhima',
+//          url: 'zhima.html',
+//          rect: {
+//              x: 0,
+//              y: 70,
+//              w: winWidth,
+//              h: winHeight
+//          },
+//          vScrollBarEnabled: false,
+//  		hScrollBarEnabled: false
+//      });  		
+//		
+//		api.closeFrame({name:'free_list'})
+		
+		this.openWin('zhima','')
+  	}
+  	
+  }
+})
+</script>
+</html>

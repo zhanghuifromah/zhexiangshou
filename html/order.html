@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+          header{  
+        	width:6.4rem;
+       		position:fixed;
+        	top:0;
+        	padding-top:30px;
+        	color:white;
+        	text-align:center;
+        	font-size: 18px; 
+        }
+      
+        header p{
+        	line-height: 50px;
+        }
+        .emptySpase{
+        	background:#f4f4f4;
+   			width:6.4rem;
+   			height:0.11rem;
+        }
+        .nav{
+        	width:6.4rem;
+        	height:0.6rem;
+        	border-bottom:1px solid #ebebeb;
+        }
+        .nav .nav-item{
+        	float:left;
+        	width: 20%;
+        	line-height: 0.6rem;
+        	text-align:center;
+        	color:#545454;
+        }
+        .active{
+        	color:#2897d7!important;
+        	border-bottom: 2px solid #2897d7;
+        }
+    	.list_box{
+    		width:6.4rem;
+    		border-bottom:0.15rem solid #e7e7e7;
+    	}
+    	.list_box .title .icon{	
+    		font-size: 0.3rem;
+    		margin:0.2rem;
+    		float:left;
+    	}
+    	.list_box .title .order_id{
+    		font-size: 0.24rem;
+    
+    		margin-top:0.25rem;
+    		float:left;
+    	}
+    	.list_box .title .order_time{
+    		font-size: 0.24rem;
+    		color:#a0a0a0;
+    		margin-top:0.25rem;
+    		float:right;
+    		margin-right:0.2rem;
+    	}
+    	.list_box .content{
+    		width:6.4rem;
+    
+    		background:#f5f5f5;
+    	
+    	}
+    	.list_box .content img{
+    		width:1.36rem;
+    		height:1.36rem;
+    		margin-top:0.08rem;
+    		margin-left:0.21rem;
+    		float:left;
+    	}
+    	.list_box .content .info{
+    		width:4.6rem;
+    		height:1.36rem;
+    		float:left;
+    		margin-top:0.08rem;
+    		margin-left:0.1rem;
+    		margin-bottom:0.08rem;
+    	}
+    	.list_box .content .info .name{
+    		width:3.19rem;
+    		display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			overflow: hidden;
+
+			font-size: 0.22rem;
+		
+			float:left;	
+    	}
+    	.list_box .content .info .price{
+    		width:1.2rem;
+    		height:0.5rem;
+    		float:left;
+    		line-height: 0.5rem;
+    		color:#f47771;
+			font-size: 0.26rem;
+			font-weight:bold;
+			text-align:right;
+    	}
+    	.list_box .content .info .time{
+    		color:#a0a0a0;
+    		font-size:0.2rem;
+    		width:3.19rem;
+    		margin-top:0.2rem;
+    		float:left;
+    	}
+    	.list_box .content .info .info{
+    		color:#a0a0a0;
+    		font-size:0.2rem;
+    		width:3.19rem;
+    		margin-top:0.1rem;
+    		float:right;
+    	}
+    	.list_box .content .info .number{
+    		width:1rem;
+    		height:0.5rem;
+    		line-height: 0.5rem;
+    		color:#a0a0a0;
+    		font-size:0.23rem;
+			text-align:right;                                    
+			float:right;
+			margin-top:0.2rem;
+			margin-right:0.2rem;
+    	}
+    	.list_box .total{
+    		width:6.4rem;
+    		height:0.68rem;
+    		line-height:0.68rem;
+    		text-align:right;
+    		border-bottom:1px solid #dddddd;
+    	}
+    	.list_box .total span{
+    		font-size: 0.32rem;
+    		color:#f47771
+    	}
+    	.list_box .btn_box{
+    		width:6.4rem;
+    		text-align:right;
+    		border-bottom:1px solid #dddddd;
+    	}
+    	.list_box .btn_box .btn{
+    		
+			border-radius:3px;
+			background:	#2897d7 ;
+			color:white;
+			width:1.42rem;
+			height:0.6rem;
+			line-height:0.6rem;
+			text-align:center;
+			margin:0.2rem;
+			display:inline-block;
+		}
+		.list_box .btn_box .cancel{
+			background:none;
+			color: #515151;
+			font-size:0.22rem;
+			margin-right:-0.1rem;
+			text-decoration: underline;
+		}
+		.noInfo{
+			text-align:center;
+			line-height: 2rem;
+			color:#545454;
+		}
+		.mail{
+			text-align:right;
+		}
+		.mailsearch{
+			color:#2897D7;
+			text-decoration:underline;
+			margin-left:0.03rem
+		}
+		.workspace{
+			height:0.8rem;
+			border:1px solid #ebebeb;
+			background:#f5f5f5;
+		
+		}
+		.workspace p{
+			margin-left:0.2rem;
+			line-height:0.8rem;
+			float:left;
+			font-size:0.22rem;
+		}
+		.workspace .btn{
+			border-radius:3px;
+			background:white ;
+			color:#2897d7;
+			border:1px solid #2897d7;
+			width:1.42rem;
+			height:0.5rem;
+			line-height:0.5rem;
+			text-align:center;
+			margin-right:0.2rem;
+			margin-top:0.15rem;
+			display:inline-block;
+			float:right;
+		}
+    </style>
+</head>
+<body>
+	<div class="warp">
+	   <div class="nav">
+	       	<div class="nav-item" :class="{'active':status==1}" @click="chooseStatus(1)">待付款</div>
+	       	<div class="nav-item" :class="{'active':status==2}" @click="chooseStatus(2)">待发货</div> 
+	       	<div class="nav-item" :class="{'active':status==3}" @click="chooseStatus(3)">待收货</div>
+	       	<div class="nav-item" :class="{'active':status==4}" @click="chooseStatus(4)">待返还</div>
+	       	<div class="nav-item" :class="{'active':status==5}" @click="chooseStatus(5)">已完成</div>
+       </div>
+       <div class="clear"></div>
+       <div v-if="list.length==0" class="noInfo">暂无订单信息</div>
+	   <div class="list_box" v-for="(item,itemindex) in list" v-if="list.length>0">
+	   		<div class="title clear">
+	   			<span class="icon">&#xe62f;</span>
+	   			<p class="order_id">订单号：{{item.out_trade_no}}</p>
+	   			<p class="order_time">{{item.created_at.substring(0,10)}}</p>
+	   		</div>
+	   		<div class="content clear" v-for="(goods,index) in item.goods" @click="gotoDetail(goods.id)">
+	   			<img :src="goods.cover" />
+	   			<div class="info">
+	   				<p class="name">{{goods.name}}</p>
+	   				<p class="price">￥{{goods.price}}</p>
+	   				<div class="clear"></div>
+	   				<p class="time">租赁时间：{{item.start.substring(0,4)}}.{{item.start.substring(5,7)}}.{{item.start.substring(8,10)}}-{{item.end.substring(0,4)}}.{{item.end.substring(5,7)}}.{{item.end.substring(8,10)}}</p>
+	   				<p class="number">x{{goods.pivot.number}}</p>
+	   			<!--	<p class="time" v-if="status==4" @click.stop="writeOrder(goods.pivot.id,index,goods.pivot.back,itemindex)">寄回快递单号：
+	   					<span v-if="goods.pivot.back==null">填写订单号</span>
+	   					<span v-if="goods.pivot.back!=null">{{goods.pivot.back}}</span>	
+	   					<span class="icon">&#xe603;</span>
+	   				</p>
+	   				<p class="time mail" v-if="status==3" @click.stop="gotoMail(goods.pivot.send)">
+	   					<span v-if="goods.pivot.send!=null">{{goods.pivot.send}}<span class='mailsearch'>查看物流</span></span>
+	   					<span v-if="goods.pivot.send==null">暂无</span>
+	   				</p>-->
+	   			</div>
+	   			<div class="clear"></div>
+	   			<div class="workspace" v-if="status==3" >
+	   				<div v-if="item.address!='自提'">
+			   			<p>物流查询</p>
+			   			<div class="btn" @click.stop="gotoMail(goods.pivot.send)" @click.stop="gotoMail(goods.pivot.send)" v-if="goods.pivot.send!=null">查询</div>
+			   			<div class="btn" style="color:#a0a0a0;background: white;border:1px solid #ebebeb"  v-if="goods.pivot.send==null">暂无信息</div>
+		   			</div>
+		   			<div v-else>
+		   				<p>自提地址：<span v-if="goods.pivot.send">{{goods.pivot.send}}</span><span v-else>暂无</span></p>
+		   			</div>
+		   		</div>
+		   		<div class="workspace" v-if="status==4" >
+		   			<p>寄回快递单号:<span style="margin-left:0.2rem;color:#a0a0a0">{{goods.pivot.back}}</span></p>
+		   			
+		   			<div class="btn" @click.stop="writeOrder(goods.pivot.id,index,goods.pivot.back,itemindex)">填写</div>
+		   		</div>
+	   		</div>
+	   		
+	   		<div class="total">
+	   			共计{{item.goods.length}}件商品 实付￥<span>{{item.actual_fee}}</span><span style="color:#545454;font-size: 0.2rem;margin-right:0.2rem">(含押金￥{{item.refund_fee}},保险￥{{item.insurance_fee}})</span>
+	   		</div>
+	   		<div class="btn_box">
+	   			<div class="btn cancel" v-if="status==1" @click="cancel(item.id)">取消订单</div>
+	   			<div class="btn" v-if="status==1" @click="gotoPay(item.id)">去支付</div>
+	   			<div class="btn" v-if="status==3"  @click="gotoSure(item.id)">确认收货</div>
+	   		</div>
+	   </div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	status:0,
+  	list:[]
+  },
+  mounted:function(){
+  	var self = this;
+  	apiready = function(){
+	  	
+		 
+		sethead();
+		iflog();
+		self.status = api.pageParam.data.status;
+		self.ajaxInfo(self.status,1);
+		//下拉刷新
+        api.setRefreshHeaderInfo({
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#fff',
+		    textColor: '#545454',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...'
+		}, function(ret, err) {
+			self.ajaxInfo(self.status,1);
+		    //在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			
+		});
+	}
+  },
+  methods:{
+  	closeWin:function(){
+  		api.closeWin();
+  	},
+  	//请求数据
+  	ajaxInfo:function(status,page){
+  		var self = this;
+  		api.showProgress({
+			    title: '努力加载中...',
+			    text: '先休息一下...',
+			    modal: true
+			});
+  		 api.ajax({
+		    url: baseUrl+'/api/orders/'+status,
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            },
+            data: {
+		        values: {
+		            page:page
+		        }
+		    },
+		}, function(ret, err) {
+		    if (ret) { 
+		    	//api.alert({ msg: JSON.stringify(ret) });
+		    	self.list = ret  
+		    	api.hideProgress();
+		    	api.refreshHeaderLoadDone()
+		    } else {
+		    	//api.alert({ msg: JSON.stringify(err) });
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				 });
+			   api.hideProgress();
+			   api.refreshHeaderLoadDone()
+		    }
+		});	
+  	},
+  	//上方导航选择
+  	chooseStatus:function(status){
+  		this.status=status;
+  		this.list=[]
+  		this.ajaxInfo(this.status,1)
+  	},
+  	//取消订单
+  	cancel:function(id){
+  		var self = this
+		api.confirm({
+		    title: '取消订单',
+		    msg: '确定取消订单？',
+		    buttons: [ '取消','确定']
+		},function(ret,err){
+			if(ret.buttonIndex == 2){
+		         api.ajax({
+				    url: baseUrl+'/api/order/cancel/'+id,
+				    method: 'get',
+				    dataType:"json",
+		            timeout:200,
+		            headers:{
+		            	Authorization:'Bearer '+$api.getStorage('token'),
+		            	Accept:'application/json'
+		            }
+				}, function(result, err) {
+					if(result){
+						if (result.success) { 
+					    	//api.alert({ msg: JSON.stringify(ret) });
+					        for(var i=0;i<self.list.length;i++){
+					        	if(self.list[i].id==id){
+					        		self.list.splice(i,1)
+					        	}
+					        }  
+					        api.toast({
+							    msg: '取消成功',
+							    duration: 2000,
+							    location: 'middle'
+							 });
+							 var jsfun2 = 'vm.ajaxorder()'
+			    			api.execScript({
+			    			    name: 'index',
+				   			    frameName: 'frame4',
+				   			    script: jsfun2
+			    			});
+					    }
+					}else {
+				    	//api.alert({ msg: JSON.stringify(err) });
+				    	api.toast({
+						    msg: '网络异常，稍后重试',
+						    duration: 2000,
+						    location: 'middle'
+						 });
+				    }
+				});	
+		    }
+		});
+  		
+  	},
+  	//跳转到支付页
+  	gotoPay:function(id){
+  		api.openWin({
+            name:'pay',
+            pageParam: {
+		        id: id
+		    },
+            url:'pay.html',
+            bounces:false,
+            animation:{
+                type:'movein'
+            }
+  		})
+  	},
+  	gotoMail:function(other){
+  		var url = 'https://m.kuaidi100.com/result.jsp?com=&nu='+other;
+  		
+		var jsfun2 = 'vm.setName("物流查询");';
+		api.execScript({
+		    name: 'all',
+		    script: jsfun2
+		});
+		var winWidth = api.winWidth;
+        var winHeight = api.winHeight - 70;
+        api.openFrame({
+            name: 'mail',
+            url: 'mail.html',
+            rect: {
+                x: 0,
+                y: 70,
+                w: winWidth,
+                h: winHeight
+            },
+            pageParam:{
+            	name:'物流查询',
+            	frame:'mail',
+            	data:{url:url}
+            },
+            bounces:true,
+            vScrollBarEnabled: false,
+    		hScrollBarEnabled: false
+        });
+        api.closeFrame({
+		    name: 'order'
+		});
+//		api.openWin({
+//			name:'all',
+//          url:'all.html',
+//          bounces:false,
+//          pageParam:{
+//          	name:'物流查询',
+//          	frame:'mail',
+//          	data:{url:url}
+//          },
+//          animation:{
+//              type:'movein'
+//          }
+//		})
+  	},
+  	gotoDetail:function(id){
+  		api.openWin({
+	        name:'detail',
+	        url:'detail.html',
+	        bounces:true,
+	        pageParam: {
+		        id: id
+		    },
+	        animation:{
+	            type:'movein'
+	        }
+	    })
+  	},
+  	//填写订单号
+  	writeOrder:function(id,index,number,itemindex){
+  		var self = this;
+  		if(number==null){
+  			number=''
+  		}
+  		api.prompt({
+  			msg:'填写快递单号',
+  			text:number,
+		    buttons: ['取消', '确定']
+		}, function(ret, err) {
+		    if(ret.buttonIndex == 2){
+		         api.ajax({
+				    url: baseUrl+'/api/rents/back/'+id,
+				    method: 'post',
+		            timeout:200,
+		            dataType:"json",
+		            data: {
+					        values: {
+					            back: ret.text
+					        }
+					    },
+		            headers:{
+		            	Authorization:'Bearer '+$api.getStorage('token')
+		            }  
+				}, function(result, err) {
+				    if (result) { 
+						self.list[itemindex].goods[index].pivot.back=ret.text;
+						var newitem = self.list[itemindex].goods[index];
+						self.list[itemindex].goods.splice(index,1,newitem)
+				    } else {
+				    	api.toast({
+						    msg: '网络异常，稍后重试',
+						    duration: 2000,
+						    location: 'middle'
+						 });
+				    }
+				});	
+		    }
+		});
+  	},
+  	gotoSure:function(id){
+  		var self= this;
+  		api.confirm({
+		    title: '确认收货',
+		    msg: '确认收货？',
+		    buttons: [ '取消','确定']
+		},function(ret,err){
+			if(ret.buttonIndex == 2){
+		         api.ajax({
+				    url: baseUrl+'/api/order/confirm/'+id,
+				    method: 'get',
+				    dataType:"json",
+		            timeout:200,
+		            headers:{
+		            	Authorization:'Bearer '+$api.getStorage('token'),
+		            	Accept:'application/json'
+		            }
+				}, function(result, err) {
+					if(result){
+						if (result.success) { 
+					    	//api.alert({ msg: JSON.stringify(ret) });
+					        for(var i=0;i<self.list.length;i++){
+					        	if(self.list[i].id==id){
+					        		self.list.splice(i,1)
+					        	}
+					        }  
+					        api.toast({
+							    msg: '确认成功',
+							    duration: 2000,
+							    location: 'middle'
+							 });
+							  var jsfun2 = 'vm.ajaxorder()'
+			    			api.execScript({
+			    			    name: 'index',
+				   			    frameName: 'frame4',
+				   			    script: jsfun2
+			    			});
+					    }
+					}else {
+				    	//api.alert({ msg: JSON.stringify(err) });
+				    	api.toast({
+						    msg: '网络异常，稍后重试',
+						    duration: 2000,
+						    location: 'middle'
+						 });
+				    }
+				});	
+		    }
+		});
+  	}
+  }
+})
+</script>
+</html>

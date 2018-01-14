@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>消息</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+        .row{
+        	height:1.2rem;
+        	width:6.4rem;
+        	border-bottom:1px solid #ebebeb
+        }
+        .row:active{
+        	background:rgba(244,244,244,.7)
+        }
+        .row .img{
+        	width:0.79rem;
+        	height:0.79rem;
+        	border-radius: 100%;
+        	float:left;
+        	margin-left:0.2rem;
+        	margin-top:0.19rem;
+        }
+        .row .img img{
+        	width: 60%;
+        	height:60%;
+        	margin:20%;
+        }
+        .row .info{
+        	width:4.96rem;
+        	height:1.2rem;
+        	margin-left:0.19rem;
+        	float:left;
+        }
+        .row .info .name{
+        	float:left;
+        	line-height:1.2rem;
+        }
+        .row .info .number{
+        	float:right;
+        	width:25px;
+        	height:25px;
+        	border-radius:100%;
+        	color:white;
+        	background:#f47771;
+        	text-align:center;
+        	line-height: 25px;
+        	margin-top:0.4rem;
+        }
+        
+    </style>
+</head>
+<body>
+<div class="warp">
+    <div class="row clear" @click="gotoMessage('system')">
+    	<div class="img" style="background:#F75521">
+    		<img src="../image/message.png"/>
+    	</div>
+    	<div class="info">
+    		<p class="name">系统消息</p>
+    		<p class="number" v-if="system!=0">{{system}}</p>
+    	</div>
+    </div>
+      <div class="row clear" @click="gotoMessage('send')">
+      	<div class="img" style="background:#FE9405">
+    		<img src="../image/message3.png"/>
+    	</div>
+    	<div class="info">
+    		<p class="name">发货通知</p>
+    		<p class="number" v-if="send!=0">{{send}}</p>
+    	</div>
+    </div>
+      <div class="row clear" @click="gotoMessage('outRent')">
+      	<div class="img" style="background:#89C34C">
+    		<img src="../image/message2.png"/>
+    	</div>
+    	<div class="info">
+    		<p class="name">出租订单</p>
+    		<p class="number" v-if="outRend!=0">{{outRend}}</p>
+    	</div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+	var vm = new Vue({
+	  el: '.warp',
+	  data: {
+	  	system:0,
+	  	send:0,
+	  	outRend:0
+	  },
+	  mounted:function(){
+	  	var self=this;
+	  	apiready = function(){
+	   		//IOS  onclick卡顿解决
+		    sethead();
+		    //alert(typeof $api.getStorage('token'))
+		    //alert(typeof $api.getStorage('token')!='undefined')
+		    if(typeof $api.getStorage('token')!='undefined'&&$api.getStorage('token')!=''){
+		    	//alert(typeof $api.getStorage('token'))
+		    	//alert(typeof $api.getStorage('token')!='undefined')
+		    	self.ajaxMessage();
+		    	
+		    	 api.setRefreshHeaderInfo({
+				    loadingImg: 'widget://image/refresh.png',
+				    bgColor: '#fff',
+				    textColor: '#545454',
+				    textDown: '下拉刷新...',
+				    textUp: '松开刷新...'
+				}, function(ret, err) {
+					
+					self.ajaxMessage();
+				    //在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+					
+				});
+		    }
+//		    if(typeof $api.getStorage('sysMessage')!='undefined'||$api.getStorage('sysMessage')!=''){
+//		    	self.system=$api.getStorage('sysMessage')
+//		    }
+		}
+	  },
+	  methods:{
+	  	closeWin:function(){
+	  		api.closeWin();
+	  	},
+	  	ajaxMessage:function(){
+	  		var self = this;
+	  		//alert('进入这里')
+	  		api.ajax({
+			    url: baseUrl+'/api/message',
+			    method: 'get',
+	            timeout:200,
+	            headers:{
+	            	Authorization:'Bearer '+$api.getStorage('token')
+	            },
+	            dataType:"json",
+			}, function(ret, err) {
+			    if (ret) { 
+			    	self.send=ret.send;
+			    	self.outRend=ret.outRent;
+			    	api.refreshHeaderLoadDone()
+			    } else {
+					api.toast({
+					    msg: '网络异常，稍后重试',
+					    duration: 2000,
+					    location: 'middle'
+					});
+					api.refreshHeaderLoadDone()
+			    }
+			});	
+	  	},
+	  	gotoMessage:function(type){
+		  	//消息推送初始化
+			var ajpush = api.require('ajpush');
+	        ajpush.init(function(ret) {
+	        });
+	    	ajpush.setBadge({
+			    badge:0
+			});
+	  		api.openWin({
+	            name:'all',
+	            url:'all.html',
+	            pageParam: {
+	            	name:'消息列表',
+	            	frame:'messageDetail',
+	            	data:{
+	            		type: type
+	            	}
+	            },
+	            bounces:false,
+	            animation:{
+	                type:'movein'
+	            }
+	        })
+  			
+	  	}
+	 }
+	 })
+</script>
+</html>

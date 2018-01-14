@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	.warp{
+    		height:100vh;
+    		background:#f8f8f8;
+    		position: relactive;
+    	}
+        header{  
+        	width:6.4rem;
+        	padding-top:30px;
+        	color:white;
+        	text-align:center;
+        	font-size: 18px; 
+        }
+        header p{
+        	line-height: 50px;
+        	position: relative;
+        }
+      	.row{
+      		width:6.4rem;
+      		background:white;
+      		border-bottom:1px solid #ebebeb
+      	}
+      	.row .time{
+      		float:left;margin-left:0.2rem;
+      		line-height: 0.72rem;
+      		height:0.72rem;
+      		color:#656565;
+      	}
+      	.row .timelength{
+      		float:right;margin-right:0.2rem;
+      		line-height: 0.72rem;
+      		height:0.72rem;
+      		color:#656565;
+      	}
+      	.row img{
+      		width:1.68rem;
+      		height:1.68rem;
+      		border:1px solid #eeeeee;
+      		float:left;
+      		margin-left:0.2rem;
+      		margin-top:0.13rem;
+      		margin-bottom:0.13rem;
+      	}
+      	.row .info{
+      		width: 4.15rem;
+      		height:1.68rem;
+      		margin-top:0.13rem;
+      		margin-left:0.1rem;
+      		border:1px solid black;
+      		float:left;
+      	}
+    </style>
+</head>
+<body>
+	<div class="warp">
+	   <header class="mainColor clear">
+	   	   <span class="icon" @click="closeWin" style="z-index:999">&#xe62c;</span>
+	       <p>订单详情</p>
+	   </header>
+	   <div class="row clear">
+	   		<p class="time">2017-07-07至2017-08-08</p>
+	   		<p class="timelength">共3天</p>
+	   </div>
+	   <div class="row clear">
+	   		<img src="../image/good.png" />
+	   		<div class="info">
+	   			<p class="name"></p>
+	   		</div>
+	   </div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	
+  },
+  mounted:function(){
+  	var self=this;
+  	apiready = function(){
+	    sethead();
+	    
+	}
+  },
+  methods:{
+  	closeWin:function(){
+  		
+  		api.closeWin();
+  	},
+  	
+  }
+})
+</script>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	 html,body{
+            background: rgba(255,255,255,.8) !important;
+        }
+        .warp{
+        	width: 6.4rem;
+        	height:100vh;
+        }
+        .content{
+        	width: 6.4rem;
+        	height:6rem;
+        	position:fixed;
+        	bottom:0;
+        	overflow: hidden;
+        }
+        .box{
+        	width:49%;
+        	height:2.82rem;
+        	position: absolute;
+        	bottom: -160px;
+        	text-align:center;
+        }
+        .box:nth-child(1) {
+		    left: 0.2rem;
+		   
+		}
+		.box:nth-child(2) {
+		    left: 3.3rem;
+		    
+		}
+		
+        .box:active{
+        	background:rgba(244,244,244,.5)
+        }
+        .box img{
+        	width: 1.5rem;
+        	height:1.5rem;
+        	-webkit-animation:jump 0.5s ease-out 0.5s 1 forwards;
+        }
+        .box .title{
+        	font-size: 0.24rem;
+        	color: #333333;
+        	margin-top:-0.1rem;
+        	margin-bottom:0.13rem;
+        	-webkit-animation:jump 0.5s ease-out 0.55s 1 forwards;
+        }
+        .box .info{
+        	width:90%;
+        	margin-left:5%;
+        	font-size: 0.18rem;
+        	color:#6e6e6e;
+        	-webkit-animation:jump 0.5s ease-out 0.6s 1 forwards;
+        }
+        .cancel_box{
+        	width: 6.4rem;
+        	height:1.33rem;
+        	text-align:center;
+        	margin-top:0.4rem;
+        	position: absolute;
+        	bottom:0rem;
+        }
+        .cancel_box img{
+        	width:0.92rem;
+        }
+        
+        
+        @-webkit-keyframes jump{
+		  0%{
+		    -webkit-transform:translateY(0rem);
+		  }
+		  65%{
+		    -webkit-transform:translateY(-4.5rem);
+		  }
+		  100%{
+		    -webkit-transform:translateY(-4.3rem);
+		  }
+		}
+    </style>
+</head>
+<body>
+	<div class="warp">
+	 	<div class="content" @click="closeWin">
+	 		<div class="box" @click.stop="openWin(1)">
+	 			<img src="../image/t_icon.jpg" />
+	 			<p class="title">托管</p>
+	 			<p class="info">物品存放至一简租，由平台评估给出合理价格，被租出金额全部返还寄主。若丢失或损坏则按市场价赔付</p>
+	 		</div>
+	 		<div class="box" @click.stop="openWin(0)">
+	 			<img src="../image/ft_icon.png" />
+	 			<p class="title">非托管</p>
+	 			<p class="info">自由定价，由其他用户联系后下单，成交发货</p>
+	 		</div>
+	 		<div class="clear"></div>
+	 		<div class='cancel_box' @click="closeWin">
+	 			<img src='../image/cancel_icon.png'>
+	 		</div>
+	 	</div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	
+  },
+  mounted:function(){
+  	var self=this;
+  	apiready = function(){
+   		//IOS  onclick卡顿解决
+	    sethead();
+	    
+	    
+	}
+  },
+  methods:{
+  	closeWin:function(){
+  		api.closeFrame({
+		    name: 'fabu'
+		});
+  	},
+  	openWin:function(state){
+  		api.openWin({
+            name:'all',
+            url:'all.html',
+            pageParam: {
+                name:'发布',
+				frame:'frame2',
+				data:{
+					state:state
+				}
+            },
+            bounces:false,
+            delay:300,
+            animation:{
+                type:'movein'
+            }
+        })
+        api.closeFrame({
+		    name: 'fabu'
+		});
+  	}
+  
+  }
+})
+</script>
+</html>

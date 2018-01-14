@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>发布</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	.warp{
+    		background:rgb(244,244,244)
+    	}
+        header{  
+        	width:6.4rem;
+        	padding-top:30px;
+        	color:white;
+        	text-align:center;
+        	font-size: 18px; 
+        }
+        header p{
+        	line-height: 50px;
+        	position: relative;
+        }
+        .emptySpase{
+        	background:#f4f4f4;
+   			width:6.4rem;
+   			height:0.11rem;
+        }
+        input::-webkit-input-placeholder { /* WebKit browsers */ 
+			color: #b2b1b1; 
+		} 
+		input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
+			color: #b2b1b1; 
+		} 
+		input::-moz-placeholder { /* Mozilla Firefox 19+ */ 
+			color: #b2b1b1; 
+		} 
+		input:-ms-input-placeholder { /* Internet Explorer 10+ */ 
+			color: #b2b1b1; 
+		} 
+    	header .title{
+    		color:#fbf9f9;
+  			font-size:0.28rem;
+ 			padding-top:0.23rem;
+ 			text-align:center;
+ 			width:100%;
+    	}
+    	.box{
+    		width:6.4rem;
+    		border-bottom:2px solid #f4f4f4;
+    		background:white;
+    	}
+    	.box .name{
+    		width:5.9rem;
+    		margin-left:0.26rem;
+    		height:0.7rem;
+    		line-height:0.7rem;
+    		font-size:0.23rem;
+    		border: 0;
+    		outline: 0;
+    	}
+    	.box .describe{
+    		width:5.9rem;
+    		margin-left:0.26rem;
+    		height:0.7rem;
+    		line-height:0.4rem;
+    		margin-top:0.25rem;
+    		font-size:0.23rem;
+    		height:1rem;
+    		border: 0;
+    		outline: 0;
+    	}
+    	.box .img_box{
+    		width:1.28rem;
+    		height:1.28rem;
+    		margin-bottom:0.2rem;
+    		margin-left:0.26rem;
+    		position:relative;
+    		float:left;
+    	}
+    	.box .img_box img{
+    		width: 100%;
+    		height:100%;
+    	}
+    	.box .img_box .del{
+    		width:0.4rem;
+    		height:0.4rem;
+    		position: absolute;
+    		right:0;
+    		top:0;
+    		background:rgba(0,0,0,.4);
+    		color:white;
+    		text-align:center;
+  			font-size:0.3rem;
+  			line-height: 0.4rem;
+    	}
+    	.box .uploadBtn{
+    		width: 5rem;
+    		height:0.6rem;
+    		margin-left:0.7rem;
+    		border:2px dotted #2897d7;
+    		border-radius:5px;
+    		margin-bottom:0.22rem;
+    	}
+    	.box .uploadBtn img{
+    		width: 0.31rem;
+    		height:0.36rem;
+    		margin-left:1.7rem;
+    		margin-top:0.12rem;
+    		float: left;
+    	}
+    	.box .uploadBtn p{
+    		line-height: 0.6rem;
+    		float:left;
+    		color:#2897d7;
+    		font-size:0.21rem;
+    		margin-left:0.12rem;
+    	}
+    	.box .row{
+    		height:0.68rem;
+    		width:6.4rem;
+    		border-bottom: 1px solid #f4f4f4;
+    	}
+    	.box .row .title{
+    		line-height: 0.68rem;
+    		color:#787777;
+    		float:left;
+    		margin-left:0.26rem;
+    		font-size: 0.25rem;
+    	}
+    	.box .row .price{
+    		width:5rem;
+    		line-height: 0.68rem;
+    		font-size: 0.22rem;
+    		outline: none;
+    		border:none;
+    		text-align:center;
+    	}
+    	.box .row .childclass{
+    		width:3.4rem;
+    		line-height: 0.68rem;
+    		font-size: 0.22rem;
+    		outline: none;
+    		border:none;
+    		text-align:center;
+    		background:none;
+    		appearance:none;
+		    -moz-appearance:none;
+		    -webkit-appearance:none;
+		    background-size:80%;
+		    background: url("../image/down.png") no-repeat scroll right center transparent;
+		    margin-right:0.25rem;
+		    color: #b2b1b1; 
+		    float:right;
+    	}
+    	.box .row .radio_box{
+    		width: 0.36rem;
+    		height:0.36rem;
+    		border-radius: 3px;
+    		background:#f47771;
+    		float: right;
+    		margin-top:0.18rem;
+    		margin-right:0.25rem;
+    	}
+    	.box .row img{
+    		width: 60%;
+    		height:60%;
+    		margin:20% 20%;
+    	}
+    	.box .row .address{
+    		line-height: 0.68rem;
+    		color:#787777;
+    		float:left;
+    		width:5.8rem;
+    		height:0.68rem;
+    		margin-left:0.26rem;
+    		font-size: 0.25rem;
+    		overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+    	}
+    	/*.box .row .radio_box .radio{
+    		width: 0.32rem;
+    		height:0.32rem;
+    		border-radius:100%;
+    		background:white;
+    		float:left;
+    		margin:0.01rem 0.01rem;
+    	}*/
+    	.box .row .switch_box{
+    		width:0.7rem;
+    		height:0.36rem;
+    		float:right;
+    		margin-right:0.25rem;
+    		margin-top:0.18rem;
+    		border-radius:0.18rem;
+    	}
+    	.box .row .switch_box .switch{
+    		height:0.32rem;
+    		width:0.32rem;
+    		border-radius: 100%;
+    		margin:0.02rem;
+    		background:white;
+    	}
+    	.box .question{
+    		color:#2897d7;
+    		float:right;
+    		text-decoration:underline;
+    		margin-top:0.2rem;
+    		margin-right:0.25rem;
+    		margin-left:0.25rem;
+    		font-size:0.22rem;
+    		margin-bottom:0.76rem;
+    		position: relative;
+    	}
+    	.box .question img{
+    		width: 0.25rem;
+    		height:0.25rem;
+    		margin-left:0.1rem;
+    	}
+    	.box .btn{
+    		width: 5.9rem;
+    		height:0.74rem;
+    		background:#2897d7;
+    		color:white;
+    		line-height: 0.74rem;
+    		text-align: center;
+    		float:right;
+    		margin-right:0.25rem;
+    		border-radius:4px;
+    	}
+		/*弹窗*/
+		.modal{
+			width:6.4rem;
+			height:100vh;
+			background:rgba(0,0,0,.6);
+			position: fixed;
+			top: 0;
+			left:0;
+		}
+		.modal_box{
+			width:6.4rem;
+			
+			background:white;
+			position: fixed;
+			bottom:0rem;
+			left:0rem;
+		}
+		.modal_box  .row{
+			width:6.4rem;
+			height:0.94rem;
+			text-align:center;
+			line-height: 0.94rem;
+			font-size: 0.27rem;
+			background:#d6d1d5;
+			border-bottom: 1px solid #888888
+		}
+		.modal_box  .row:active{
+			background:rgba(214,209,213,.8)		
+		}
+		.modal_box2{
+			width:5.9rem;
+			
+			background:white;
+			position: fixed;
+			top:3rem;
+			left:0.22rem;
+			border-radius:6px;
+			
+		}
+		.modal_box2 .tanchuang_bg{
+			width:3.44rem;
+			height:2.05rem;
+			position:relative;
+			top:-0.9rem;
+			left:1.3rem;
+		}
+		.modal_box2 .del{
+			float:right;
+			width:0.2rem;
+			height:0.2rem;
+			margin-right:0.2rem;
+			margin-top:0.2rem;
+		}
+		.modal_box2 .p_title{
+			position:relative;
+			top:-0.9rem;
+			text-align:center;
+			color:#6d6f6f;
+			line-height: 0.36rem;
+			font-size:0.26rem;
+			width:94%;
+			margin-left:3%;
+			margin-bottom:0.5rem;
+		}
+		.modal_box2 .p_content{
+			position:relative;
+			top:-0.9rem;
+			
+			color:#6d6f6f;
+			line-height: 0.36rem;
+			font-size:0.26rem;
+			width:94%;
+			margin-left:3%;
+			margin-bottom:0.5rem;
+		}
+    </style>
+</head>
+<body>
+	<div class="warp">
+	   <div class="box">
+	   		<input type="text" placeholder="标题  商品品牌型号都是买家喜欢搜索的" class="name" v-model="name">
+	   </div>
+	    <div class="box">
+	   		<textarea placeholder="描述一下你的商品 " class="describe" v-model="remark"></textarea>
+	   		<div class="img_box" v-for="(item,index) in imgUrl" v-if="imgUrl.length>0">
+	   			<img :src='item' />
+	   			<div class="del" @click.stop="del(index)">x</div>
+	   		</div>
+	   		<div class="clear"></div>
+	   		<div class="uploadBtn" @click="upload" v-if="imgUrl.length<5">
+	   			<img src="../image/touch.png" />
+	   			<p>点击上传实物图</p>
+	   		</div>
+	   </div>
+	   <div class="box">
+	   		<textarea placeholder="填写一下补充说明 (如需更多帮助，请点击左下角 上架说明)" class="describe" v-model="desc"></textarea>
+	   		
+	   </div>
+	   <div class="emptySpase clear"></div>
+	   <div class="box">
+	   		<div class="row clear" style="height: 1.36rem">
+	   			<p class="title">发布地址（让附近的人搜索）：</p>
+	   			<div class="address" > {{address.province}} {{address.city}} {{address.district}} </div>
+	   		</div>
+	   </div>
+	   
+	   <div class="emptySpase clear"></div>
+	    <div class="box">
+	   	<!--	<div class="row" >
+	   			<p class="title">是否接受托管</p>
+	   			<div class="switch_box" :class="{'f47771':truststate==0,'mainColor':truststate==1}" @click="trust">
+	   				<div class="switch" :class="{'left':truststate==0,'right':truststate==1}" ></div>
+	   			</div>
+	   		</div>-->
+	   		<div class="row" v-if="truststate==0">
+	   			<p class="title">单日租金:</p>
+	   			<input type="number"  placeholder="输入你的商品价格" class="price" v-model="price"/>
+	   			
+	   		</div>
+	   		<div class="row" v-if="truststate==0">
+	   			<p class="title">几日起租:</p>
+	   			<input type="number"  placeholder="输入你的起租天数" class="price" v-model="day"/>
+	   			
+	   		</div>
+	   		
+	   </div>
+	    <div class="box" style="background:#f4f4f4;">
+	   		<!--<p class="question " @click="show">托管的含义？</p>-->
+	   		<p class="question left" style="text-decoration: none" @click="gotoInfo" >上架说明<img src="../image/ask.png"/></p>
+	   		<p class="btn clear" @click='makeGood' >确认发布</p>
+	   </div>
+ 
+	   <div class="modal" v-if="hide==1||hide==2" @click.stop="cancel"></div>
+	   <div class="modal_box" v-if="hide==1">
+	   		<div class="row" @click="uploadPic(1)">拍照</div>
+	   		<div class="row" style="border-bottom:0.13rem solid #737375" @click="uploadPic(2)">从手机相册选择</div>
+	   		<div class="row" style="border-bottom:none" @click.stop="cancel">取消</div>
+	   </div>
+	   <div class="modal_box" v-if="hide==1">
+	   		<div class="row" @click="uploadPic(1)">拍照</div>
+	   		<div class="row" style="border-bottom:0.13rem solid #737375" @click="uploadPic(2)">从手机相册选择</div>
+	   		<div class="row" style="border-bottom:none" @click.stop="cancel">取消</div>
+	   </div>
+	 	<div class="modal_box2" v-if="hide==2">
+	   		<img src="../image/tanchuang_bg.png" class="tanchuang_bg"/>
+	   		<img src="../image/del.png" class="del" @click="cancel"/>
+	   		<p class="p_title">托管说明</p>
+	   		<p class="p_content">我们会审核您的设备，评估后给出一个合理的租用价格。</p>
+	    </div>	
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	truststate:0,
+  	imgUrl:[],
+  	hide:0,
+  	name:'',
+  	address:'',
+  	remark:'',
+  	price:'',
+  	desc:'',
+  	day:''
+  },
+  mounted:function(){
+  	var self = this;
+  	apiready = function(){
+		//IOS  onclick卡顿解决
+		sethead();
+		self.truststate=api.pageParam.data.state
+		//self.getAddress();
+	    var aMapLBS = api.require('aMapLBS');
+	    aMapLBS.configManager({
+	        accuracy: 'hundredMeters',
+	        filter: 1
+	    }, function(ret, err) {
+	    });
+		aMapLBS.singleAddress({
+		    timeout: 10
+		}, function(ret, err) {
+		    if (ret.status) {
+		        //alert(JSON.stringify(ret));
+		        self.address=ret.address
+		    }
+		});
+	}
+  },
+  methods:{
+  	closeWin:function(){
+  		api.closeWin();
+  	},
+  	trust:function(){
+  		this.truststate =!this.truststate
+  	},
+  	upload:function(){
+		var self = this;
+//
+//		api.openWin({
+//	        name: 'photo',
+//	        url: 'photo.html',
+//	        pageParam:{
+//	        	from:'fabu'
+//	        }
+//      });
+		self.hide=1
+  	},
+  	uploadPic:function(type){
+  		var self = this;
+  		var sourceType="";
+  		if(type==1){
+  			sourceType='camera'
+  			api.getPicture({
+			    sourceType: sourceType,
+			    encodingType: 'jpg',
+			    mediaValue: 'pic',
+			    destinationType: 'url',
+			    allowEdit: false,
+			    quality: 50,
+			    saveToPhotoAlbum: false
+			}, function(ret, err) {
+			    if (ret) {
+			       if (ret.data!=""&& typeof ret!='undefinded') {
+					   self.imgUrl.push(ret.data)
+					   self.hide=0
+				   }else{
+				   		api.toast({
+						    msg: '取消图片上传',
+						    duration: 2000,
+						    location: 'middle'
+						});
+						self.hide=0
+				   }
+			    } else {
+			        //alert(JSON.stringify(err));
+			        self.hide=0
+			    }
+			});
+  		}else{
+  			var UIMediaScanner = api.require('UIMediaScanner');
+			UIMediaScanner.open({
+			    type: 'picture',
+			    column: 4,
+			    classify: true,
+			    max: 5,
+			    sort: {
+			        key: 'time',
+			        order: 'desc'
+			    },
+			    texts: {
+			        stateText: '已选择*项',
+			        cancelText: '取消',
+			        finishText: '完成'
+			    },
+			    styles: {
+			        bg: '#fff',
+			        mark: {
+			            icon: '',
+			            position: 'bottom_left',
+			            size: 20
+			        },
+			        nav: {
+			            bg: '#eee',
+			            stateColor: '#000',
+			            stateSize: 18,
+			            cancelBg: 'rgba(0,0,0,0)',
+			            cancelColor: '#000',
+			            cancelSize: 18,
+			            finishBg: 'rgba(0,0,0,0)',
+			            finishColor: '#000',
+			            finishSize: 18
+			        }
+			    },
+			    scrollToBottom: {
+			        intervalTime: 3,
+			        anim: true
+			    },
+			    exchange: true,
+			    rotation: true
+			}, function(ret) {
+			    if (ret) {
+			    	self.hide=0
+			        if(ret.eventType=="confirm"){
+			        	self.hide=0;
+				        api.showProgress({
+						    title: '图片上传中...',
+						    text: '先休息一下...',
+						    modal: true
+						});
+			        	for(var i=0;i<ret.list.length;i++){
+			        		self.imgUrl.push(ret.list[i].thumbPath)
+			        	}
+			        	 setTimeout('api.hideProgress();',2000)
+			        }else if(ret.eventType=="cancel"){
+			        	self.hide=0
+			        	api.toast({
+						    msg: '取消图片上传',
+						    duration: 2000,
+						    location: 'middle'
+						});
+						 
+			        }
+			    }
+			});
+  		}
+  		
+  		
+  	},
+  	setpic:function(url){
+  		var self = this;
+  		self.imgUrl.push(url)
+  	},
+  	del:function(index){
+  		api.showProgress({
+		    title: '删除中...',
+		    text: '先休息一下...',
+		    modal: true
+		});
+  		this.imgUrl.splice(index,1)
+  		 setTimeout('api.hideProgress();',1000)
+  	},
+  	show:function(){
+  		this.hide=2
+  	},
+  	cancel:function(){
+  		this.hide=0
+  	},
+  	gotoInfo:function(){
+  		api.openWin({
+            name:'fabuinfo',
+            url:'fabuinfo.html',
+            bounces:false,
+            animation:{
+                type:'movein'
+            }
+        })
+  	},
+  	//确认发布
+  	makeGood:function(){
+  		var self = this;
+  		api.showProgress({
+		    title: '发布中...',
+		    text: '先休息一下...',
+		    modal: true
+		});
+		if(self.name==''){
+			api.hideProgress();
+  			api.toast({
+			    msg: '标题不能为空',
+			    duration: 2000,
+			    location: 'middle'
+			});
+			
+			return false;
+		}
+		if(self.name.length>32){
+			api.hideProgress();
+  			api.toast({
+			    msg: '标题不能超过32个字',
+			    duration: 2000,
+			    location: 'middle'
+			});
+			
+			return false;
+		}
+		if(self.day>31){
+			api.hideProgress();
+  			api.toast({
+			    msg: '起租日期不能超过31天',
+			    duration: 2000,
+			    location: 'middle'
+			});
+			
+			return false;
+		}
+		if(self.remark==''){
+			api.hideProgress();
+  			api.toast({
+			    msg: '描述不能为空',
+			    duration: 2000,
+			    location: 'middle'
+			});
+			return false;
+		}
+		if(self.truststate==0){
+			if(self.price==''){
+				api.hideProgress();
+	  			api.toast({
+				    msg: '单日租金不能为空',
+				    duration: 2000,
+				    location: 'middle'
+				});
+				return false;
+			}
+			if(self.day==''){
+				api.hideProgress();
+	  			api.toast({
+				    msg: '最小天数不能为空',
+				    duration: 2000,
+				    location: 'middle'
+				});
+				return false;
+			}
+		}
+  		var is_trusteeship='F'
+  		if(self.truststate==0){
+  			is_trusteeship='F'
+  		}else{
+  			is_trusteeship='T'
+  			self.price=0
+  		}
+		if(self.imgUrl.length<1){
+			api.hideProgress();
+			api.toast({
+			    msg: '请至少上传一张图片',
+			    duration: 2000,
+			    location: 'middle'
+			});
+			return false;
+		}
+  		var lon="";
+  		var lat="";
+  		var aMapLBS = api.require('aMapLBS');
+	    aMapLBS.singleLocation({
+	        timeout: 10
+	    }, function(ret, err) {
+	        if (ret.status) {
+	            
+	            lon=ret.lon;
+	            lat=ret.lat;
+	            var address=''+self.address.province+self.address.city+self.address.district;
+	            var values={
+	            	name:self.name,
+		    		remark:self.remark,
+		    		price:self.price,
+		    		is_trusteeship:is_trusteeship,
+		    		address:address,
+		    		desc:self.desc,
+		    		lon:lon,
+		    		lat:lat,
+		    		day:self.day
+	            }
+				api.ajax({
+				    url: baseUrl+'/api/release',
+				    method: 'post',
+		            timeout:200,
+					dataType:"json",
+				    data: {
+		    			values:values,
+				    	files: {
+				            'file[]': self.imgUrl
+				        }
+				    },
+				    headers:{
+		            	Authorization:'Bearer '+$api.getStorage('token'),
+		            	Accept:'application/json',
+		            	contentType:'text/html'
+		            }  
+				}, function(ret, err) {
+				    if (ret) {
+						var jsfun = 'vm.ajaxInfo('+ is_trusteeship +');';
+						api.execScript({
+						    name: 'myDevice',
+						   
+						    script: jsfun
+						});
+//						var name='我的设备'
+//						var jsfun2 = 'vm.setName("我的设备");';
+//						api.execScript({
+//						    name: 'all',
+//						    script: jsfun2
+//						});
+//						var winWidth = api.winWidth;
+//				        var winHeight = api.winHeight - 70;
+// rect: {
+//				                x: 0,
+//				                y: 70,
+//				                w: winWidth,
+//				                h: winHeight
+//				            },
+//				            vScrollBarEnabled: false,
+//				    		hScrollBarEnabled: false
+				        api.openWin({
+				            name: 'myDevice',
+				            url: 'myDevice.html',
+				           
+				        });
+//		                api.closeFrame({
+//						    name: 'frame2'
+//						});
+		                api.toast({
+						    msg: '发布成功',
+						    duration: 2000,
+						    location: 'middle'
+						});
+						
+						api.hideProgress();
+						api.closeWin();
+				    } else {
+				    	api.hideProgress();
+				    	api.toast({
+						    msg: '图片过大，发布失败',
+						    duration: 2000,
+						    location: 'middle'
+						});
+						
+				    }
+				});
+	        }
+	    });
+  		
+  	},
+  	//请求默认地址
+  	ajaxFirst:function(){
+  		var self=this;
+  		api.ajax({
+		    url: baseUrl+'/api/address/first',
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+		    headers:{
+            	Authorization:'Bearer '+$api.getStorage('token'),
+            	Accept:'application/json'
+            }  
+		}, function(ret, err) {
+		    if (ret) {
+		      	self.address= ret          
+		    } else {
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});
+  	},
+  	getAddress:function(){
+  		var self=this;
+  		if(typeof $api.getStorage('address')=='undefined'){
+			self.ajaxFirst()
+		}else{
+			self.address=$api.getStorage('address')
+		}
+  	},
+  	gotoAddressList:function(){
+  		api.openWin({
+            name:'addressList',
+            url:'addressList.html',
+            bounces:false,
+            animation:{
+                type:'movein'
+            }
+        })
+  	}
+  }
+})
+</script>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的收入</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	.warp{
+    		height:100vh;
+    		background:#f8f8f8;
+    	}
+        header{  
+        	width:6.4rem;
+        	padding-top:30px;
+        	color:white;
+        	text-align:center;
+        	font-size: 18px; 
+        }
+        header p{
+        	line-height: 50px;
+        	position: relative;
+        }
+        .head_box{
+        	width:6.4rem;
+        	height:3.26rem;
+        }
+        .head_box img{
+        	width: 1.49rem;
+        	height: 1.49rem;
+        	border-radius:100%;
+        	border: 2px solid white;
+        	margin-left:2.45rem;
+        	margin-top:0.52rem;
+        	padding:0;
+        	overflow:hidden;
+        }
+        .head_box p{
+        	text-align:center;
+        	margin-top:0.24rem;
+        	font-size:0.25rem;
+        	line-height:0.25rem;
+        }
+        .row{
+        	width:6.4rem;
+        	background:white;
+        	border-bottom:1px solid #ebebeb;
+        }
+        .row img{
+        	width:0.57rem;
+        	height:0.43rem;
+        	margin-left:0.2rem;
+        	margin-top:0.2rem;
+        	float:left;
+        }
+        .row .title{
+        	float:left;
+        	height:0.85rem;
+        	line-height:0.85rem;
+        	margin-left:0.2rem;
+        }
+        .box{
+        	width: 33%;
+        	height:1.26rem;
+        	border-left:1px solid #ebebeb;
+        	border-bottom:1px solid #ebebeb;
+        	float:left;
+        }
+        .box .number{
+        	text-align:center;
+        	font-size:0.32rem;
+        	font-weight: bold;
+        	margin-top:0.34rem;
+        	margin-bottom:0.1rem;
+        }
+        .box:nth-child(1){
+	   		color:#2897D7
+	    }
+	    .box:nth-child(2){
+	   		color:#2897D7
+	    }
+	    .box:nth-child(3){
+	   		color:#f1c215
+	    }
+	    .box:nth-child(4){
+	   		color:#e60b0a;
+	   		border-bottom:none;
+	    }
+	    .box:nth-child(5){
+	   		color:#e60b0a;
+	   		border-right:1px solid #ebebeb;
+	   		border-bottom:none;
+	    }
+        .box .info{
+        	text-align:center;
+        	font-size: 0.2rem;
+        	color:#5c5c5c
+        }
+        .last{
+        	border-right:1px solid #ebebeb;
+        }
+    </style>
+</head>
+<body>
+	<div class="warp">
+	   <div class="head_box mainColor">
+	   		<img :src="userData.avatar  "/>
+	   		<p>{{userData.name}}</p>
+	   </div>
+	   <div class="row clear">
+	   		<img src="../image/earn.png" />
+	   		<p class="title">收入中心</p>
+	   </div>
+	   <div class="row clear">
+	   		<div class="box" :class="index==totals.length-1?'last':''" v-for="(item,index) in totals">
+	   			<p class="number" >{{totals[index]}}</p>
+	   			<p class="info">{{index}}</p>
+	   		</div>
+	   </div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	userData:{
+  		name:"请登录",
+  		avatar:"../image/icon.png",
+  		is_verify:"F",
+  		credit_score:0
+  	},
+  	totals: {
+        "退还押金": 0,
+        "退款": 0,
+        "托管费用": 0,
+        "他营费用": 0,
+        "其他": 0
+    }
+  },
+  mounted:function(){
+  	var self=this;
+  	apiready = function(){
+   		//IOS  onclick卡顿解决
+	    sethead();
+		iflog();
+		self.ajaxTotal();
+		self.ajaxUser();
+		 api.setRefreshHeaderInfo({
+			    loadingImg: 'widget://image/refresh.png',
+			    bgColor: '#fff',
+			    textColor: '#545454',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...'
+			}, function(ret, err) {
+				
+				self.ajaxTotal();
+				self.ajaxUser();
+			    //在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+				
+			});
+//		api.ajax({
+//		    url: baseUrl+'/api/center/record/total',
+//		    method: 'get',
+//          timeout:200,
+//          dataType:"json",
+//          headers:{
+//          	Authorization:'Bearer '+$api.getStorage('token')
+//          }  
+//		}, function(ret, err) {
+//		    if (ret) { 
+//		    	self.totals=ret.totals
+//		    } else {
+//		    	 api.toast({
+//				    msg: '网络异常，稍后重试',
+//				    duration: 2000,
+//				    location: 'middle'
+//				 });
+//		    }
+//		});	
+		
+		
+	}
+  },
+  methods:{
+  	closeWin:function(){
+  		api.closeWin();
+  	},
+  	ajaxTotal:function(){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/center/record/total',
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            }  
+		}, function(ret, err) {
+		    if (ret) { 
+		    	self.totals=ret.totals
+		    	api.refreshHeaderLoadDone()
+		    } else {
+		    	 api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				 });
+				 api.refreshHeaderLoadDone()
+		    }
+		});	
+  	},
+  	ajaxUser:function(){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/user',
+		    method: 'get',
+            timeout:200,
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            },
+            dataType:"json",
+		}, function(ret, err) {
+		    if (ret) { 
+		    	self.userData=ret; 
+		    	api.refreshHeaderLoadDone()
+		    } else {
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+				api.refreshHeaderLoadDone()
+		    }
+		});	
+  	}
+  	
+  }
+})
+</script>
+</html>

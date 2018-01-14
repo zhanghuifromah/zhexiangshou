@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>购物车</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/swiper.css" />
+		<link rel="stylesheet" type="text/css" href="../css/leftDelete.css" />
+    <style>
+        header{  
+        	width:6.4rem;
+       		position:fixed;
+        	top:0;
+        	padding-top:30px;
+        	color:white;
+        	text-align:center;
+        	font-size: 18px; 
+        	z-index:999
+        	
+        }
+      
+        header p{
+        	line-height: 50px;
+        	color:#fff!important;
+        }
+        .emptySpase{
+        	background:#f4f4f4;
+   			width:6.4rem;
+   			height:0.11rem;
+        }
+       .list_box{
+       		width:6.4rem;
+       }
+       .list_box .title{
+       		background:white;
+       }
+       .choose_box{
+       		width:0.35rem;
+       		height:0.35rem;
+       		border:1px solid #c5c4c4;
+       		border-radius:3px;
+       		margin-left:0.2rem;
+       		margin-top:0.2rem;
+       		float:left;
+       }
+       .choose_box img{
+	        margin:10% !important;
+	        padding:0!important;
+	       	width: 80%!important;
+	       	height:80%!important;
+       }
+ 		.list_box .title .icon{
+    		
+    		font-size: 0.3rem;
+    		margin:0.2rem;
+    		float:left;
+    	}
+    	.list_box .title .type{
+    		font-size: 0.24rem;
+    		color:#a0a0a0;
+    		margin-top:0.25rem;
+    		float:left;
+    	}
+    	.list_box .content{
+    		width:100%;
+    		background:#fafafa;
+    		height:1.64rem;
+    	}
+		.list_box .content img{
+    		width:1.36rem;
+    		height:1.36rem;
+    		margin-top:0.08rem;
+    		/*margin-left:0.21rem;*/
+    		float:left;
+    	}
+    	.list_box .content .info{
+    		width:3.6rem;
+    		height:1.26rem;
+    		float:left;
+    		margin-top:0.08rem;
+    		margin-left:0.1rem;
+    	}
+    	.list_box .content .info .name{
+    		width:2.8rem;
+    		display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			overflow: hidden;
+			color:#3f4447;
+			font-size: 0.22rem;
+			font-weight:bold;
+			float:left;	
+    	}
+    	.list_box .content .info .price{
+    		width:0.75rem;
+    		height:0.5rem;
+    		float:right;
+    		line-height: 0.5rem;
+    		color:#f47771;
+			font-size: 0.26rem;
+			font-weight:bold;
+			text-align:right;
+    	}
+    	.list_box .content .info .time{
+    		color:#a0a0a0;
+    		font-size:0.2rem;
+    		width:2.8rem;
+    		margin-top:0.1rem;
+    		float:left;
+    	}
+    	.list_box .content .info .number{
+    		width:0.75rem;
+    		height:0.5rem;
+    		line-height: 0.5rem;
+    		color:#a0a0a0;
+    		font-size:0.23rem;
+			text-align:right;                                    
+			float:left;
+    	}
+    	.list_box .content .info .del{
+    		color:white;
+    		float:right;
+    		font-size: 0.2rem;
+    		padding:0.02rem 0.04rem;
+    		border-radius:3px;
+    	}
+    	.foot{
+    		width:6.4rem;
+    		height:0.8rem;
+    		position:fixed;
+    		bottom:0;
+    		border-top:1px solid #ededed;
+    		background:white;
+    		z-index:9999
+    	}
+  		.foot  p{
+  			width:4rem;
+  			line-height: 0.8rem;
+  			float:left;
+  			margin-left:0.2rem;
+  			display: inline-block;
+  			overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+  		}
+		.foot .pay{
+			background:#2897d7;
+			color:white;
+			width:1.276rem;
+			text-align:center;
+			float:right;
+			
+		}
+		.noInfo{
+			text-align:center;
+			line-height: 2rem;
+			color:#545454;
+		}
+		
+    </style>
+</head>
+<body>
+	<div class="warp">
+	   <div  class="noInfo" v-if="leases.length==0">购物车为空</div>
+	   <div class="list_box clear " :class="index==leases.length-1?'last':''" v-for="(item, index) in leases" v-if="leases.length>0">
+	   		<div class="title clear" >
+	   			<div class="choose_box" @click="chooseleases(index,item.start)" :class=" {'mainColor': item.chooseState} "> 
+	   				<img src="../image/choosed.png" v-if="item.chooseState" />
+	   			</div>
+	   			<span class="icon">&#xe62f;</span>
+	   			<p class="type">{{item.start}}至{{item.end}}</p>
+	   		</div>
+	   		<div class="swiper-container swiper-btn-1" v-for="goods in carts" v-if="goods.pivot.start==item.start&&goods.pivot.end==item.end">
+	   			<div class="content clear swiper-wrapper" >
+		   			<!--<div class="choose_box" @click="choosegood(goods.id)" :class=" {'mainColor': goods.chooseState||item.chooseState} ">
+		   				<img src="../image/choosed.png" v-if="goods.chooseState||item.chooseState" />
+		   			</div>-->
+		   			<div class="swiper-slide">
+		   				<img :src="goods.cover" />
+			   			<div class="info">
+			   				<p class="name">{{goods.name}}</p>
+			   				<p class="price">￥{{goods.price}}</p>
+			   				<p class="time">租赁时间：{{goods.pivot.start}}-{{goods.pivot.end}}</p>
+			   				<p class="number">x{{goods.pivot.number}}</p>
+			   			</div>
+		   			</div>
+		   			<div class="swiper-slide slide-left">
+					</div>
+					<div class="swiper-slide"></div>
+					<div class="swiper-slide">
+					</div>
+					<div class="swiper-slide swipe-btn "  tapmode @click="del(goods.pivot.id)">删除</div>
+		   		</div>
+		   		
+	   		</div>
+	   		<div class="emptySpase"></div>
+	   </div>
+	  
+	  <div class="foot">
+	  		<p >合计：<span class="price">￥{{allprice}}</span>(含押金：￥{{yajin}})</p>
+	  		<p class="pay"  v-if="allprice==0">结算</p>
+	  		<p class="pay" @click="gotoPay()" v-if="allprice>0">结算</p>
+	  </div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/swiper.js"></script>
+<script>
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	leases:[],
+  	carts:[],
+  },
+  mounted: function() {
+  	var self = this;
+  	apiready = function(){
+		//IOS  onclick卡顿解决
+		sethead();
+		iflog();
+        self.ajaxCarts()
+	}
+  },
+  updated:function(){
+  	 this.initList();
+  },
+  methods:{
+  	ajaxCarts:function(){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/carts',
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            }  
+		}, function(ret, err) {
+		    if (ret) { 
+		    	 self.leases=ret.leases;
+		    	 self.carts = ret.carts
+		         for(var i =0;i<self.carts.length;i++){
+		         	self.carts[i].chooseState=false;
+		         }
+		         for(var i =0;i<self.leases.length;i++){
+		         	self.leases[i].chooseState=false;
+		         }
+		    } else {
+		    	 api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				 });
+		    }
+		});	
+  	},
+  	closeWin:function(){
+  		api.closeWin();
+  	},
+  	//选择商品当前框
+  	choosegood:function(id){
+  		var self = this;
+  		for(var i =0;i<self.carts.length;i++){
+  			if(self.carts[i].id==id){
+  				self.carts[i].chooseState=!self.carts[i].chooseState;
+  				var newitem = self.carts[i]
+  				self.carts.splice(i,1,newitem)
+  			}
+	    }
+  	},
+  	//选择订单
+  	chooseleases:function(i){
+  		var self = this;
+  		for(var k=0;k<self.leases.length;k++){
+  			if(k!=i){
+  				self.leases[k].chooseState=false;
+  			}else{
+  				self.leases[i].chooseState=!self.leases[i].chooseState;
+  			}
+  			var newitem = self.leases[k]
+			self.leases.splice(k,1,newitem)
+  		}
+  	
+  	},
+  	//初始化列表
+	initList:function() {		
+		this.initSwiper();//初始化滑块
+	},
+	//初始化滑动
+	initSwiper:function(){
+		var openSwipers = [];
+		var sele = ".swiper-btn-" + 1; 
+		var swiper = new Swiper(sele, {
+			slidesPerView: 4,
+			slidesPerGroup: 1,
+			onTouchStart: function(swiper) {
+				if (openSwipers.length > 0) {
+					for(var s in openSwipers){	
+						openSwipers[s].slideTo(0, 300, false);
+						openSwipers.splice(s,1);
+					}
+				}
+			},
+			onSlideChangeStart: function(swiper) {
+				openSwipers.push(swiper);
+			}
+	   	});				
+	},
+	del:function(id){
+		var self = this;
+		api.ajax({
+		    url: baseUrl+'/api/cart/'+id,
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token'),
+            	Accept:'application/json'
+            }  
+		}, function(ret, err) {
+			if (ret) { 
+				 self.carts=ret.carts.carts;
+				 self.leases=ret.carts.leases
+				 api.toast({
+				    msg: '删除成功',
+				    duration: 2000,
+				    location: 'middle'
+				 });
+				 api.execScript({
+				 	name: 'index',
+				    frameName: 'frame4',
+				    script:'vm.delcarts();'
+				})
+			}else{
+				 api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				 });
+			}
+		})
+	},
+	//生成订单，跳转到支付页
+	gotoPay:function(){
+		var self = this;
+		for(var i=0;i<self.leases.length;i++){
+	  		if(self.leases[i].chooseState==true){
+	  			
+				var goods=[]
+	  			for(var j=0;j<self.carts.length;j++){
+	  				if(self.carts[j].pivot.start==self.leases[i].start&&self.carts[j].pivot.end==self.leases[i].end){
+	  					var id = self.carts[j].id;
+	  					var item={
+	  						goods_id:self.carts[j].id,
+		  					number:self.carts[j].pivot.number,
+		  					insurance_price:self.carts[j].pivot.insurance_price
+	  					};
+	  					goods.push(item)
+	  				}
+	  			}
+	  			var value = {
+					start:self.leases[i].start,
+					end:self.leases[i].end,
+					goods:JSON.stringify(goods),
+					v:"1.5"
+				};
+	  			
+	  		}
+	  	}
+  		api.ajax({
+			    url: baseUrl+'/api/makeOrder',
+			    method: 'post',
+	            timeout:200,
+	            dataType:"json",
+			    data: {
+			    	values:value
+			    },
+			    headers:{
+	            	Authorization:'Bearer '+$api.getStorage('token'),
+	            	Accept:'application/json'
+	            }  
+			}, function(ret, err) {
+			    if (ret) {
+		        	if(ret.success=='下单成功'){
+		        		api.execScript({
+						 	name: 'index',
+						    frameName: 'frame4',
+						    script:'vm.delcarts();'
+						})
+						self.ajaxCarts();
+		        		api.openWin({
+				            name:'pay',
+				            pageParam: {
+						        id: ret.order.id
+						    },
+				            url:'pay.html',
+				            bounces:false,
+				            animation:{
+				                type:'movein'
+				            }
+			      		})
+			      		
+			      		api.closeWin()
+		       		 }			        
+			    } else {
+					api.toast({
+					    msg: '网络异常，稍后重试',
+					    duration: 2000,
+					    location: 'middle'
+					 });
+			    }
+			});
+	}
+  },
+  computed:{
+  	allprice:function(){
+  		var self=this;
+  		var totalprice=0;
+  		if(self.leases.length>0){
+  			for(var i=0;i<self.leases.length;i++){
+  				if(self.leases[i].chooseState==true){
+  					for(var j=0;j<self.carts.length;j++){
+  						if(self.carts[j].pivot.start==self.leases[i].start&&self.carts[j].pivot.end==self.leases[i].end){
+  							var startday = new Date(self.carts[j].pivot.start).getTime();
+				    		var endtday = new Date(self.carts[j].pivot.end).getTime();
+				    		var day=(endtday-startday)/(24*60*60*1000)+1;
+				    		totalprice=totalprice+(self.carts[j].price*day+self.carts[j].foregift)*self.carts[j].pivot.number;
+  						}
+  					}
+  				}
+  			}
+  		}
+  		totalprice=parseFloat(totalprice).toFixed(2);
+  		return totalprice
+  	},
+  	yajin:function(){
+  		var self=this;
+  		var yajin=0;
+  		if(self.leases.length>0){
+  			for(var i=0;i<self.leases.length;i++){
+  				if(self.leases[i].chooseState==true){
+  					for(var j=0;j<self.carts.length;j++){
+  						if(self.carts[j].pivot.start==self.leases[i].start&&self.carts[j].pivot.end==self.leases[i].end){
+				    		yajin=yajin+(self.carts[j].foregift)*self.carts[j].pivot.number;
+  						}
+  					}
+  				}
+  			}
+  		}
+  		yajin=parseFloat(yajin).toFixed(2);
+  		return yajin
+  	}
+  }
+})
+</script>
+</html>

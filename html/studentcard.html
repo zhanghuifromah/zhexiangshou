@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>身份证认证</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	 .head{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			color: #fff;
+			text-align: center;
+			height: 50px;
+			line-height: 50px;
+			font-size: 18px;
+		}
+		.back{
+			position: fixed;
+			width: 50px;
+			height: 50px;
+			top: 20px;
+			left: 0;
+		}
+    	.card_title{
+            color: #a5a5a5;
+            width: 100%;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .card_title p:nth-child(1){
+            font-size: 0.3rem;
+            font-weight: bold;
+            line-height: 0.4rem;
+        }
+        .card_title p span{
+            font-size: 0.3rem;
+            color: #2797d7;
+            text-decoration: underline;
+            margin-left: 5px;
+        }
+        .card_title p:nth-child(2){
+            font-size: 0.25rem;
+            line-height: 0.5rem;
+        }
+        .card_title p:nth-child(3){
+           font-size: 0.25rem;
+            line-height: 0.5rem;
+            color:red 
+        }
+        ul{
+            list-style: none;
+            width: 92%;
+            margin-left: 4%;
+            margin-top: 0.4rem;
+            float: left;
+        }
+        ul li{
+            float: left;
+            width: 2.58rem;
+            height: 3.43rem;
+            margin-left: 0.215rem;
+            margin-bottom: 1.5%;
+            position: relative;
+        }
+        ul li img{
+           
+            width: 2.58rem;
+            height: 2.58rem;
+            position: relative;
+            z-index: 1
+        }
+        ul li p{
+            width: 2.58rem;
+            text-align: center;
+            color: #2797d7;
+            font-size: 0.2rem;
+            line-height: 0.25rem;
+        }
+        .card_button{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #2797d7;
+            height: 0.87rem;
+            line-height: 0.87rem;
+            color: #fff;
+            text-align: center;
+            font-size: 0.3rem;
+        }
+        .card_add{
+            position: absolute;
+            height: 0.75rem;
+            width: 0.75rem;
+            background-image: url(../image/card_add.png);
+            background-size: 100% 100%;
+            top:0.85rem;
+            left: 0.85rem;
+            z-index:99;
+        }
+        /*弹窗*/
+		.modal{
+			width:6.4rem;
+			height:100vh;
+			background:rgba(0,0,0,.6);
+			position: fixed;
+			top: 0;
+			left:0;
+			z-index: 100;
+		}
+		.modal_box{
+			width:6.4rem;
+			 z-index:101;
+			background:white;
+			position: fixed;
+			bottom:0rem;
+			left:0rem;
+		}
+		.modal_box  .row{
+			width:6.4rem;
+			height:0.94rem;
+			text-align:center;
+			line-height: 0.94rem;
+			font-size: 0.27rem;
+			background:#d6d1d5;
+			border-bottom: 1px solid #888888
+		}
+		.modal_box  .row:active{
+			background:rgba(214,209,213,.8)		
+		}
+    </style>
+</head>
+<body>
+	<div class="warp">
+		 <header class="mainColor clear head">
+	   	   <span class="icon back" @click="closeWin" style="z-index:999">&#xe62c;</span>
+	       <p>学生认证</p>
+	     
+	   </header>
+		<div class="card_title">
+	        <p>请上传材料，完成学生证认证<span>免押金500元</span></p>
+	        <p>（上传扫面件或高清照片，保证上传材料的真实性）</p>
+	        <p v-if='type==2'>*{{reason}}</p>
+	    </div>
+	    <ul>
+	        <li @click="updataSrc(1)"><img :src="src1" ><p>学生证</p><div class="card_add"></div></li>
+	        <li @click="updataSrc(2)"><img :src="src2" ><p>校园卡</p><div class="card_add"></div></li>
+	        <li @click="updataSrc(3)"><img :src="src3" ><p>手持学生证</p><div class="card_add"></div></li>
+	    </ul>
+	    <div class="card_button" @click="upload">提 交</div>
+	    <div class="modal" v-if="hide==1" @click.stop="cancel"></div>
+	   <div class="modal_box" v-if="hide==1">
+	   		<div class="row" @click="uploadPic(1)">拍照</div>
+	   		<div class="row" style="border-bottom:0.13rem solid #737375" @click="uploadPic(2)">从手机相册选择</div>
+	   		
+	   		<div class="row" style="border-bottom:none" @click.stop="cancel">取消</div>
+	   </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+	var vm = new Vue({
+	  el: '.warp',
+	  data: {
+	  	type:1,
+	  	reason:"",
+	  	src1:'../image/card5.png',
+	  	src2:'../image/card6.png',
+	  	src3:'../image/card4.png',
+	  	files:{},
+	  	hide:0,
+	  	from:0
+	  },
+	  mounted: function() {
+	  	var self = this;
+	  	apiready = function(){
+	  		sethead();
+		   self.type=api.pageParam.type;
+	       if(self.type==2){
+	       		api.showProgress({
+				    title: '努力加载中...',
+				    text: '先休息一下...',
+				    modal: true
+				});
+	       		api.ajax({
+				    url: baseUrl+'/api/verify/getStudent/'+api.pageParam.id,
+				    method: 'get',
+		            timeout:200,
+		            dataType:"json",
+				    headers:{
+		            	Authorization:'Bearer '+$api.getStorage('token'),
+		            	Accept:'application/json'
+		            }  
+				}, function(ret, err) {
+				    if (ret) {
+		        		 //api.alert({ msg: JSON.stringify(ret) });
+		        		 self.src1=ret.student_id_card;
+		        		 self.src2=ret.student_card;
+		        		 self.src3=ret.real_person;
+		        		 self.reason=ret.reason;
+		        		 api.hideProgress();
+				    }else{
+				    api.hideProgress();
+				    	api.toast({
+						    msg: '网络异常，稍后重试',
+						    duration: 2000,
+						    location: 'middle'
+						});
+				    }
+				});
+	       }
+		}
+	  },
+	  methods:{
+	  	uploadPic:function(type){
+	  		var self = this;
+	  		var sourceType="";
+	  		if(type==1){
+	  			sourceType='camera'
+	  			api.getPicture({
+				    sourceType: sourceType,
+				    encodingType: 'jpg',
+				    mediaValue: 'pic',
+				    destinationType: 'url',
+				    allowEdit: false,
+				    quality: 50,
+				    saveToPhotoAlbum: false
+				}, function(ret, err) {
+				    if (ret) {
+				       if (ret.data!=""&& typeof ret!='undefinded') {
+				       		self.hide=0
+				       		api.showProgress({
+							    title: '图片上传中...',
+							    text: '先休息一下...',
+							    modal: true
+							});
+						   if(self.from==1){
+					  			self.src1=ret.data
+								self.files.student_id_card=ret.data
+					  		}else if (self.from==2){
+					  			self.src2=ret.data
+								self.files.student_card=ret.data
+					  		}else if(self.from==3){
+					  			self.src3=ret.data
+								self.files.real_person=ret.data
+					  		}
+							self.hide=0
+							setTimeout('api.hideProgress();',2000)
+					   }else{
+					   		api.toast({
+							    msg: '取消图片上传',
+							    duration: 2000,
+							    location: 'middle'
+							});
+							self.hide=0
+					   }
+				    } else {
+				        //alert(JSON.stringify(err));
+				        self.hide=0
+				    }
+				});
+	  		}else{
+	  			var UIMediaScanner = api.require('UIMediaScanner');
+				UIMediaScanner.open({
+				    type: 'picture',
+				    column: 4,
+				    classify: true,
+				    max: 1,
+				    sort: {
+				        key: 'time',
+				        order: 'desc'
+				    },
+				    texts: {
+				        stateText: '已选择*项',
+				        cancelText: '取消',
+				        finishText: '完成'
+				    },
+				    styles: {
+				        bg: '#fff',
+				        mark: {
+				            icon: '',
+				            position: 'bottom_left',
+				            size: 20
+				        },
+				        nav: {
+				            bg: '#eee',
+				            stateColor: '#000',
+				            stateSize: 18,
+				            cancelBg: 'rgba(0,0,0,0)',
+				            cancelColor: '#000',
+				            cancelSize: 18,
+				            finishBg: 'rgba(0,0,0,0)',
+				            finishColor: '#000',
+				            finishSize: 18
+				        }
+				    },
+				    scrollToBottom: {
+				        intervalTime: 3,
+				        anim: true
+				    },
+				    exchange: true,
+				    rotation: true
+				}, function(ret) {
+				    if (ret) {
+				    	self.hide=0
+				        if(ret.eventType=="confirm"){
+				        	self.hide=0;
+					        api.showProgress({
+							    title: '图片上传中...',
+							    text: '先休息一下...',
+							    modal: true
+							});
+							if(self.from==1){
+					  			self.src1=ret.list[0].path
+								self.files.student_id_card=ret.list[0].path
+					  		}else if (self.from==2){
+					  			self.src2=ret.list[0].path
+								self.files.student_card=ret.list[0].path
+					  		}else if(self.from==3){
+					  			self.src3=ret.list[0].path
+								self.files.real_person=ret.list[0].path
+					  		}
+							self.hide=0
+//				        	for(var i=0;i<ret.list.length;i++){
+//				        		self.imgUrl.push(ret.list[i].path)
+//				        	}
+				        	 setTimeout('api.hideProgress();',2000)
+				        }else if(ret.eventType=="cancel"){
+				        	self.hide=0
+				        	api.toast({
+							    msg: '取消图片上传',
+							    duration: 2000,
+							    location: 'middle'
+							}); 
+				        }
+				    }
+				});
+	  		}
+	  	},
+	  	closeWin:function(){
+	  		api.closeWin();
+	  	},
+	  	cancel:function(){
+	  		this.hide=0
+	  	},
+	  	updataSrc:function(type){
+			var self = this;
+			self.hide=1;
+			self.from=type;
+//			api.openWin({
+//		        name: 'photo',
+//		        url: 'photo.html',
+//		        pageParam:{
+//		        	from:'student'+type
+//		        }
+//	        });
+	
+	
+	  	},
+	  	setpic:function(type,url){
+	  		var self = this;
+	  		if(type==1){
+	  			self.src1=url
+				self.files.student_id_card=url
+	  		}else if (type==2){
+	  			self.src2=url
+				self.files.student_card=url
+	  		}else if(type==3){
+	  			self.src3=url
+				self.files.real_person=url
+	  		}
+	  	
+	  	},
+//	  	updataSrc:function(type){
+//	  		var self = this;
+//	  		api.getPicture({
+//			    sourceType: 'library',
+//			    encodingType: 'jpg',
+//			    mediaValue: 'pic',
+//			    destinationType: 'url',
+//			    allowEdit: false,
+//			    quality: 50,
+//			    saveToPhotoAlbum: false
+//			}, function(ret, err) {
+//				if(ret){
+//					if (ret.data!=""&& typeof ret!='undefinded') {
+//				        if(type == 1){
+//				        	self.src1=ret.data
+//				        	self.files.student_id_card=ret.data
+//				        }else if(type ==2){
+//				        	self.src2=ret.data
+//				        	self.files.student_card=ret.data
+//				        }else if(type ==3){
+//				        	self.src3=ret.data
+//				        	self.files.real_person=ret.data
+//				        }
+//				    }
+//				}  
+//			});
+//	  	},
+	  	upload:function(){
+	  		var self = this;
+	  		api.showProgress({
+			    title: '提交中...',
+			    text: '先休息一下...',
+			    modal: true
+			});
+			if(self.type==1){
+				if(self.files.student_id_card&&self.files.student_card&&self.files.real_person){
+		  			api.ajax({
+					    url: baseUrl+'/api/verify/student',
+					    method: 'post',
+			            timeout:200,
+			            dataType:"json",
+					    data: {
+					    	files:self.files
+					    },
+					    headers:{
+			            	Authorization:'Bearer '+$api.getStorage('token'),
+			            	Accept:'application/json'
+			            }  
+					}, function(ret, err) {
+					    if (ret) {
+					    	 api.hideProgress();
+			        		 //api.alert({ msg: JSON.stringify(ret) });
+			        		 if(ret.success){
+			        		 	
+				        		 api.toast({
+								    msg: '提交成功',
+								    duration: 2000,
+								    location: 'middle'
+								});
+								var jsfun2 = 'vm.askUserInfo();';
+								api.execScript({
+								    name: 'all',
+								    frameName: 'free_list',
+								    script: jsfun2
+								});
+								setTimeout('api.closeWin()',2000)
+			        		 }else if(ret.error){
+				        		 api.toast({
+								    msg: JSON.stringify(ret.error),
+								    duration: 2000,
+								    location: 'middle'
+								});
+			        		 }
+					    }else{
+					     	//api.alert({ msg: JSON.stringify(err) });
+					     	api.hideProgress();
+					    	api.toast({
+							    msg: '图片过大，提交失败',
+							    duration: 2000,
+							    location: 'middle'
+							});
+					    }
+					});
+		  		}else{
+		  			api.hideProgress();
+		  			api.toast({
+					    msg: '您有证件照未上传',
+					    duration: 2000,
+					    location: 'middle'
+					});
+		  		}
+			}else if(self.type==2){
+				if(self.files.student_id_card||self.files.student_card||self.files.real_person){
+					api.ajax({
+					    url: baseUrl+'/api/verify/reVerifyStudent/'+api.pageParam.id,
+					    method: 'post',
+			            timeout:200,
+			            dataType:"json",
+					    data: {
+					    	files:self.files
+					    },
+					    headers:{
+			            	Authorization:'Bearer '+$api.getStorage('token'),
+			            	Accept:'application/json'
+			            }  
+					}, function(ret, err) {
+					    if (ret) {
+					    	api.hideProgress();
+						    if(ret.success){
+				        		 api.toast({
+								    msg: '提交成功',
+								    duration: 2000,
+								    location: 'middle'
+								});
+								var jsfun2 = 'vm.askUserInfo();';
+								api.execScript({
+								    name: 'all',
+								    frameName: 'free_list',
+								    script: jsfun2
+								});
+								setTimeout('api.closeWin()',2000)
+						    }else if(ret.error){
+				        		 api.toast({
+								    msg: JSON.stringify(ret.error),
+								    duration: 2000,
+								    location: 'middle'
+								});
+						    }
+					    }else{
+					     //api.alert({ msg: JSON.stringify(err) });
+						    api.hideProgress();
+					    	api.toast({
+							    msg: '图片过大,提交失败',
+							    duration: 2000,
+							    location: 'middle'
+							});
+					    }
+					});
+				}else{
+					api.hideProgress();
+			    	api.toast({
+					    msg: '请先上传修改的图片',
+					    duration: 2000,
+					    location: 'middle'
+					});
+				}
+				
+	  		}
+			
+				
+	  	}
+	  }
+	})
+</script>
+</html>

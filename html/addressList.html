@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>地址列表</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+        header{  
+        	width:6.4rem;
+       		position:fixed;
+        	top:0;
+        	padding-top:30px;
+        	color:white;
+        	text-align:center;
+        	font-size: 18px; 
+        }
+        header p{
+        	line-height: 50px;
+        }
+       .list_box{
+	       	width:6.4rem;
+	       	height:2.3rem;
+	       	border-bottom: 0.14rem solid #efefef
+       }
+       
+       .list_box .info{
+       		width:6.4rem;
+       		height:1.34rem;
+       		border-bottom: 1px solid #e4e4e4;
+       }
+       .list_box .info .name{
+       		margin-left:0.2rem;
+       		margin-top:0.25rem;
+       		float:left
+       }
+       .list_box .info .phone{
+       		float:right;
+       		margin-right:0.2rem;
+       		margin-top:0.25rem;
+       }
+       .list_box .info .address{
+       		float:left;
+       		margin-left:0.2rem;
+       		margin-top:0.25rem;
+       }
+       .list_box .choose{
+       		width:4rem;
+       		height:0.78rem;
+       		line-height: 0.78rem;
+       		float:left;
+       }
+       .list_box .choose .choose_box{
+       		margin-left:0.2rem;
+       		margin-right:0.2rem;
+       		margin-top:0.26rem;
+       		width:0.22rem;
+       		height:0.22rem;
+       		border-radius:2px;
+       		border:1px solid #ebebeb;
+       		float:left;
+       		position: relative;
+       		z-index:1
+       }
+       .list_box .choose .choose_box img{
+       		width: 80%;
+       		height: 80%;
+       		position: absolute;
+       		top:10%;
+       		left:10%;
+       }
+       .list_box .edit{
+       	
+       		float:right;
+       }
+       .list_box .edit:active{
+       	background:rgba(244,244,244,.7)
+       }
+       .list_box .edit p{
+       		float:left;
+       		line-height: 0.78rem;
+       		margin-right:0.2rem;
+       }
+       .list_box .edit p span{
+       		margin-right:0.1rem;
+       }
+       .foot{
+       		width: 6.4rem;
+       		height:0.8rem;
+       		position: fixed;
+       		bottom: 0;
+       		text-align:center;
+       		line-height: 0.8rem;
+       		color:white
+       }
+       .noInfo{
+			text-align:center;
+			line-height: 2rem;
+			color:#545454;
+		}
+    </style>
+</head>
+<body>
+	<div class="warp">
+	
+	   <div class="noInfo clear"   v-if='address.length==0'>暂无地址列表</div>
+	   <div class="list_box clear"  v-for="(item,index) in address" v-if='address.length>0'>
+	   		<div class="info" @click="chooseAddress(index)">
+	   			<p class="name">{{item.name}}</p>
+	   			<p class="phone">{{item.phone}}</p>
+	   			<div class="clear"></div>
+	   			<p class="address">{{item.province}} {{item.city}} {{item.area}} {{item.location}}</p>
+	   		</div>
+	   		<div class="work">
+	   			<div class="choose clear" @click="choose(item.id)">
+	   				<div class="choose_box clear"  v-bind:class="[index==0 ? 'mainColor noborder' : '']">
+	   					<img src="../image/choosed.png" v-if="index==0"/>
+	   				</div>
+	   				<p v-if="index!=0">设为默认</p>
+	   				<p v-if="index==0">默认地址</p>
+	   			</div>
+	   			<div class="edit">
+	   				<p @click="gotoAddressEdit(item)"><span class="icon">&#xe630;</span>编辑</p>
+	   				<p @click="del(item.id,index)"><span class="icon">&#xe600;</span>删除</p>
+	   			</div>
+	   		</div>
+	   </div>
+	   <div class="foot mainColor" @click="gotoAddressEdit('')">
+	   		添加新地址
+	   </div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	choosed:0,
+  	address:[]
+  },
+  mounted:function(){
+  	  var self = this;
+	  apiready = function(){
+	  	api.showProgress({
+		    title: '努力加载中...',
+		    text: '先休息一下...',
+		    modal: true
+		});
+	  	sethead();
+		iflog();
+        self.ajax();
+	  }
+  },
+  methods:{
+  	closeWin:function(){
+  		api.closeWin();
+  	},
+  	gotoAddressEdit:function(id){
+  		api.openWin({
+            name:'editAddress',
+            url:'editAddress.html',
+            bounces:false,
+            delay:300,
+            pageParam:{
+            	id:id
+            },
+            animation:{
+                type:'movein'
+            }
+        })
+  	},
+  	ajax:function(){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/address',
+		    method: 'get',
+	        timeout:200,
+	        dataType:"json",
+		    headers:{
+	        	Authorization:'Bearer '+$api.getStorage('token'),
+	        	Accept:'application/json'
+	        }  
+		}, function(ret, err) {
+		    if (ret) {
+		      	self.address= ret;
+		      	 api.hideProgress();	         
+		    } else {
+		        api.toast({
+	                msg: '网络异常，稍后重试',
+	                duration: 2000,
+	                location: 'middle'
+	            });
+	            api.hideProgress();
+		    }
+		});
+  	},
+  	choose:function(id){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/address/default/'+id,
+		    method: 'get',
+	        timeout:200,
+	        dataType:"json",
+		    headers:{
+	        	Authorization:'Bearer '+$api.getStorage('token'),
+	        	Accept:'application/json'
+	        }  
+		}, function(ret, err) {
+		    if (ret) {
+		    	api.toast({
+				    msg: '设置成功',
+				    duration: 2000,
+				    location: 'bottom'
+				  });
+  				api.execScript({
+  				 	name: 'pay',
+  				    script:'vm.ajaxFirst();'
+  				})
+		      self.address=ret.addresses     
+		    } else {
+		    	  
+		    }
+		});
+  	},
+  	del:function(id,index){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/address/'+id,
+		    method: 'get',
+	        timeout:200,
+	        dataType:"json",
+		    headers:{
+	        	Authorization:'Bearer '+$api.getStorage('token'),
+	        	Accept:'application/json'
+	        }  
+		}, function(ret, err) {
+		    if (ret) {
+		      	self.address.splice(index,1)    
+		      	$api.rmStorage('address') 
+		    } else {
+
+		    }
+		});
+  	},
+  	chooseAddress:function(index){
+  		var self=this;
+  		var newAddress=self.address[index]
+  		$api.setStorage('address',newAddress);
+  		api.execScript({
+  		 	  name: 'pay',
+  		    script:'vm.getAddress();'
+  		})
+  		api.execScript({
+  		 	  name: 'frame2',
+  		    script:'vm.getAddress();'
+  		})
+		  api.closeWin()
+  	}
+  }
+})
+</script>
+</html>

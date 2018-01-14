@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>购物车</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/swiper.css" />
+		<link rel="stylesheet" type="text/css" href="../css/leftDelete.css" />
+    <style>
+      
+    </style>
+</head>
+<body>
+	<div class="warp">
+	  
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/swiper.js"></script>
+<script>
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	url:''
+  },
+  mounted: function() {
+  	var self = this;
+  	apiready = function(){
+		//IOS  onclick卡顿解决
+		
+		sethead();
+     	if(typeof $api.getStorage('first')=='undefined'||$api.getStorage('first')==''){
+			api.openWin({
+	              name: 'swiper',
+	              url: 'swiper.html',
+	              slidBackEnabled:false
+              });
+		}else{
+			api.openWin({
+	              name: 'index',
+	              url: '../index.html',
+	              slidBackEnabled:false
+              });
+             // api.closeWin({name:'root'});
+		}
+       	
+	}
+  },
+  methods:{
+  	
+  }
+})
+</script>
+</html>

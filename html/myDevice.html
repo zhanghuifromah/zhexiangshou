@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	.warp{
+    		background:#f8f8f8
+    	}
+        .head{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			color: #fff;
+			text-align: center;
+			z-index:100;
+			line-height: 50px;
+			font-size: 18px;
+		}
+		.back{
+			position: fixed;
+			width: 50px;
+			height: 50px;
+			top: 20px;
+			left: 0;
+		}
+        .emptySpase{
+        	background:#f4f4f4;
+   			width:6.4rem;
+   			height:0.11rem;
+        }
+     
+      /*  .nav{
+        	width:6.4rem;
+       		margin-left:1.1rem;
+        }
+        .nav .nav-item{
+        	width:2.1rem;
+        	height:0.5rem;
+        	float: left;
+        	border:2px solid white;
+        	border-right:0;
+        	text-align:center;
+        	line-height: 0.5rem;
+        	color:white;
+        	margin-bottom:10px;
+        }*/
+        .nav{
+        	width:6.4rem;
+       		margin-left:1.45rem;
+        }
+        .nav .nav-item{
+        	width:1.7rem;
+        	height:0.3rem;
+        	float: left;
+        	border:2px solid white;
+        	border-right:0;
+        	text-align:center;
+        	line-height: 0.3rem;
+        	color:white;
+        	margin-bottom:5px;
+        	font-size: 11px;
+        }
+        .nav .active{ background:white;color:#2897d7 }
+        .nav .nav-item:nth-child(1){ border-bottom-left-radius: 4px;border-top-left-radius: 4px }
+        .nav .nav-item:nth-child(2){ border-right:2px solid white;border-bottom-right-radius: 4px;border-top-right-radius: 4px }
+       
+    	
+ 
+		.first{
+			margin-top:1.8rem;
+		
+		}
+		.list_box{
+			width:6.4rem;
+			background:white;
+			margin-bottom:0.17rem;
+			position: relative;
+			z-index:1
+		}
+		.list_box .title{
+			height:0.7rem;
+			line-height: 0.7rem;
+			width:6.4rem;
+			border-bottom:1px solid #ebebeb;
+		}
+    	.list_box .title .name{
+    		float:left;
+    		margin-left:0.2rem;
+    		overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+			width:5rem;
+    	}
+    	.list_box .title .del{
+    		float:left;
+    		margin-left:0.2rem;
+    		width:1.1rem;
+    		height:0.4rem;
+    		line-height:0.4rem;
+    		margin-top:0.15rem;
+    		color:#d2d2d2;
+    		border-right:1px solid #D2D2D2
+    	}
+    	.list_box .title .state{
+    		float:right;
+    		margin-right:0.2rem;
+    	}
+    	.list_box .title .btn{
+    		float:right;
+    		margin-right:0.2rem;
+    		width:1.4rem;
+    		height:0.4rem;
+    		line-height:0.4rem;
+    		margin-top:0.15rem;
+    		color:#2897d7;
+    		border:1px solid #2897d7;
+    		text-align:center;
+    		border-radius:3px;
+    	}
+    	.list_box .info{
+    		width:6.4rem;
+    		height:1.85rem;
+			border-bottom:1px solid #ebebeb;
+    	}
+    	.list_box img{
+    		width:1.41rem;
+    		height:1.41rem;
+    		float:left;
+    		margin:0.2rem 0.22rem;
+    	}
+  		.list_box .info .info_box{
+			float:left; 
+			width:4.37rem; 
+			height:1.41rem;	
+			margin:0.2rem 0rem;	
+			position:relative;
+  		}
+  		.list_box .info .info_box .describe{
+  			color:#979797;
+  			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 3;
+			overflow: hidden;
+  		}
+  		.list_box .info .info_box .price{
+  			position:absolute;
+  			bottom:0;
+  			color:#979797;
+  			font-size: 0.2rem;
+  			z-index:1
+  		}
+  		.list_box .info .info_box .price font{
+  			font-size: 0.3rem;
+  			color:#d24f27
+  		}
+		.noInfo{
+			text-align:center;
+			line-height: 2rem;
+			color:#545454;
+		}
+    </style>
+</head>
+<body>
+	<div class="warp">
+	   <header class="mainColor head">
+	  
+	   	   <span class="icon back" @click="closeWin" style="z-index:999">&#xe62c;</span>
+	       <p>我的设备</p>
+	     
+	 
+	       <div class="nav">
+		       	<div class="nav-item" :class="is_trusteeship=='F'?'active':''" @click="change('F')">非托管</div>
+		       	<div class="nav-item" :class="is_trusteeship=='T'?'active':''" @click="change('T')">托管</div> 
+	       </div>
+	   </header>
+	   <div  class="noInfo first" v-if="list.length==0" style='background:white;'>暂无设备信息</div>
+	   <div class="list_box clear"  v-for="(item,index) in list" v-if="list.length>0">
+	   		<div class="title" :class="index==0?'first':''">
+	   			<p class="name">{{item.name}}</p>
+	   			<p class="state" v-if="is_trusteeship=='F'&&item.status==0" style="color:#8cc343">未审核</p>
+	   			<p class="state" v-if="is_trusteeship=='F'&&item.status==2" style="color:#e84713">审核失败</p>
+	   			<p class="state" v-if="is_trusteeship=='F'&&item.status==1" style="color:#8cc343">已审核</p>
+	   		</div>
+	   		<div class="info">
+	   			<img :src="item.sliders[0]">
+	   			<div class="info_box">
+	   				<p class="describe" v-if="item.info">{{item.info}}</p>
+	   				<p class="describe" v-else>暂无审核信息</p>
+	   				<p class="price"><font>{{item.price}}</font>/天</p>
+	   			</div>
+	   		</div>
+	   		<div class="title">
+	   			<p class="del" @click="del(item.id,index)">删除设备</p>
+	   			<div v-if="item.goods">
+	   				<div v-if="is_trusteeship=='F'&&item.status==1" @click="islock(item.goods_id,index)">
+			   			<div v-if="item.goods.is_lock=='F'" class="btn"><p>点击下架</p></div>
+			   			<div v-if="item.goods.is_lock=='T'" class="btn"><p>点击上架</p></div>
+		   			</div>
+	   			</div>
+	   			<div v-if="!item.goods">	
+	   				<div v-if="is_trusteeship=='F'&&item.status==0" @click="islock(item.goods_id,index)">
+			   			<div class="btn"><p>重新上架</p></div>
+		   			</div>	
+			   		<div  class="btn" v-else><p>等待上架</p></div>
+	   			</div>
+	   		</div>
+	   </div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	is_trusteeship:"F",
+  	list:[],
+  },
+  mounted:function(){
+  	var self = this;
+  	apiready = function(){
+		sethead()
+        self.ajaxInfo(self.is_trusteeship);
+//  	api.closeFrame({
+//		    name: 'frame2'
+//		});
+		var jsfun = 'vm.closeWin();';
+		api.execScript({
+		    name: 'all',
+		    script: jsfun
+		});
+		
+	}
+  },
+  methods:{
+  	closeWin:function(){
+  		api.closeToWin({ name: 'index'})
+  	},
+  	change:function(state){
+  		this.is_trusteeship==state;
+  		this.ajaxInfo(state)
+  	},
+  	ajaxInfo:function(state){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/release/'+state,
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            }  
+		}, function(ret, err) {
+		    if (ret) { 
+		   		 self.list=ret
+		   		 self.is_trusteeship=state;
+		    } else {
+		    	 api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				 });
+		    }
+		});	
+  	},
+  	islock:function(id,index){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/release/islock/'+id,
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            }  
+		}, function(ret, err) {
+		    if (ret) {
+		   		 var newItem;
+		   		 if(self.list[index].goods.is_lock=='T'){
+		   		 	self.list[index].goods.is_lock='F'
+		   		 	newItem=self.list[index]
+		   		 }else{
+		   		 	self.list[index].goods.is_lock='T'
+		   		 	newItem=self.list[index]
+		   		 }
+		   		 api.toast({
+				    msg: '操作成功',
+				    duration: 2000,
+				    location: 'bottom'
+				});
+		   		 self.list.splice(index,1,newItem)  
+		    } else {
+		    	 api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				 });
+		    }
+		});	
+  	},
+  	del:function(id,index){
+  		var self = this;
+  		api.confirm({
+		    title: '取消商品',
+		    msg: '确定取消商品？',
+		    buttons: [ '取消','确定']
+		},function(ret,err){
+			if(ret.buttonIndex == 2){
+				api.ajax({
+				    url: baseUrl+'/api/release/delete/'+id,
+				    method: 'get',
+		            timeout:200,
+		            dataType:"json",
+		            headers:{
+		            	Authorization:'Bearer '+$api.getStorage('token')
+		            }  
+				}, function(ret, err) {
+				    if (ret) { 	   	
+				   		 api.toast({
+						    msg: '操作成功',
+						    duration: 2000,
+						    location: 'bottom'
+						 });
+				   		 self.list.splice(index,1)  
+				    } else {
+				    	 api.toast({
+						    msg: '网络异常，稍后重试',
+						    duration: 2000,
+						    location: 'middle'
+						 });
+				    }
+				});	
+			}
+		})
+  		
+  		
+  	}
+  }
+})
+</script>
+</html>

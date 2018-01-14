@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>购物车</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    	.row{
+      		width:6.4rem;
+      		background:white;
+      		border-bottom:1px solid #f6f6f6;
+      	}
+      	.row .title{
+      		float:left;
+      		height:0.85rem;
+      		line-height:0.85rem;
+      		margin-left:0.2rem;
+      		color:#515658;
+      		font-weight: bold;
+      	}
+      	
+      	.row .icon{
+      		float:left;
+      		width:0.5rem;
+      		margin-left:0.2rem;
+      		margin-top:0.12rem;
+      	}
+      	.row .rightarror{
+      		float:right;
+      		width:0.3rem;
+      		height:0.3rem;
+      		margin:0.2rem;
+      		margin-top:0.3rem;
+      		margin-left:0;
+      	}
+    </style>
+</head>
+<body>
+	<div class="warp">
+	    <div class="row clear" @click='gotoCard'>
+	   		<img class="icon" src="../image/icon1.png"/>
+	   		<p class="title">芝麻信用认证</p>
+	   		<img src="../image/rightarror.png" class="rightarror"/>
+	   </div>
+	   <div class="row clear" @click='gotoCard'>
+	   		<img class="icon" src="../image/icon2.png"/>
+	   		<p class="title">身份证认证</p>
+	   		<img src="../image/rightarror.png" class="rightarror"/>
+	   </div>
+	   <div class="row clear" @click='gotoCard'>
+	   		<img class="icon" src="../image/icon3.png"/>
+	   		<p class="title">学生证认证</p>
+	   		<img src="../image/rightarror.png" class="rightarror"/>
+	   </div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/swiper.js"></script>
+<script>
+
+</script>
+</html>

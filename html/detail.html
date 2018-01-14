@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+     <link rel="stylesheet" type="text/css" href="../css/swiper-3.4.2.min.css"/>
+    <style>
+    body{
+    	height:auto;
+    }
+    	.warp{
+    		width: 6.4rem;
+    		position: relative;
+    	}
+    	.box{
+    		width:6rem;
+    		padding:0.2rem;
+    		background:white;
+    		/*margin-top:0.14rem;*/
+    		color:#9f9f9f;
+    	}
+    	
+/*返回按钮*/
+		.back{
+			position: absolute;
+			top:0.5rem;
+			left:0.5rem;
+			color:white;
+			background:red;
+			border-radius:50%;
+			width:0.8rem;
+			left:0.8rem;
+			z-index:999
+		}
+/*产品信息*/
+    	.box .name{
+    		font-size:0.3rem;
+    		color:#545454;
+    	}
+    	.box .price{
+    		font-size:0.26rem;
+    		color:#f0431e;
+    	}
+/*使用期限*/
+    	.box .title{
+    		font-size:0.26rem;
+    		float: left;
+    	}
+    	.box  .s_title{
+    		width:32%;
+    		text-align:center;
+    		float:left;
+    		height:100%;
+    		position:relative;
+    	}
+    	.box .s_title .line{
+    		width:1px;
+    		height:0.3rem;
+    		background:#ebebeb;
+    		position: absolute;
+    		right:0;
+    		top:0.1rem;
+    	}
+    	.box .right_date{
+    		font-size:0.24rem;
+    		float: right;
+    	}
+/*上一月下一月*/
+    	.box .mounth{
+    		font-size:0.26rem;
+    		float: left;
+    	}
+/*租借期限*/
+    	.box .borrow_title{
+    		border:1px solid #9bd7f4;
+    		padding:0.02rem;
+    		font-size:0.2rem;
+    		display: inline-block;
+    		float:left;
+    	}
+    	.box .borrow_date{
+    		font-size:0.24rem;
+    		float:left;
+    		margin-left:0.3rem;
+    	}
+    	.box ul{
+    	list-style:inside;
+    	margin-top:0.2rem;
+    		
+    	}
+    	.box li{
+    		list-style-type: disc;
+    		padding-left:0.1rem;
+    		margin-bottom:0.1rem;
+    	}
+    	.box li div{
+    		padding-left:0.2rem;
+    	}
+/*押金*/   
+		.box .yajin_img{
+			width: 0.29rem;
+			height:0.31rem;
+			float:left;
+		} 	
+		.box .words_box{
+			width: 5.45rem;
+			float: left;
+			margin-left:0.17rem;
+		}
+		.box .words_box .words_box_name{
+			color:#666666;
+			font-size: 0.24rem;
+		}
+		.box .words_box .words_box_info{
+			color: #9f9f9f;
+			font-size:0.22rem;
+			margin-top:0.17rem;
+		}
+/*产品介绍*/
+		.box .detail_box{
+			width: 6.4rem;
+			float:left;
+			overflow:hidden;
+			padding-top:0.2rem;
+			position:relative;
+			left:-0.2rem
+			
+		}
+		.box .detail_box img{
+			width:100%!important;
+			margin:0!important;
+			padding:0!important;
+			display:block;
+		}
+		.box .more{
+			width:100%;
+			height:0.8rem;
+			line-height: 0.8rem;
+			text-align:center;
+			color:#2897d7;
+			font-size: 0.23rem;
+		}
+		.box .more:active{
+			background:rgba(244,244,244,.4)
+		}
+/*产品退订*/
+		.box .unsubscribe_box{
+			width: 100%;
+			margin-top:0.1rem;
+			position: relative;
+			float:left;
+		}
+		.box .unsubscribe_box .circle{
+			width:0.3rem;
+			height:0.3rem;
+			border-radius:100%;
+			overflow:hidden;
+			position: relative;
+			float:left;
+		}
+		.box .unsubscribe_box .circle .cross{
+			border:1px solid white;
+			width:0.3rem;
+			height:0.3rem;
+			position: absolute;
+			bottom:0.13rem;
+			left:0.13rem;
+		}
+		.box .unsubscribe_box .classfy{
+			float:left;
+			color:#ceced0;
+			font-size:0.19rem;
+			height:0.3rem;
+			line-height:0.3rem;
+			margin-left:0.16rem;
+		}
+		.box .unsubscribe_box .unsubscribe{
+			
+			height:1.37rem;
+			margin-left:0.1rem;
+			margin-top:0.08rem;
+			position: relative
+		}
+		.box .unsubscribe_box .unsubscribe .leftarror{
+			width:0.19rem;
+			height:0.33rem;
+			margin-top:0.15rem;
+			margin-left:0.1rem;
+			float:left;
+		}
+		.box .unsubscribe_box .unsubscribe .message{
+			float: left;
+			width: 4.87rem;
+			padding:0.2rem 0.3rem;
+			border-radius: 6px;
+			font-size:0.24rem;
+			color:#707173;
+			background:#eff0f2;
+		}
+		.box .unsubscribe_box .unsubscribe .message .seconde_message{
+			color:#c0c0c2;
+			margin-top:0.1rem;
+		}
+		.modal{
+			width:6.4rem;
+			height:100vh;
+			position: fixed;
+			top:0;
+			left:0;
+			background:rgba(0,0,0,.4)
+		}
+		.active{
+			color:#666666;
+			border-bottom:3px solid #2797D7
+		}
+		.afterRili{
+			margin-top:5.2rem;
+		}
+		
+    </style>
+</head>
+<body>
+	<div class="warp">
+<!--商品信息-->	
+		<div class="box" style="margin-top:4.8rem">
+			<p class="name">{{data.name}}</p>
+			<p class="price">￥{{data.price}}元/天 <span style="float:right">{{days}}天起租</pan></p>
+			
+		</div>
+		<div class="box clear">
+			<p class="title"></p>
+			<p class="right_date">共{{chooseLength}}天</p>
+		</div>
+
+<!--日历-->
+		<div class="box clear">
+			<p @click="clickPreMonth" class="mounth">上一月</p>
+			<p class="mounth" style="margin-left:1.5rem;">{{time.year}}年{{time.month}}月</p>
+			<p @click="clickNextMonth" class="mounth" style="float:right">下一月</p>
+		</div>
+<!--可租日期-->
+		<!--<div class="box clear afterRili" >
+			<p class="borrow_title ">租金计算方式</p>
+			<div class="clear"></div>
+			<ul>
+				<li>租期 ≤ 3天:<div>单价×租期</div></li>
+				<li>3 < 租期 ≤ 7天:<div>单价×3天+单价×0.8x(租期-3)</div></li>
+				<li>租期 ≥ 7天:<div>单价×3天+单价×0.8x(7-3)+单价×0.6×（租期-7）</div></li>
+			</ul>
+		</div>-->
+		
+<!--免押金-->
+<!--:-->
+		<div class="box clear afterRili"  v-if="renzhengShow==1">
+			<img src="../image/zhima.png" class="yajin_img">
+			<div class="words_box">
+				<p class="words_box_name">认证芝麻信用免押金</p>
+				<p class="words_box_info">该设备押金￥{{data.foregift}}<span style="display:inline" v-if="renzhengState==1">，我的剩余免押金金额￥{{my_fee}}，需支付现金押金￥{{foregift}}</span></p>
+			</div>
+		</div>
+		
+<!--产品介绍-->
+
+		<div class="box clear" >
+			
+			<div class="title clear" style="width:100%;height:0.5rem;border-bottom:1px solid #f9f9fb;color:#9f9f9f">
+				<div class="s_title" :class="state==1?'active':''" @click="chooseState(1)">
+					<p>产品介绍</p>
+					<div class="line"></div>
+				</div>
+				<div class="s_title" :class="state==2?'active':''" @click="chooseState(2)">
+					<p>实物图</p>
+					<div class="line"></div>
+				</div>
+				<div class="s_title" style="border-right:none" :class="state==3?'active':''" @click="chooseState(3)"><p>补充说明</p></div>
+			</div>
+			<div class="clear"></div>
+			
+			<div class="swiper-container swiper-container-horizontal detail_box">
+		        <div class="swiper-wrapper" style="height:3.98rem">
+		            <div class="swiper-slide "   v-html="data.introduction" style="position:relative">
+		            </div>
+		            <div class="swiper-slide " >
+		            	<img :src='item' v-for="item in mapArray"  v-if="mapArray.length>0" style="position:relative"/>
+		            	<p v-if="mapArray.length==0" style="text-align:center">未上传实物图</p>
+		            </div>
+		            <div class="swiper-slide "   v-html="data. supplement" style="position:relative">
+		            </div>
+		        </div>
+		    </div>
+			<div class="clear"></div>
+			<div class="more" @click="clickMore" >{{more}}</div>
+			
+			
+		</div>
+		
+<!--退订政策-->
+		<div class="box clear">
+			<p class="title clear" style="width:100%;padding-bottom:0.2rem;border-bottom:1px solid #f9f9fb;color:#9f9f9f">退订政策</p>
+<!--第一处-->
+			<div class="unsubscribe_box">
+<!--时间线小圆-->	
+				<div class="circle" style="background:#0097f0">
+					<div class="cross"></div>
+				</div>	
+				<p class="classfy">距离开始日期7天以上（不包含7天）或下单后12小时内</p>	
+				<div class="clear"></div>	
+<!--下发消息框-->
+				<div class="unsubscribe clear" style="border-left:3px solid #0095e8;">
+					<img src="../image/leftarror.png" class="leftarror"/>
+					<div class="message">
+						如取消，定金/押金全部退还
+					</div>
+				</div>
+			</div>
+<!--第二处-->
+			<div class="unsubscribe_box" >
+<!--时间线小圆-->	
+				<div class="circle" style="background:#f7591a">
+					<div class="cross"></div>
+				</div>	
+				<p class="classfy">租赁开始日前7天</p>	
+				<div class="clear"></div>	
+<!--下发消息框-->
+				<div class="unsubscribe clear" style="border-left:3px solid #f7591a;">
+					<img src="../image/leftarror.png" class="leftarror"/>
+					<div class="message">
+						如取消订单，扣除定金
+						<p class="seconde_message">（若交纳全部押金则扣除一日定金）</p>
+					</div>
+				</div>
+			</div>
+<!--第三处-->
+			<div class="unsubscribe_box">
+<!--时间线小圆-->	
+				<div class="circle" style="background:#f7591a">
+					<div class="cross"></div>
+				</div>	
+				<p class="classfy">租赁开始日前3天</p>	
+				<div class="clear"></div>	
+<!--下发消息框-->
+				<div class="unsubscribe clear" style="border-left:3px solid #b2b3b5;">
+					<img src="../image/leftarror.png" class="leftarror"/>
+					<div class="message">
+						如取消订单，扣除50%总租金
+						<p class="seconde_message">（若已发货不可取消订单）</p>
+					</div>
+				</div>
+			</div>
+<!--第四处-->
+			<div class="unsubscribe_box" style="margin-bottom:1rem">
+<!--时间线小圆-->	
+				<div class="circle" style="background:#b2b3b5">
+					<div class="cross"></div>
+				</div>	
+				<p class="classfy">物品使用后</p>	
+				<div class="clear"></div>	
+<!--下发消息框-->
+				<div class="unsubscribe clear" style="margin-left:0.13rem;">
+					<img src="../image/leftarror.png" class="leftarror"/>
+					<div class="message">
+						提前归还设备，未使用的档期租金，恕不退还
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/swiper-3.4.2.min.js"></script>
+<script type="text/javascript" src="../script/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+
+
+<script>
+//	时间处理
+Date.prototype.format=function (){
+	var s='';
+	var month ="";
+	var date ="";
+	if(this.getMonth()+1<10){
+		month = "0"+(this.getMonth()+1)
+	}else{
+		month = (this.getMonth()+1)
+	}
+	if(this.getDate()+1<10){
+		date = "0"+this.getDate()
+	}else{
+		date = this.getDate()
+	}
+	
+	s+=this.getFullYear()+'-';// 获取年份。
+	s+=month+"-";         // 获取月份。
+	s+= date;                 // 获取日。
+	return(s);                          // 返回日期。
+};
+	
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	data:{},
+	mapArray:[],
+  	height:3.98+'rem',
+  	more:"展开",
+  	days:1,
+  	chooseDays:[],
+  	today:"",
+  	chooseLength:"",
+  	time:{},
+  	state:1,
+  	swiper: {},
+  	renzhengShow:1,
+  	renzhengState:0,
+  	my_fee:0,
+  	foregift:0,
+  	infolength:0
+  },
+
+  mounted:function(){
+  	var self = this;	
+  	apiready = function(){
+		api.showProgress({
+		    title: '努力加载中...',
+		    text: '先休息一下...',
+		    modal: true
+		});
+		 
+  		//设置头部
+		sethead();
+		var UIScrollPicture = api.require('UIScrollPicture');
+		var UICalendar = api.require('UICalendar');
+		var days=[];
+		//请求数据
+		api.ajax({
+		    url: baseUrl+'/api/goods/'+api.pageParam.id,
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+		}, function(ret, err) {
+		    if (ret) {
+		    	self.data=ret;
+		    	//分割实物图
+		    	if(ret.map){
+		    		self.mapArray=ret.map.split(',');
+		    	}
+		    	//设置最小租赁日期
+		    	self.days=ret.min_days;
+		    	
+				self.chooseLength=ret.min_days;
+				$api.setStorage('min_days',ret.min_days);
+				//创建产品介绍轮播
+				self.swiper = new Swiper('.swiper-container',{
+					calculateHeight : true,
+				    onSlideChangeStart: function(swiper){
+				      //产品介绍左右滑动事件
+				      //上方选项卡切换
+				      self.state = swiper.activeIndex+1;
+				      //得到显示的swiper的全部高度
+				      var h = $(".swiper-slide-active").children().height() * $(".swiper-slide-active").children().length;
+				      //如果是收起阶段
+				      if(self.infolength==0){
+				    		//swiper实际高度小于默认高度，则显示swiper实际高度
+							if(h<224){
+								$(".swiper-wrapper").css("height",h);
+							}else{
+							//swiper实际高度大于默认高度，显示默认高度
+								$(".swiper-wrapper").css("height",224);
+							}
+				      }else{
+				    	//如果是展开阶段，显示swiper实际高度
+				      	$(".swiper-wrapper").css("height",h);
+				      }
+				    }
+				});	
+				//如果未登陆，押金未认证
+				if(typeof $api.getStorage('token')=='undefined'||$api.getStorage('token')==''){
+					self.renzhengState=0
+				}else{
+					//已登录，请求得到押金数据
+					self.renzhengState=1
+					api.ajax({
+					    url: baseUrl+'/api/user',
+					    method: 'get',
+			            timeout:200,
+			            headers:{
+			            	Authorization:'Bearer '+$api.getStorage('token')
+			            },
+			            dataType:"json",
+					}, function(ret, err) {
+					    if (ret) { 
+					    	self.my_fee=ret.total_quota-ret.used_quota;
+					    	if(self.my_fee<self.data.foregift){
+					    		self.foregift=self.data.foregift-self.my_fee
+					    	}else{
+					    		self.foregift=0
+					    	}
+					    } else {
+					    	api.toast({
+							    msg: '网络异常，稍后重试',
+							    duration: 2000,
+							    location: 'middle'
+							});
+					    }
+					});	
+				}
+		    }else{
+				api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+			//		轮播图
+			UIScrollPicture.open({
+			    rect: {
+			        x: 0,
+			        y: 0,
+			        w: api.winWidth,
+			        h: api.winWidth/1.32
+			    },
+			    data: {
+			        paths: ret.sliders.split(',')
+			    },
+			    styles: {
+			        indicator: {
+			            align: 'center',
+			            color: '#FFFFFF',
+			            activeColor: '#53c9de'
+			        }
+			    },
+			    placeholderImg: 'widget://res/image/swiper1.png',
+			    contentMode: 'scaleAspectFit',
+			    interval: 6,
+			    fixedOn: api.frameName,
+			    loop: true,
+			    fixed: false
+			}, function(ret, err) {
+				//打开返回
+			    api.openFrame({
+				    name: 'back',
+				    url: './back.html',
+				    rect: {
+				        x: 10,
+				        y: 30,
+				        w: 40,
+				        h: 40
+				    },
+				    bounces: false,
+				    bgColor:"",
+				    fixed: false,
+				    vScrollBarEnabled: false,
+				    hScrollBarEnabled: false
+				});
+				//腿部框
+				 api.openFrame({
+				    name: 'foot',
+				    url: './foot.html',
+				    rect: {
+				        x: 0,
+				        y: api.winHeight-api.winWidth/7.5+2,
+				        w: api.winWidth,
+				        h: api.winWidth/7.5+8
+				    },
+				    pageParam: {
+				        state: '0',
+				        id:api.pageParam.id
+				    },
+				    bounces: false,
+				    bgColor:"",
+				    vScrollBarEnabled: false,
+				    hScrollBarEnabled: false
+				});
+				api.hideProgress();
+			});
+			//		日历
+			var riliTop=''
+			if(api.systemType=='android'){
+				riliTop = api.winWidth/0.82
+			}else{
+			 	riliTop = api.winWidth/0.78
+			}
+			
+			UICalendar.open({
+			    rect: {
+			        x: 0,
+			        y: riliTop,
+			        w: api.winWidth,
+			        h: api.winWidth/1.32
+			    },
+			    styles: {
+			        bg: 'rgba(0,0,0,0)',
+			        week: {
+			            weekdayColor: '#a7a7a7',
+			            weekendColor: '#24abeb',
+			            size: 12
+			        },
+			        date: {
+			            color: '#a7a7a7',
+			            selectedColor: '#fff',
+			            selectedBg: '#ebebeb',
+			            size: 12
+			        },
+			        today:{
+			        	color: 'rgb(230,46,37)',
+			            selectedColor: '#fff',
+			            selectedBg: '#24abeb',
+			            size: 12
+			        },
+			        specialDate: {
+			            color: '#a8d500',
+			            bg: 'widget://image/a.png'
+			        }
+			    },
+			    specialDate: [{
+			         date : '2016-01-17'
+			    }],
+			    switchMode: 'none',
+			    fixed: false
+			}, function(ret, err) {
+				self.time=ret
+				//补零
+				if(ret.month<10){
+					ret.month = "0"+ret.month
+				}else{
+					ret.month =ret.month
+				}
+				if(ret.day<10){
+					ret.day = "0"+ret.day
+				}else{
+					ret.day =ret.day
+				}
+				var dateTemp = ret.year + "-" + ret.month + "-"+ ret.day;
+				//页面打开模块初始化默认选中明天和后面几天
+				if(self.chooseDays.length==0){
+					self.setSpecialData([],UICalendar); 
+					var today = new Date(dateTemp);
+					self.today = today;	
+					var tmpDay =[];
+					for(var i=1;i<=self.days;i++){			
+						var tomorrow = new Date(today);
+						tomorrow.setDate(today.getDate()+i);
+						self.chooseDays.push(tomorrow)
+						tomorrow =tomorrow.format('yyyy-MM-dd');
+						tmpDay.push({
+		                    date : tomorrow,
+		                    color : '#fff',
+		                    bg : '#2897d7'
+		                });
+					}
+					self.setSpecialData(tmpDay,UICalendar); 
+					$api.setStorage('chooseLength',self.days);
+					//存储默认第一天到本地缓存
+					var firstday=self.chooseDays[0];
+					firstday = firstday.format('yyyy-MM-dd');
+					$api.setStorage('start',firstday);	
+					//存储默认最后一天到本地缓存	
+					var lastday=self.chooseDays[self.chooseDays.length-1];
+					lastday = lastday.format('yyyy-MM-dd');
+					$api.setStorage('end',lastday); 					 
+					 
+					UICalendar.setDate({
+						date: self.today.format('yyyy-MM-dd'),
+						ignoreSelected: true
+					}, function(ret, err) {});
+				 	
+	              }
+	              //第二次点击，清除之前选中，确认选中日期
+	              else if(self.chooseDays.length >=2){
+	              	var clickDay = new Date(dateTemp);
+	              	if(clickDay>self.today){
+	              		//使今天不能选中
+						self.setSpecialData([{
+		                    date : self.today.format('yyyy-MM-dd'),
+		                    color : 'rgb(230,46,37)',
+		                    bg : 'rgba(0,0,0,0)'
+		                }],UICalendar);
+		                UICalendar.setDate({
+							date: self.today.format('yyyy-MM-dd'),
+							ignoreSelected: true
+						}, function(ret, err) {});
+						
+	              		//首末两个日期清除选中
+	              		self.setSpecialData([],UICalendar); 
+	              		var tmpCancelDay = [];
+	              		for(var i=0;i<self.chooseDays.length;i++){
+							tmpCancelDay.push(self.chooseDays[i].format('yyyy-MM-dd'));
+						}
+						UICalendar.cancelSpecialDates({
+		                    specialDates : tmpCancelDay
+			            });
+			            
+						//中间日期清楚选中
+						var newdays = self.compareData(self.chooseDays[0],self.chooseDays[1]);
+						self.clearSpecialData(newdays);
+						
+						//设置当前选中日期
+						var date = clickDay.format('yyyy-MM-dd')
+						self.setSpecialData([{
+		                    date : date,
+		                    color : '#fff',
+		                    bg : '#2897d7'
+		                }],UICalendar);
+		                
+		                //取消选中日期样式
+		                UICalendar.setDate({
+							date: date,
+							ignoreSelected: true
+						}, function(ret, err) {});
+						
+						
+		                //设置选中日期		
+						self.chooseDays=[]	
+	                	self.chooseDays.push(clickDay)
+	                	self.chooseLength=1;
+	                	$api.setStorage('chooseLength',self.chooseLength);
+	                	//将选中日期放入本地缓存
+	                	$api.setStorage('start',clickDay.format('yyyy-MM-dd')); 
+	                	$api.setStorage('end',clickDay.format('yyyy-MM-dd')); 
+	                	
+	              	}
+				}
+				//第三次点击，
+					else if(self.chooseDays.length ==1){
+						var clickDay = new Date(dateTemp);
+						if(clickDay>self.today){
+							//使今天不能选中
+							UICalendar.setDate({
+								date: self.today.format('yyyy-MM-dd'),
+								ignoreSelected: true
+							}, function(ret, err) {
+								
+							});
+							
+
+							self.chooseDays.push(clickDay)						
+							var newdays = self.compareData(self.chooseDays[0],self.chooseDays[1])
+							var tmpDay=[]
+							for(var j=0;j<newdays.length;j++){	
+								tmpDay.push({
+				                    date : newdays[j],
+				                    color : '#fff',
+				                    bg : '#2897d7'
+				                });
+							}
+							
+							self.setSpecialData(tmpDay,UICalendar); 
+							//取消选中日期样式
+							UICalendar.setDate({
+								date: clickDay.format('yyyy-MM-dd'),
+								ignoreSelected: true
+							}, function(ret, err) {
+							
+							});
+							self.chooseLength=newdays.length
+							$api.setStorage('chooseLength',self.chooseLength);
+						}
+					}
+	    	});
+		});
+		
+		api.ajax({
+		    url: baseUrl+'/api/hidden',
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+		}, function(ret, err) {
+		    if (ret) {
+		    	self.renzhengShow=ret.verify;
+		    	//api.alert({ msg: JSON.stringify(ret) });
+		    	
+		    } else {
+				api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});	
+	}
+  },
+  methods:{
+  	//下个月
+	clickNextMonth:function() {
+		var self = this;
+        var UICalendar = api.require('UICalendar');
+        UICalendar.nextMonth(function (ret, err) {
+            if (ret) {
+            	if(ret.month<10){
+            		ret.month = "0"+ret.month
+            	}
+            	self.time=ret
+            } else {
+            }
+        });
+	 },
+	 //上个月
+    clickPreMonth:function() {
+    	var self = this;
+        var UICalendar = api.require('UICalendar');
+        UICalendar.prevMonth(function (ret, err) {
+            if (ret) {
+            	if(ret.month<10){
+            		ret.month = "0"+ret.month
+            	}
+				self.time = ret
+            } else {
+            }
+        });
+    },
+    //清除日期
+    clearSpecialData:function(days){
+    	var UICalendar = api.require('UICalendar');
+    	for(var i=0;i<days.length;i++){
+			var dateTemp = days[i];
+            UICalendar.cancelSpecialDates({
+                specialDates : [dateTemp]
+            });          
+		}
+    },
+    //设置日期
+    setSpecialData:function(data, UICalendar){
+    	UICalendar.setSpecialDates({
+            specialDates : data
+    	});
+    },
+    //比较日期
+    compareData:function(date1,date2){
+    	var self = this
+    	//中间日期
+		var newdays=[]
+		var dateTemp1 = date1.format('yyyy-MM-dd');
+		var dateTemp2 = date2.format('yyyy-MM-dd');
+		if(date1>date2){
+			newdays=self.getAll(dateTemp2,dateTemp1);
+			$api.setStorage('start',dateTemp2);
+			$api.setStorage('end',dateTemp1);				
+		}else{
+			newdays=self.getAll(dateTemp1,dateTemp2);
+			$api.setStorage('start',dateTemp1);
+			$api.setStorage('end',dateTemp2);	
+		}	
+		return newdays
+    },
+    //获得选取的全部日期
+    getAll:function(begin,end){
+		var daysin=[begin]
+		var ab = begin.split("-");
+		var ae = end.split("-");
+		var db = new Date();
+		db.setUTCFullYear(ab[0], ab[1]-1, ab[2]);
+		var de = new Date();
+		de.setUTCFullYear(ae[0], ae[1]-1, ae[2]);
+		var unixDb=db.getTime();
+		var unixDe=de.getTime();
+		for(var k=unixDb+24*60*60*1000;k<unixDe;){
+			daysin.push((new Date(parseInt(k))).format())
+			k=k+24*60*60*1000;
+		}
+		daysin.push(end);
+		return(daysin)
+	},
+	//隐藏模态框
+	hideModal:function(){
+		// alert(111)
+	},
+	//点击查看更多
+	clickMore:function(){
+		//得到swiper的实际高度
+		var h = $(".swiper-slide-active").children().height() * $(".swiper-slide-active").children().length;			  
+		//如果实际高度小于默认高度
+		if(h<224){
+			//展开状态
+			if(this.infolength=="1"){
+				this.infolength=0;
+				this.more="展开";
+			}else{
+			//收起状态
+				this.infolength=1;
+				this.more="收起";
+			}
+		}else{
+		//如果实际高度大于默认高度
+			if(this.infolength=="1"){
+			//展开状态
+				this.infolength=0;
+				this.height=3.98+'rem';
+				this.more="展开";
+				$(".swiper-wrapper").css("height",'3.98rem');
+				//alert($(".swiper-wrapper").offset.height())
+				
+			}else{
+			//收起状态
+				this.infolength=1
+				//this.height="auto"
+				this.more="收起"		  
+				$(".swiper-wrapper").css("height",h);
+			}	
+		}
+	},
+	//选择选项卡
+	chooseState:function(state){
+	
+		//收起状态
+		if(this.infolength=="0"){
+			//切换选项卡选中
+			this.state=state;
+			//切换下发轮播部分
+			var index = parseInt(state)-1;
+			this.swiper.slideTo(index, 1000, false);
+			this.height=3.98+'rem';
+			this.more="展开";
+			//获得显示swiper的实际高度
+			var h = $(".swiper-slide-active").children().height() * $(".swiper-slide-active").children().length;	
+			if(h<244){
+				//小于默认高度，显示实际高度
+				$(".swiper-wrapper").css("height",h);
+			}else{
+				//大于默认高度，显示默认高度
+				$(".swiper-wrapper").css("height",'244');
+			}
+		}else{
+		//展开状态
+			//切换选项卡选中
+			this.state=state;
+			//切换轮播
+			var index = parseInt(state)-1;
+			this.swiper.slideTo(index, 1000, false);
+			//this.height="auto"
+			this.more="收起"
+			//显示实际swiper高度
+			var h = $(".swiper-slide-active").children().height() * $(".swiper-slide-active").children().length;	  
+			$(".swiper-wrapper").css("height",h);
+		}	
+		
+		
+	}
+  }
+})
+	
+	 
+
+    
+
+	
+
+
+</script>
+</html>

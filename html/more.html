@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>发现</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	.list_head{
+    		width:6.4rem;
+    		padding-bottom:0.1rem;
+    	}
+		/*排序*/    	
+       	.list_head .row{
+       		background:white;
+       		width:6.4rem;
+       		border-bottom: 1px solid #ededed;
+       	}
+       	.list_head .row .tags{
+       		width:5.744rem;
+       		height:0.764rem;
+      		margin-left:0.328rem;
+       		float:left;
+       		overflow-x:auto;
+       		color:#a4a4a4;
+       	}
+       	.list_head .row .sort{
+       	 	margin-left:0.08rem;
+       		width:2.079rem;
+       		height:0.56rem;
+       		line-height:0.56rem;
+       		margin-top:0.13rem;
+       		float:left;
+       		background:#cdcdcd;
+       		color:white;
+       		text-align:center;
+       	
+       	}
+       	
+       	.list_head .row .tag1{
+	       	margin-right:0.293rem;
+	       	text-align:center;
+       		height:0.764rem;
+       		line-height:0.854rem;
+       		display:inline-block;
+       	}
+       	.list_head .row .tag{
+       		float:left;
+       		margin-right:0.293rem;
+       		font-size:0.23rem;
+       		height:0.46rem;
+       		text-align:center;
+       		line-height: 0.46rem;
+       		color:#a4a4a4;
+        	
+       	}
+       	.list_head .row2 .tag:nth-child(1){
+       		margin-left:0.32rem;
+       	}
+       	.list_head .row2 .tag:nth-child(6){
+       		margin-right:0rem;
+       	}
+       	.list_head .row2 .tag:nth-child(7){
+       		margin-left:0.32rem;
+       	}
+       	.active{
+       		color:#2c2c2c!important;
+       	}
+		/*列表*/
+		.list{
+			width:6.4rem;
+			height:auto;
+			background:#F4F4F4;
+			
+		}
+		.list .box{
+			background:#fff;
+			width:2.92rem;
+			height:4.01rem;
+			float: left;
+			margin-top:0.18rem;
+			margin-left: 0.18rem;
+			position:relative;
+		}
+		.list .box img{
+			width: 100%;
+			height:2.92rem;
+		}
+		.list .box .name{
+			width:97%;
+			padding-left:0.07rem;
+			margin-top:0.3rem;
+			color: #7e7d7d;
+			line-height: 0.3rem;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			overflow: hidden;
+		}
+		.list .box .price_box{
+			height:0.36rem;
+			border-radius:0.18rem;
+			background:white;
+			position: absolute;
+			top:0.14rem;
+			left:0.07rem;
+		}
+		.list .box .price_box img{
+			width: 0.3rem;
+			height:0.3rem;
+			margin-top:0.03rem;
+			margin-left:0.03rem;
+			display: inline-block;
+			float:left;
+		}
+		.list .box .price_box .price{
+			color: #f47771;
+			height:0.3rem;
+			line-height: 0.3rem;
+			margin:0.05rem;
+			display:inline-block;
+			
+			float:left;
+		}
+		.list .box .zi{
+			padding:0.03rem;
+			border-radius:2px;
+			border:1px solid #2897d7;
+			background:#2897d7;
+			color:white;
+			font-size:0.18rem;
+			position: absolute;
+			top:0.16rem;
+			right:0.1rem;
+		}
+		.emptySpase{
+   			background:#F4F4F4;
+   			width:6.4rem;
+   			height:0.11rem;
+   		}
+    </style>
+</head> 
+<body>
+	<div class="warp">
+	   <!--头部筛选-->
+	   <div class="list_head">
+	       <div class="row clear" style="height:0.764rem;">
+	       		<div class="tags">
+	       			<div class="nav" :style="{width:(date.length+2.5)+'rem'}">
+		       			<div class="tag1" :class="{'active':active_id==0}" id="0" @click="chooseFirstTag(0,-1,'全部')">全部</div>    		
+			       		<div class="tag1" v-for="(item,index) in date" :id="item.id" :class="{'active':active_id==item.id}" @click="chooseFirstTag(item.id,index,item.name)">{{item.name}}</div>	
+		       		</div>
+	       		</div>
+	       </div>
+	       <div class="clear"></div>
+	       <div class="row row2 clear" style="padding-top:0.1rem;padding-bottom:0.1rem" v-if="first_index!=-1">
+	       		<div class="tag" :class="{'active':second_active_id==0}" @click="chooseSecondeTag(active_id)" id="active_id">全部</div>  
+	       		<div class="tag" :class="{'active':second_active_id==item.id}"  v-for="item in date[first_index].children" @click="chooseSecondeTag(item.id)">{{item.name}}</div>
+	       </div>
+	       <div class="clear"></div>
+	       <div class="row row2 clear" style="padding-top:0.1rem;padding-bottom:0.1rem" >
+	       		<div class="tag" :class="{'active':order==''}" @click="chooseThridTag('')" >默认排序</div>  
+	       		<div class="tag" :class="{'active':order=='desc'}" @click="chooseThridTag('desc')">价格从高到低</div>
+	       		<div class="tag" :class="{'active':order=='asc'}" @click="chooseThridTag('asc')">价格从低到高</div>
+	       </div>
+       </div>   
+    <div class="clear"></div>
+	<!-- 列表-->    
+    <div class="list clear">
+    	<div class="box" v-for="item in listDate" @click="gotoDetail(item.id)">
+    		<img :src="item.cover">
+    		<p class="name">{{item.name}}</p>
+    		<div class="price_box">
+    			<img src="../image/price.png">
+    			<p class="price">￥{{item.price}}</p>
+    		</div>
+    		<div class="zi" v-if="item.user_id==0">自营</div>
+    	</div>
+    	
+    </div>
+   	<div class="emptySpase"></div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	date:[],
+  	active_id:0,
+  	first_index:-1,
+  	second_active_id:0,
+  	final_id:0,
+  	listDate:[],
+  	page:1,
+  	order:''
+  },
+  mounted:function(){
+  	var self = this;
+  	apiready = function(){
+		sethead();
+	    //ajax请求导航栏
+	    api.showProgress({
+		    title: '努力加载中...',
+		    text: '先休息一下...',
+		    modal: true
+		});
+	    self.ajaxNav();
+	   	
+	    if(typeof api.pageParam.data.id !='undefined'){
+	    	self.active_id=api.pageParam.data.id
+	    }
+	    //alert(api.pageParam.data.id)
+		//ajax请求列表
+		self.final_id=api.pageParam.data.id;
+		self.ajaxList(self.active_id);
+		 api.hideProgress();
+		//上拉加载
+		api.addEventListener({
+            name:'scrolltobottom',
+            extra:{
+                threshold:0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err){
+    	  api.showProgress({
+			    title: '努力加载中...',
+			    text: '先休息一下...',
+			    modal: true
+			});
+         	self.page = self.page+1;
+         	self.ajaxList(self.final_id,self.page,self.order)
+         	api.hideProgress();
+        });
+        //下拉刷新
+        api.setRefreshHeaderInfo({
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#fff',
+		    textColor: '#545454',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...'
+		}, function(ret, err) {
+			
+			self.ajaxList(self.active_id,1,self.order);
+		    //在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			
+		});
+	}
+  },
+  methods:{
+  	//请求导航条数据
+  	ajaxNav:function(){
+  		 var self = this;
+  		 api.ajax({
+		    url: baseUrl+'/api/categories',
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+		 }, function(ret, err) {
+		    if (ret) { 
+		        self.date=ret      
+		    } else {
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});	
+  	},
+  	//请求列表
+  	ajaxList:function(id,page,order){
+  	   var self = this;
+	   api.ajax({
+		    url: baseUrl+'/api/filter',
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+	        data: {
+		        values: {
+		            category_id : id,
+		            page:page,
+		            order:order
+		        }
+		    }
+		}, function(ret, err) {
+		    if (ret) { 
+		    	if(page==1){
+		    		self.listDate=ret.data;  
+		    	}else{
+		    		for(var i = 0;i<ret.data.length;i++){
+		    			self.listDate.push(ret.data[i])
+		    		}
+		    	}   
+		    	api.refreshHeaderLoadDone()
+		    } else {
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+				api.refreshHeaderLoadDone()
+		    }
+		});	
+  	},
+  	//选择一级分类
+  	chooseFirstTag:function(id,index,name){
+  		this.active_id=id;
+  		this.first_index=index; 
+  		this.final_id=id;
+  		this.page=1;
+  		this.order=""
+  		this.ajaxList(id,this.page,this.order);
+  		var jsfun = 'vm.setName("'+name+'");'
+        api.execScript({
+		    name: 'all',
+		    script: jsfun
+		});
+  	},
+  	//选择二级分类
+  	chooseSecondeTag:function(id){
+	  	if(id==this.active_id){
+	  		this.second_active_id=0;
+	  	}else{
+	  		this.second_active_id=id;
+	  	}
+	  	this.final_id=id;
+	  	this.page=1;
+	  	this.order=""
+	  	this.ajaxList(id,this.page,this.order);
+	},
+	//选择三级分类
+	chooseThridTag:function(order){
+		this.order=order;
+		this.page=1;
+		this.ajaxList(this.final_id,this.page,this.order);
+	},
+	//点击商品跳转到详情页
+	gotoDetail:function(id){
+		api.openWin({
+            name:'detail',
+            url:'detail.html',
+            bounces:true,
+            pageParam: {
+		        id: id
+		    },
+            animation:{
+                type:'movein'
+            }
+        })
+	}
+  }
+})
+function ajaxList(id){
+	   api.ajax({
+		    url: baseUrl+'/api/filter',
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+	        data: {
+		        values: {
+		            category_id : id,
+		            page:1,
+		            order:''
+		        }
+		    }
+		}, function(ret, err) {
+		    if (ret) { 
+	    		vm.active_id=id
+	    		vm.listDate=ret.data;  
+		    } else {
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});	
+  	}
+</script>
+</html>

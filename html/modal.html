@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>文档</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	  html,body{
+            background-color: transparent !important;
+          }
+          .box{
+          	width:5.86rem;
+          	background:white;
+          	float:left;
+          	margin-left:0.28rem;
+          	margin-top:3rem;
+   
+          	border-radius: 6px;
+          }
+          .box .title{
+          	text-align:center;
+          	height:0.91rem;
+          	line-height: 0.91rem;
+          	border-bottom:1px solid #ebebeb;
+          	margin-bottom:0.4rem;
+          	font-size: 0.28rem;
+          }
+          .box .cancel{
+          	margin-bottom:0rem;
+          	border-top:1px solid #ebebeb;
+          	border-bottom:none;
+          	height:0.8rem;
+          	line-height: 0.8rem;
+          	color:#2897d7
+          }
+          .littlebox{
+          	 width:1.95rem;
+          	 height:1.8rem;
+          	 float:left;
+          	 text-align:center;
+          }
+          .littlebox:active{
+          	background:rgba(244,244,244,.5)
+          }
+          .littlebox img{
+          	width:1rem;
+          	height:1rem;
+          	margin-bottom:0.1rem;
+          }
+          .pay_box {
+          	width:6.4rem;
+     
+          	background:white;
+          	position: fixed;
+          	bottom:0;
+          	border-top-left-radius: 6px;
+          	border-top-right-radius:6px;
+          }
+          .row{
+          	width:6.4rem;
+          	height:0.86rem;
+          	border-bottom:1px solid #ebebeb;
+          }
+          .row .title{
+          	line-height:0.86rem;
+          	float:left;
+          	margin-left:0.2rem
+          }
+          .row .title img{
+          	height:0.25rem;
+          	width:0.25rem;
+    	
+    		float:right;
+    		margin:0.28rem 0 0 0.15rem;
+          	
+          }
+          .row .number_box{
+          	float: right;
+          	margin-right:0.2rem;
+          	border-right:1px solid #d2d2d2;
+          	margin-top:0.2rem;
+          	
+          }
+          .row .number_box .number_sml_box{
+          	float:left;
+          	border:1px solid #d2d2d2;
+          	border-right:none;
+          	width:0.53rem;
+          	height:0.47rem;
+          	line-height: 0.47rem;
+          	text-align:center;
+          	color:#d2d2d2
+          }
+          .row .number_box .number_sml_box:active{
+          	background:rgba(244,244,244,.8)
+          }
+          .row .checkbox{
+          	width:0.29rem;
+          	height:0.29rem;
+          	border:2px solid #002326;
+          	float:left;
+          	margin-left:0.2rem;
+          	margin-top:0.25rem;
+          }
+          .row .safe{
+          	width:6.4rem;
+          	
+          }
+          .row .safe .safe_box{
+          	width: 50%;
+          	float:left;
+          	margin-top:0.09rem;
+          	height:0.36rem;
+          	line-height: 0.36rem;
+          	margin-bottom:0.2rem
+          }
+          .row .safe .safe_box .safe_check_box{
+          	margin-left:0.2rem;
+          	height:0.34rem;
+          	width:0.34rem;
+          	border:1px solid #d2d2d2;
+          	border-radius:100%;
+          	float:left;
+          }
+          .row .safe .safe_box p{
+          	float:left;
+          	font-size: 0.22rem;
+          	margin-left:0.16rem;
+          }
+          .row .price{
+          	float:left;
+          	line-height:0.86rem;
+          	width:5rem;
+          	text-align:center;
+          }
+          .totalprice{
+          	color: #2897D7;
+          	margin-left:0.2rem;
+          	margin-top:0.5rem;
+          	float:left;
+          	margin-bottom:0.3rem;
+          }
+          .pay_btn{
+          	float: right;
+          	background:#2897D7;
+          	color: white;
+          	margin-right:0.2rem;
+          	width:2.38rem;
+          	height:0.65rem;
+          	text-align: center;
+          	line-height:0.65rem;
+          	border-radius:0.32rem;
+          	 	margin-top:0.3rem;
+          	 	margin-bottom:0.3rem;
+          }
+          .select_check_box{
+          	 border:1px solid #2897D7!important
+          }
+          .select_check_box div{
+          	width: 60%;
+          	height:60%;
+          	margin-top:20%;
+          	margin-left:20%;
+          	background:#2897D7;
+          	border-radius:100%;
+          }
+          
+          /*弹窗*/
+		.modal{
+			width:6.4rem;
+			height:100vh;
+			background:rgba(0,0,0,.6);
+			position: fixed;
+			top: 0;
+			left:0;
+		}
+		.modal_box{
+			width:5.9rem;
+			height:7rem;
+			background:white;
+			position: fixed;
+			top:2.42rem;
+			left:0.22rem;
+			border-radius:6px;
+		}
+		.modal_box .tanchuang_bg{
+			width:3.44rem;
+			height:2.05rem;
+			position:relative;
+			top:-0.9rem;
+			left:1.3rem;
+		}
+		.modal_box .del{
+			float:right;
+			width:0.2rem;
+			height:0.2rem;
+			margin-right:0.2rem;
+			margin-top:0.2rem;
+		}
+		.modal_box .p_title{
+			position:relative;
+			top:-0.9rem;
+			text-align:center;
+			color:#6d6f6f;
+			line-height: 0.36rem;
+			font-size:0.26rem;
+			width:94%;
+			margin-left:3%;
+			margin-bottom:0.5rem;
+		}
+		.modal_box .p_info{
+			position:relative;
+			top:-0.9rem;
+			text-indent:1.5em;
+			color:#6d6f6f;
+			line-height: 0.36rem;
+			font-size:0.26rem;
+			width:94%;
+			margin-left:3%;
+		}
+		
+    </style>
+</head>
+<body>
+	<div class="warp" @click.self="close" style="height:100%">
+			<div class="box clear" v-if="show==3">
+				<div class="title">分享到</div>
+				<div class="littlebox" @click.stop='qqfriend'>
+					<img src="../image/share/qqfriend.png">
+					<p>QQ</p>
+				</div>
+				<div class="littlebox" @click.stop='qqzone'>
+					<img src="../image/share/qqzone.png">
+					<p>QQ空间</p>
+				</div>
+				<div class="littlebox" @click.stop='wxfriend'>
+					<img src="../image/share/wxfriend.png">
+					<p>微信</p>
+				</div>
+				<div class="littlebox" @click.stop='wxzone'>
+					<img src="../image/share/wxzone.png">
+					<p>朋友圈</p>
+				</div>
+				<div class="littlebox" @click.stop='wb'>
+					<img src="../image/share/wb.png">
+					<p>微博</p>
+				</div>
+				<div class="clear"></div>
+				<div class="title cancel" @click.self="close">取消</div>
+			</div>
+			<div class="pay_box" v-if='show==1||show==2'>
+				<div class="row clear">
+					<p class='title'>数量：</p>
+					<div class="number_box">
+						<div class="number_sml_box" @click.stop="minus">-</div>
+						<div class="number_sml_box" style="color:#232326">{{number}}</div>
+						<div class="number_sml_box" @click.stop="plus">+</div>
+					</div>
+				</div>
+				<div class="row clear" style="height:auto" v-if='baoxianShow==1'>
+					
+					<p class="title" @click="showModal">是否购买<span style="float:right;color:#f46257;font-size: 0.2rem" v-if="data.goods.is_force=='T'">（*本产品为强制险） </span><span style="text-decoration: underline;color:#2897d7">保险 </span><img src="../image/ask.png"></p>
+					<div class="clear"></div>
+					<div class='safe' >
+						<div class="safe_box" v-for="(item,index) in data.insurances" v-if="data.goods.is_force=='F'">
+							<div class="safe_check_box" v-if="selectid!=item.id" @click.stop='select(item.id,item.price)'></div>
+							<div class="safe_check_box select_check_box" v-if="selectid==item.id" @click.stop='select(0,0)'>
+								<div></div>
+							</div>
+							<p>{{item.name}}{{item.price}}元</p>
+						</div>
+						<div class="safe_box" v-for="(item,index) in data.insurances" v-if="data.goods.is_force=='T'">
+							<div class="safe_check_box" v-if="selectid!=item.id" @click.stop='select(item.id,item.price)'></div>
+							<div class="safe_check_box select_check_box" v-if="selectid==item.id">
+								<div></div>
+							</div>
+							<p>{{item.name}}{{item.price}}元</p>
+						</div>
+					</div>
+				</div>
+				<div class="row clear">
+					<p class='title'>租金：</p>
+					<p class="price">￥{{zuprice}}</p>
+				</div>
+				<div class="row clear">
+					<p class='title'>押金：</p>
+					<p class="price">￥{{yaprice}}</p>
+				</div>
+				<div class='totalprice'>总价：￥{{totalprice}}</div>
+				<div class='pay_btn' @click="pay">确认</div>
+			</div>
+			<div class="modal" v-if="hide==1"></div>
+		   <div class="modal_box" v-if="hide==1">
+		   		<img src="../image/tanchuang_bg.png" class="tanchuang_bg"/>
+		   		<img src="../image/del.png" class="del" @click="cancel"/>
+		   		<p class="p_title">保险说明</p>
+		   		
+		   </div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+	var vm = new Vue({
+	  el: '.warp',
+	  data: {
+	  	show:0,
+	  	number:1,
+	  	data:{
+	  		"goods": {
+		        "id": 0,
+		        "price": 0,
+		        "foregift": 0,
+		        "is_force":'F'
+		    }
+	  	},
+	  	selectid:0,
+	  	selectprice:0,
+	  	baoxianShow:0,
+	  	hide:0
+	  },
+	  mounted:function(){
+	  	var self = this
+	  	apiready = function(){
+		     sethead();
+		     self.show=api.pageParam.show;
+		     api.ajax({
+			    url: baseUrl+'/api/buyGoods/'+api.pageParam.id,
+			    method: 'get',
+	            timeout:200,
+	            dataType:"json",
+			}, function(ret, err) {
+			    if (ret) {
+			    	self.data=ret;
+			    	if(ret.goods.is_force=='T'){
+			    		self.selectid=ret.insurances[0].id;
+			    		self.selectprice=ret.insurances[0].price;
+			    	}
+			    	//api.alert({ msg: JSON.stringify(ret) });
+			    } else {
+					api.toast({
+					    msg: '网络异常，稍后重试',
+					    duration: 2000,
+					    location: 'middle'
+					});
+			    }
+			});
+			api.ajax({
+			    url: baseUrl+'/api/hidden',
+			    method: 'get',
+	            timeout:200,
+	            dataType:"json",
+			}, function(ret, err) {
+			    if (ret) {
+			    	self.baoxianShow=ret.income;
+			    	//api.alert({ msg: JSON.stringify(ret) });
+			    } else {
+					api.toast({
+					    msg: '网络异常，稍后重试',
+					    duration: 2000,
+					    location: 'middle'
+					});
+			    }
+			});	
+		}
+	  },
+	  methods:{
+	  	close:function(){
+	  		api.closeFrame({
+	  			name: 'foot'
+	  		});
+	  		api.openFrame({
+			    name: 'foot',
+			    url: './foot.html',
+			    rect: {
+			        x: 0,
+			        y: api.winHeight-api.winWidth/7.5,
+			        w: api.winWidth,
+			        h: api.winWidth/7.5
+			    },
+			    pageParam: {
+			        state: '0',
+			        id:api.pageParam.id
+			    },
+			    bounces: false,
+			    bgColor:"",
+			    vScrollBarEnabled: false,
+			    hScrollBarEnabled: false
+			});
+			api.closeFrame({
+	  			name: 'modal'
+	  		});
+	  	},
+	  	qqfriend:function(){
+	  		var self=this;
+	  		var qq = api.require('qq');
+			qq.shareNews({
+			    url: 'http://www.xiongmaojianzu.com/share/goods/'+api.pageParam.id,
+			    title: '一简租',
+			    description: self.data.goods.name,
+			    imgUrl: 'widget://image/play2.jpg',
+			    type:'QFriend'
+			}, function(ret, err) {
+			    if (ret.status) {
+			        api.toast({
+					    msg: '分享成功',
+					    duration: 2000,
+					    location: 'middle'
+					});
+			    }else{
+			    	 api.toast({
+					    msg: err.msg,
+					    duration: 2000,
+					    location: 'middle'
+					});
+			    }
+			});
+	  	},
+	  	qqzone:function(){
+	  		var self = this;
+	  		var qq = api.require('qq');
+			qq.shareNews({
+			    url: 'http://www.xiongmaojianzu.com/share/goods/'+api.pageParam.id,
+			    title: '一简租',
+			    description: self.data.goods.name,
+			    imgUrl: self.data.goods.cover,
+			    type:'QZone'
+			}, function(ret, err) {
+			    if (ret.status) {
+			        api.toast({
+					    msg: '分享成功',
+					    duration: 2000,
+					    location: 'middle'
+					});
+			    }else{
+			    	 api.toast({
+					    msg: err.msg,
+					    duration: 2000,
+					    location: 'middle'
+					});
+			    }
+			});
+	  	},
+	  	wxfriend:function(){
+	  		var self = this;
+	  		var weiXin = api.require('weiXin');
+			weiXin.registerApp(
+		    	function(ret, err) {
+			        if (ret.status) {
+			            weiXin.sendRequest({
+				            scene: 'session',
+						    contentType: 'web_page',
+						    title: '一简租',
+						    description: self.data.goods.name,
+						    thumbUrl: 'widget://image/play2.jpg',
+						    contentUrl: 'www.xiongmaojianzu.com/share/goods/'+api.pageParam.id
+				
+				        },function(ret,err){
+				            if (ret.status) {
+				                api.toast({
+								    msg: '分享成功',
+								    duration: 2000,
+								    location: 'middle'
+								});
+				            }else{
+				                api.toast({
+								    msg: '分享失败',
+								    duration: 2000,
+								    location: 'middle'
+								});
+				            };
+				        });
+			        } else {
+			            //api.alert({ msg: JSON.stringify(err) });
+			        }
+		   	 	}
+			);
+	  	},
+	  	wxzone:function(){
+	  		var self = this;
+	  		var weiXin = api.require('weiXin');
+			weiXin.registerApp(
+		    	function(ret, err) {
+			        if (ret.status) {
+			            weiXin.sendRequest({
+				            scene: 'timeline',
+						    contentType: 'web_page',
+						    title: '一简租',
+						    description: self.data.goods.name,
+						    thumbUrl: 'widget://image/play2.jpg',
+						    contentUrl: 'www.xiongmaojianzu.com/share/goods/'+api.pageParam.id
+				
+				        },function(ret,err){
+				            if (ret.status) {
+				                api.toast({
+								    msg: '分享成功',
+								    duration: 2000,
+								    location: 'middle'
+								});
+				            }else{
+				                api.toast({
+								    msg: '分享失败',
+								    duration: 2000,
+								    location: 'middle'
+								});
+				            };
+				        });
+			        } else {
+			           //api.alert({ msg: JSON.stringify(err) });
+			        }
+		   	 	}
+			);
+	  	},
+	  	wb:function(){
+	  		var self = this;
+	  		var weibo = api.require('weibo');
+//	  		weibo.auth(function(ret, err) {
+//			    if (ret.status) {
+			        weibo.shareWebPage({
+					    text: self.data.goods.name,
+					    title: '一简租',
+					    description: self.data.goods.name+'www.xiongmaojianzu.com/share/goods/'+api.pageParam.id,
+					    thumb: 'widget://image/play2.jpg',
+					    contentUrl: 'http://www.xiongmaojianzu.com/share/goods/'+api.pageParam.id
+					}, function(ret, err) {
+					    if (ret.status) {
+					        api.toast({
+							    msg: '分享成功',
+							    duration: 2000,
+							    location: 'middle'
+							});
+					    }else{
+					    	api.toast({
+							    msg: '分享失败',
+							    duration: 2000,
+							    location: 'middle'
+							});
+					    }
+					});
+//			    }
+//			});
+	        
+	  	},
+	  	minus:function(){
+	  		if(this.number>1){
+	  			this.number = this.number-1;
+	  		}
+	  	},
+	  	plus:function(){
+	  		this.number=this.number+1
+	  	},
+	  	select:function(id,price){
+	  		this.selectid=id
+	  		this.selectprice=price
+	  	},
+	  	pay:function(){
+	  		var self = this;
+	  		if(typeof $api.getStorage('token')!='undefined'){
+	  			if(self.show==1){
+				var goods = {
+					goods_id:api.pageParam.id,
+					number:self.number,
+					insurance_price:self.selectprice
+				};
+				var value = {
+					start:$api.getStorage('start'),
+					end:$api.getStorage('end'),
+					goods:JSON.stringify([goods]),
+					v:'1.5'
+				};
+				api.ajax({
+				    url: baseUrl+'/api/makeOrder',
+				    method: 'post',
+		            timeout:200,
+		            dataType:"json",
+				    data: {
+				    	values:value
+				    },
+				    headers:{
+		            	Authorization:'Bearer '+$api.getStorage('token'),
+		            	Accept:'application/json'
+		            }  
+				}, function(ret, err) {
+				    if (ret) {
+			        	if(ret.success=='下单成功'){
+			        		api.openWin({
+					            name:'pay',
+					            pageParam: {
+					            		id: ret.order.id
+	
+							    },
+					            url:'pay.html',
+					            bounces:false,
+					            animation:{
+					                type:'movein'
+					            }
+				      		})
+			       		 } 
+				    }else{
+				    //api.alert({ msg: JSON.stringify(err) });
+				    	api.toast({
+						    msg: '网络异常，稍后重试',
+						    duration: 2000,
+						    location: 'middle'
+						});
+				    }
+				});
+			}else if(self.show==2){
+				var self = this;
+				var value = {
+					start:$api.getStorage('start'),
+					end:$api.getStorage('end'),
+					insurance_id:self.selectid,
+					goods_id:api.pageParam.id,
+					number:self.number
+				};
+				api.ajax({
+				    url: baseUrl+'/api/cart',
+				    method: 'post',
+		            timeout:200,
+		            dataType:"json",
+				    data: {
+				    	values:value
+				    },
+				    headers:{
+		            	Authorization:'Bearer '+$api.getStorage('token'),
+		            	Accept:'application/json'
+		            }  
+				}, function(ret, err) {
+				    if (ret) {
+		        		api.toast({
+						    msg: '添加购物车成功',
+						    duration: 2000,
+						    location: 'middle'
+						});
+			       		var jsfun = 'vm.cartplus();';
+		   				api.execScript({
+		   				    name: 'detail',
+		    				frameName: 'foot',
+		   				    script: jsfun
+		   				});
+		   				api.closeFrame({
+		  			    	name: 'modal'
+		    			})
+				    }else{
+				    	 //api.alert({ msg: JSON.stringify(err) });
+				    	api.toast({
+						    msg: '网络异常，稍后重试',
+						    duration: 2000,
+						    location: 'middle'
+						});
+				    }
+				});
+			}
+	  		}else{
+				api.toast({
+				    msg: '请先登录',
+				    duration: 2000,
+				    location: 'middle'
+				});
+				api.openWin({
+			        name:'login',
+			        url:'login.html',
+			        bounces:false,
+			        animation:{
+			            type:'movein'
+			        }
+			    })
+			}
+			
+	  	},
+	  	cancel:function(){
+	  		this.hide=0
+		  	api.closeFrame({
+			    name: 'baoxianwords'
+			});
+	  	},
+	  	showModal:function(){
+	  		this.hide=1
+	  		api.openFrame({
+			    name: 'baoxianwords',
+			    url: 'baoxianwords.html',
+			    rect: {
+			        x: api.winWidth*0.1,
+			        y: api.winHeight*0.4,
+			        w: api.winWidth*0.8,
+			        h: api.winHeight*0.4
+			    },
+			});	
+	  	},
+	  },
+	  computed:{
+	  	zuprice:function(){
+	  		var arr = $api.getStorage('start').split(/[- : \/]/);
+			var start=new Date(arr[0], arr[1]-1, arr[2]);
+			var arr = $api.getStorage('end').split(/[- : \/]/);
+			var end=new Date(arr[0], arr[1]-1, arr[2]);
+			
+			var days=end.getTime()-start.getTime();
+			 days = Math.round( days/ (1000 * 60 * 60 * 24)+1);
+	
+			var zujing;
+			
+			if(days>7){
+				zujing=this.data.goods.price*this.number*3+this.data.goods.price*4*0.8*this.number+this.data.goods.price*(days-7)*0.6*this.number
+			}else if(days>3&&days<=7){
+			
+				zujing=this.data.goods.price*this.number*3+this.data.goods.price*(days-3)*8/10.0*this.number;
+			}else if(days<=3){
+		
+				zujing=this.data.goods.price*this.number*days
+			}
+	  		return parseFloat(zujing).toFixed(2);
+	  	},
+	  	yaprice:function(){
+	  		var yajing = this.data.goods.foregift*this.number
+	  		return parseFloat(yajing).toFixed(2);
+	  	},
+	  	totalprice:function(){
+	  		var arr = $api.getStorage('start').split(/[- : \/]/);
+			var start=new Date(arr[0], arr[1]-1, arr[2]);
+			var arr = $api.getStorage('end').split(/[- : \/]/);
+			var end=new Date(arr[0], arr[1]-1, arr[2]);
+			
+			var days=end.getTime()-start.getTime();
+			 days = Math.round( days/ (1000 * 60 * 60 * 24)+1);
+	
+			var zujing;
+			if(days>7){
+				zujing=this.data.goods.price*this.number*3+this.data.goods.price*4*0.8*this.number+this.data.goods.price*(days-7)*0.6*this.number
+			}else if(days>3&&days<=7){
+				zujing=this.data.goods.price*this.number*3+this.data.goods.price*(days-3)*0.6*this.number
+			}else if(days<=3){
+				zujing=this.data.goods.price*this.number*days
+			}
+			var yajing = this.data.goods.foregift*this.number
+			var totla=zujing+yajing+this.selectprice*this.number
+	  		return parseFloat(totla).toFixed(2);
+	  	}
+	  }
+	})
+</script>
+</html>

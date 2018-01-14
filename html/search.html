@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>购物车</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	.warp{
+    	background:#f8f8f8}
+        header{  
+        	width:6.4rem;
+        	height:0.97rem;
+       		position:fixed;
+        	top:0;
+        	padding-top:30px;
+        	color:white;
+        	line-height: 50px;
+        	font-size: 18px; 
+        }
+        .emptySpase{
+        	background:#f4f4f4;
+   			width:6.4rem;
+   			height:0.11rem;
+        }
+        header .icons{
+        	margin-left:0.25rem;
+        }
+        header input{
+        	border-bottom:1px solid white;
+        	outline: none;
+        	margin-left:0.8rem;
+        	margin-right:0.15rem;
+        	width:4.3rem;
+        	height:0.42rem;
+        	-webkit-appearance:none;
+        	line-height: 0.42rem;
+        	text-indent:1em;
+        	color: white;
+        	font-size: 0.28rem;
+        	border-radius: 0;
+        }
+        header p{
+        	display: inline-block;
+        	background:white;
+        	color: #2897d7;
+        	text-align:center;
+        	border-radius:4px;
+        	height:0.42rem;
+        	line-height:0.42rem;
+        	margin-top:0.2rem;
+        	width:0.8rem;
+        	font-size: 0.22rem;
+        	
+        }
+        input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
+		color: #ebebeb; 
+		} 
+		input:-moz-placeholder, textarea:-moz-placeholder { 
+		color: #ebebeb; 
+		} 
+		input::-moz-placeholder, textarea::-moz-placeholder { 
+		color: #ebebeb; 
+		} 
+		input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
+		color: #ebebeb; 
+		} 
+		.noInfo{
+			text-align:center;
+			line-height: 2rem;
+			color:#545454;
+			background:white;
+		}
+		.list_box{
+	       	width:6.4rem;
+	       	border-bottom: 1px solid #ebebeb;
+       }
+       .list_box:active{
+       		background:rgba(244,244,244,.5)
+       }
+       .list_box img{
+	       	width: 1.5rem;
+	       	height:1.5rem;
+	       	margin:0.2rem;
+	       	float: left;
+       }
+       .list_box .info_box{
+       		float: left;
+       		width:4.2rem;
+       		margin-top:0.2rem;
+       		height:1.5rem;	
+       }
+       .list_box .name{
+       		display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			overflow: hidden;
+			color:#3f4447;
+			font-size: 0.25rem;
+			font-weight:bold;
+       }
+       .list_box .name .zi{
+       		background:#2897d7;
+       		color: white;
+       		padding:0.03rem 0.03rem;
+       		border-radius: 3px;
+       		font-weight:normal;
+       		margin-bottom:0.1rem;
+       		font-size: 0.22rem;
+       }
+       .list_box .tag{
+       		margin-top:0.45rem;
+       		color: #2897d7;
+       		padding:0.01rem 0.02rem;
+       		border-radius: 3px;
+       		border:1px solid #2897d7;
+       		font-weight:normal;
+       		margin-right:0.1rem;
+       }
+       .list_box .price{
+       		color:#fb0101;
+       		font-weight: bold;
+       		text-align:right;
+       		margin-top:0.45rem;
+       		font-size: 0.3rem;
+       		float:right;
+       }
+    </style>
+</head>
+<body>
+	<div class="warp">
+	   <header class="mainColor">
+		    <span class="icon" @click="closeWin" style="bottom:0.1rem">&#xe7ec;</span>
+		    <form v-on:submit.prevent="gotoList" method="get">
+		    	<input type="search" placeholder="请输入搜索内容" v-model="keyword"/>
+		    	<p @click="gotoList">搜索</p>
+		    </form>
+		    
+		   
+	   </header>
+	   <div v-if="list.length==0" class="noInfo" style="padding-top:1.45rem">暂无搜索结果</div>
+	   <div class="list_box clear" :class="index==0?'first':''" v-for="(item, index) in list" v-if='list.length>0' @click="gotoDetail(item.id)">
+	   		<img :src="item.cover" />
+	   		<div class="info_box">
+	   			<div class="name">
+	   				<span class="zi" v-if="item.user_id ==0">自营</span>
+	   				{{item.name}}
+	   			</div>
+	   			<!---->
+	   			<div class="tags">
+	   				<span class="tag" v-for="tags in item.tags">{{tags.name}}</span>
+	   				<div class="price">
+		   				￥{{item.price}}
+		   			</div>
+	   			</div>
+	   			
+	   		</div>
+	   </div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	keyword:"",
+  	list:[]
+  },
+  mounted:function(){
+  	apiready = function(){
+		sethead();
+	}
+  },
+  methods:{
+  	closeWin:function(){
+  		api.closeWin();
+  	},
+  	gotoList:function(){		
+  		var self = this;
+  		if(self.keyword!=''){
+  			api.ajax({
+			    url: baseUrl+'/api/search',
+			    method: 'get',
+	            timeout:200,
+	            dataType:"json",
+			    data: {
+			     	values:{
+			     		search:self.keyword
+			     	}  
+			    }
+			}, function(ret, err) {
+			    if (ret) {
+			       self.list=ret;
+			    } else {
+			    	api.toast({
+					    msg: '网络异常，稍后重试',
+					    duration: 2000,
+					    location: 'middle'
+					 });
+			    }
+			});
+  		}else{
+  			api.toast({
+			    msg: '搜索内容不能为空',
+			    duration: 2000,
+			    location: 'bottom'
+			});
+  		}
+  	},
+  	gotoDetail:function(id){
+		api.openWin({
+	        name:'detail',
+	        url:'detail.html',
+	        bounces:true,
+	        pageParam: {
+		        id: id
+		    },
+	        animation:{
+	            type:'movein'
+	        }
+	    })
+   	}
+  
+  }
+  
+})
+</script>
+</html>

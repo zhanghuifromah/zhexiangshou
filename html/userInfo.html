@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	.warp{
+    		height:100vh;
+    		background:#f8f8f8;
+    	}
+        .head{
+
+			width: 100%;
+			color: #fff;
+			text-align: center;
+			height: 50px;
+			line-height: 50px;
+			font-size: 18px;
+		}
+		.back{
+			
+			width: 50px;
+			height: 50px;
+			
+		}
+        .info{
+        	margin-top:1.4rem;
+        }
+      	.row{
+      		width:6.4rem;
+      		background:white;
+      		line-height:0.85rem;
+      		border-bottom:1px solid #f6f6f6
+      	}
+      	.row .title{
+      		float:left;
+      		height:0.85rem;
+      		line-height:0.85rem;
+      		margin-left:0.2rem;
+      		color:#515658;
+      		font-weight: bold;
+      	}
+      	.row .headtitle{
+      		height:1rem;
+      		width:1rem;
+      		line-height:1rem;
+      		margin:0.2rem;
+      	}
+      	.row input{
+      		width:5rem;
+      		border:none;
+      		outline:none;
+      		text-indent:2em;
+      		text-align:right;
+      	}
+      	.row .head_pic{
+      		float:right;
+      		height:1rem;
+      		width:1rem;
+      		margin:0.2rem;
+      		border-radius:100%;
+      	}
+      	.row .rightarror{
+      		float:right;
+      		width:0.3rem;
+      		height:0.3rem;
+      		margin:0.2rem;
+      		margin-top:0.55rem;
+      		margin-left:0;
+      	}
+      	
+    </style>
+</head>
+<body>
+	<div class="warp">
+	  
+	  	<header class="mainColor clear head">
+	   	   <span class="icon back" @click="closeWin" style="z-index:999">&#xe62c;</span>
+	       <p>个人资料 <span style="position:absolute;right:0.2rem;" @click="save">保存</span></p>
+	     
+	   </header>
+	   <div class="row clear" style="margin-bottom:0.15rem" @click="changeHead">
+	   		<p class="title headtitle">头像</p>
+	   		<img src="../image/rightarror.png" class="rightarror"/>
+	   		<img :src="userInfo.avatar " class="head_pic"/>
+	   </div>
+	   <div class="row clear" >
+	   		<p class="title">昵称</p>
+	   		<input type="text"  v-model='userInfo.name'/>
+	   </div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	choosed:0,
+  	head:"../image/top_img.png",
+  	userInfo:{},
+  	name:''
+  },
+  mounted:function(){
+  	var self=this;
+  	apiready = function(){
+   		//IOS  onclick卡顿解决
+	    sethead();
+		iflog();
+	    api.ajax({
+		    url: baseUrl+'/api/user',
+		    method: 'get',
+            timeout:200,
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            },
+            dataType:"json",
+		}, function(ret, err) {
+		    if (ret) { 
+		    	self.userInfo=ret; 
+		    } else {
+				api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});	
+	}
+  },
+  methods:{
+  	closeWin:function(){
+  		api.closeWin();
+  	},
+  	choose:function(){
+  		this.choosed = !this.choosed
+  	},
+  	changeHead:function(){
+  		var self = this;
+  		api.getPicture({
+		    sourceType: 'library',
+		    encodingType: 'jpg',
+		    mediaValue: 'pic',
+		    destinationType: 'url',
+		    allowEdit: false,
+		    quality: 50,
+		    targetWidth: 100,
+		    targetHeight: 100,
+		    saveToPhotoAlbum: true
+		}, function( ret, err ){ 
+			if (ret.data!=""&& typeof ret!='undefinded') {
+				self.userInfo.avatar = ret.data
+			}
+		    
+  		})
+  	},
+  	save:function(){
+  		var self = this;
+		api.ajax({
+		    url: baseUrl+'/api/user/update',
+		    method: 'post',
+            timeout:200,
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            },
+            dataType:"json",
+             data: {
+    			values:{
+		    		name:self.userInfo.name
+		    	},
+		    	files: {
+		            'file': self.userInfo.avatar
+		        }
+		    },
+		}, function(ret, err) {
+		    if (ret) { 
+		    	api.toast({
+				    msg: '修改成功',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    	api.execScript({
+				 	name: 'index',
+				    frameName: 'frame4',
+				    script:'vm.askUserInfo();'
+				})
+		    	api.closeWin()
+		    } else {
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});	
+  	}
+  }
+})
+</script>
+</html>

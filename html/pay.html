@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+        header{  
+        	width:6.4rem;
+       		position:fixed;
+        	top:0;
+        	padding-top:30px;
+        	color:white;
+        	text-align:center;
+        	font-size: 18px; 
+        }
+        header p{
+        	line-height: 50px;
+        }
+        .address_box{
+        	width:6.4rem;
+        	height:2.04rem;
+        	border-bottom:4px solid #ebebeb;
+        }
+        .address_box:active{
+			background:rgba(0,0,0,.3)
+		}
+        .address_box .icon{
+        	float:left;
+        	width:0.8rem;
+        	text-align:center;
+        	line-height: 2.04rem;
+        	font-size:0.4rem;
+        }
+        .address_box .info{
+        	float:left;
+        	width:4.7rem;
+        	height:2.04rem;
+        }
+        .address_box .info .name{
+        	display: inline-block;
+        	font-size:0.26rem;
+        	color: #222222;
+        	font-weight:bold;
+        	width:2.5rem;
+        	margin-top:0.3rem;
+        	overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+
+        }
+        .address_box .info .phone{
+        	display: inline-block;
+        	font-size:0.26rem;
+        	color: #222222;
+        	font-weight:bold;
+        	width:1.8rem;
+        	margin-top:0.3rem;
+        }
+        .address_box .info .address{
+        	width: 4rem;
+        	font-size:0.22rem;
+        	line-height:0.26rem;
+        	margin-top:0.2rem;
+        	color: #222222;
+        	font-weight:bold;
+        }
+        .address_box .info .remind{
+        	width: 4rem;
+        	font-size:0.22rem;
+        	line-height:0.26rem;
+        	margin-top:0.2rem;
+        	color: #f1ba50;
+        }
+        .order_box{
+        	width: 6.4rem;
+        }
+        .order_box .title{
+        	width:6.4rem;
+        	height:0.94rem;
+        }
+        .order_box .title img{
+        	width:0.4rem;
+        	height:0.4rem;
+        	float:left;
+        	margin:0.25rem 0.2rem;
+    
+        }
+        .order_box .title p{
+        	float:left;
+        	font-size:0.24rem;
+        	height:0.94rem;
+        	color:#434343;
+        	font-weight:bold;
+        	line-height: 0.94rem;
+        }
+           	.order_box .content{
+    		width:6.4rem;
+    		height:1.55rem;
+    		background:#f5f5f5;
+    		border-bottom: 0.09rem solid white;
+    	}
+    	.order_box .content img{
+    		width:1.36rem;
+    		height:1.36rem;
+    		margin-top:0.08rem;
+    		margin-left:0.21rem;
+    		float:left;
+    	}
+    	.order_box .content .info{
+    		width:4.6rem;
+    		height:1.36rem;
+    		float:left;
+    		margin-top:0.08rem;
+    		margin-left:0.1rem;
+    	}
+    	.order_box .content .info .name{
+    		width:4.6rem;
+    		display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			overflow: hidden;
+			color:#3f4447;
+			font-size: 0.22rem;
+		
+			font-weight:bold;
+			float:left;	
+			margin-top:0.2rem;
+    	}
+    	.order_box .content .info .time{
+    		color:#a0a0a0;
+    		font-size:0.2rem;
+    		margin-top:0.05rem;
+    		float:left;
+    	}
+    	.order_box .content .info .price{
+    		float:right;
+    		color:#f47771;
+			font-size: 0.24rem;
+			font-weight:bold;
+			text-align:right;
+    	}
+    	.order_box .row{
+    		width: 6rem;
+    		margin-left:0.2rem;
+    		height:0.9rem;
+    		border-bottom: 1px solid #ebebeb;
+    	}
+    	.order_box .row .row_name{
+    		float:left;
+    		height:0.9rem;
+    		line-height: 0.9rem;
+    	}
+    	.order_box .row .row_right{
+    		float:right;
+    		height:0.9rem;
+			line-height: 0.9rem;
+    	}
+    	.order_box .row .row_right input{
+    		-webkit-appearance:none;
+    		line-height: 0.9rem;
+    	}
+    	.order_box .row .row_right span{
+    		font-size:0.2rem;
+    		color:#3a3a3a
+    	}
+    	.order_box .row .row_right .moreArror{
+    		margin-left:0.1rem;
+    		font-size:0.24rem;
+    	}
+    	.order_box .row .row_right .sml_box{
+    		width:0.45rem;
+    		height:0.45rem;
+    		float:left;
+    		background:#f5f5f5;
+    		text-align:center;
+    		line-height: 0.45rem;
+    	}
+    	.order_box .row .row_right .sml_box:active{
+			background:rgba(244,244,244,.7)
+		}
+    	.order_box .row .row_right .message{
+    		width:4.58rem;
+    		border: 0;
+    		outline: none;
+    		overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+    	}
+    	.foot{
+    		width:6.4rem;
+    		height:0.8rem;
+    		position: fixed;
+    		bottom: 0;
+    	}
+    	.foot .price{
+    		width: 4rem;
+    		float:left;
+    		height:0.8rem;
+    		background: #fafafa;
+    		text-align:right;
+    		line-height: 0.8rem;
+
+    	}
+    	.foot .pay_btn{
+    		background: #2897d7;
+    		color:white;
+    		width:2.4rem;
+    		height:0.8rem;
+    		float:right;
+    		text-align:center;
+    		line-height: 0.8rem;
+    	}
+    	.modal{
+    		width: 6.4rem;
+    		height:100vh;
+    		background:rgba(0,0,0,.4);
+    		position: fixed;
+    		bottom: 0;
+    		left:0;
+    	}
+    	.modal .choose_box{
+    		background:white;
+    		width:6.4rem;
+    		height:2rem;
+    		position: fixed;
+    		bottom:0;
+    	}
+    	.modal .choose_box .row{
+    		width:6rem;
+    		height:0.8rem;
+    		border-bottom:1px solid #ebebeb;
+    		margin-left:0.2rem;
+    	}
+    	.modal .choose_box .row img{
+    		width:0.5rem;
+    		height:0.5rem;
+    		margin-top:0.15rem;
+    		margin-right:0.2rem;
+    		float:left;
+    	}
+    	.modal .choose_box .row p{
+    		line-height:0.8rem;
+    		float:left;
+    	}
+    	.modal .check_box{
+    		width:0.3rem;
+    		height:0.3rem;
+    		margin-top:0.25rem;
+    		margin-right:0.2rem;
+    		float: right;
+    		border:1px solid #908b8b;
+    		border-radius: 3px;
+    	}
+    	.modal .check_box img{
+    		width:80%!important;
+    		height:80%!important;
+    		margin:10%!important;
+    		float: left;
+    	}
+    </style>
+</head>
+<body>
+	<div class="warp">
+	   <header class="mainColor">
+	   	   <span class="icon" @click="closeWin">&#xe62c;</span>
+	       <p>确认订单</p>
+	   </header>
+	   <div class="address_box" style="margin-top:1.3rem;" @click="gotoAddress" v-if='addressFlag&&sendType==1'>
+	   		<div class="icon">&#xe650;</div>
+	   		<div class="info" style="text-align:center;line-height: 2.04rem">
+	   			去添加
+	   		</div>
+	   		<div class="icon">&#xe6a8;</div>
+	   	
+	   </div>
+	     <div class="address_box" style="margin-top:1.3rem;" @click="gotoAddress" v-if='sendType==2'>
+	   		<div class="icon">&#xe650;</div>
+	   		<div class="info" style="text-align:center;line-height: 2.04rem">
+	   			自提
+	   		</div>
+	   		<div class="icon">&#xe6a8;</div>
+	   	
+	   </div>
+	   <div class="address_box" style="margin-top:1.3rem;" @click="gotoAddress" v-if='!addressFlag&&sendType==1'>
+	   		<div class="icon">&#xe650;</div>
+	   		<div class="info">
+	   			<div class="name">收货人：{{address.name}}</div>
+	   			<div class="phone">{{address.phone}}</div>
+	   			<div class="address" v-if='sendType==1'>收货地址：{{address.province}} {{address.city}} {{address.area}} {{address.location}} </div>
+	   			
+	   			<div class="remind">(温馨提示：所有商品支持到付)</div>
+	   		</div>
+	   		<div class="icon">&#xe6a8;</div>
+	   </div>
+	   <div class="order_box">
+	   		<div class="title">
+	   			<img src="../image/title1.png" />
+	   			<p>商品信息</p>
+	   		</div>
+	   		<div v-for="(item,index) in info.goods">
+	   			<div class="content clear">
+		   			<img :src="item.cover" />
+		   			<div class="info">
+		   				<p class="name">{{item.name}}</p>
+		   				<p class="time">租赁时间：{{info.start.substring(0,4)}}.{{info.start.substring(5,7)}}.{{info.start.substring(8,10)}}-{{info.end.substring(0,4)}}.{{info.end.substring(5,7)}}.{{info.end.substring(8,10)}}</p>
+		   				<p class="price">￥{{item.price}}/天</p>
+		   				<div class="clear"></div>
+		   				<p class="time">押金：￥{{item.foregift}}</p>
+		   				<p class="price" style="color:#a0a0a0;font-weight: normal">x{{item.pivot.number}}</p>
+		   			</div>
+		   		</div>
+		   		<!--<div class="row">
+		   			<div class="row_name">商品数量</div>
+		   			<div class="row_right">
+		   				<div class="sml_box" @click="minus(index)">-</div>
+		   				<div class="sml_box" style="background:none;">{{item.pivot.number}}</div>
+		   				<div class="sml_box" @click="plus(index)">+</div>
+		   			</div>
+		   		</div>-->
+	   		</div>
+	   		<div class="row">
+	   			<div class="row_name">买家留言：</div>
+	   			<div class="row_right clear">
+	   				<input type="text" placeholder="选填：对本次交易的说明（建议填写已和买卖买卖买卖买卖" class="message" v-model='remark'/>
+	   			</div>
+	   		</div>
+	   		<div class="row">
+	   			<div class="row_name">保险：</div>
+	   			<div class="row_right clear orange">
+	   				<span>￥{{info.insurance_fee}}元</span>
+	   			</div>
+		   	</div>
+	   		<div class="row">
+	   			<div class="row_name">剩余免押金额度：</div>
+	   			<div class="row_right clear orange" v-if='total_quota>0' @click='gotoVerify'>
+	   				-￥{{remain_quota}}<span class='moreArror icon'>&#xe6a8;</span>
+	   			</div>
+	   			<div class="row_right clear" v-else @click='gotoVerify'>
+	   				去认证<span class='moreArror icon'>&#xe6a8;</span>
+	   			</div>
+		   	</div>
+		   	<div class="row">
+	   			<div class="row_name">押金：</div>
+	   			<div class="row_right clear orange">
+	   				<span v-if='total_quota>0'>已减免押金{{info.quota_fee}}元</span><span v-if='total_quota==0'>已减免押金0元</span>￥{{info.refund_fee}}
+	   			</div>
+		   	</div>
+		   	<div class="row" @click='showSendType'>
+	   			<div class="row_name">配送方式：</div>
+	   			<div class="row_right clear" v-if='sendType==1' >
+	   				到付<span class='moreArror icon'>&#xe6a8;</span>
+	   			</div>
+	   			<div class="row_right clear" v-if='sendType==2'>
+	   				自提<span class='moreArror icon'>&#xe6a8;</span>
+	   			</div>
+		   	</div>
+	   </div>
+	   
+	  	<div class="foot">
+	  		<p class="price">合计：<span class="orange">￥<font style="font-size:0.4rem;margin-right: 0.2rem">{{info.actual_fee}}</font></span></p>
+	  		<div class="pay_btn" @click="showModal" v-if='renzhengShow==1&&!addressFlag'>立即支付</div>
+	  		<div class="pay_btn" @click="noaddress" v-if='renzhengShow==1&&addressFlag'>立即支付</div>
+	  		<div class="pay_btn" v-if='renzhengShow==0' @click="call">联系买家，线下付款</div>
+	  	</div>
+	  	<div class="modal" v-if="hide==1||hide==2" @click="hideModal">
+	  		<div class="choose_box" v-if='hide==1'>
+	  			<div class="row" @click="alipay">
+	  				<img src="../image/alipay.png">
+	  				<p>支付宝支付</p>
+	  			</div>
+	  			<div class="row" @click="wxpay">
+	  				<img src="../image/wxpay.png">
+	  				<p>微信支付</p>
+	  			</div>
+	  		</div>
+	  		<div class="choose_box" v-if='hide==2'>
+	  			<div class="row" @click.stop="chooseSendType(1)">
+	  				<p>到付</p>
+	  				<div class="check_box">
+	  					<img src="../image/choosed2.png" v-if='sendType==1'/>
+	  				</div>
+	  			</div>
+	  			<div class="row" @click.stop="chooseSendType(2)">
+	  				<p>自提</p>
+	  				<div class="check_box">
+	  					<img src="../image/choosed2.png" v-if='sendType==2'/>
+	  				</div>
+	  			</div>
+	  		</div>
+	  	</div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	number:1,
+  	hide:0,
+  	info:{},
+  	address:{},
+  	remark:'',
+  	total_quota:0,
+  	remain_quota:0,
+  	renzhengShow:0,
+  	sendType:1
+  },
+  mounted:function(){
+  	var self = this;
+
+	apiready = function(){
+		//IOS  onclick卡顿解决
+		sethead();
+		iflog();
+		api.ajax({
+		    url: baseUrl+'/api/hidden',
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+		}, function(ret, err) {
+		    if (ret) {
+		    	self.renzhengShow=ret.verify;
+		    	//api.alert({ msg: JSON.stringify(ret) });
+		    	
+		    } else {
+				api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});	
+		api.ajax({
+		    url: baseUrl+'/api/order/detail/'+api.pageParam.id,
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+		    headers:{
+            	Authorization:'Bearer '+$api.getStorage('token'),
+            	Accept:'application/json'
+            }  
+		}, function(ret, err) {
+		    if (ret) {
+		      	self.info = ret.order;
+		      	self.total_quota = ret.total_quota; 
+				self.remain_quota  = ret.remain_quota ;
+		    } else {
+		   // api.alert({ msg: JSON.stringify(err) });
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				 });
+		    }
+		});
+		self.getAddress('')
+	}	
+  },
+  methods:{
+  	closeWin:function(){
+  		api.closeWin();
+  	},
+  	
+  	minus:function(index){
+  		if(this.info.goods[index].pivot.number>1){
+  			this.info.goods[index].pivot.number = this.info.goods[index].pivot.number-1;
+  		}
+  	},
+  	plus:function(index){
+  		this.info.goods[index].pivot.number=this.info.goods[index].pivot.number+1
+  	},
+  	gotoAddress:function(){
+  		api.closeWin({name: 'all'})
+        api.openWin({
+            name:'all',
+            url:'all.html',
+            pageParam: {
+            	name:'管理收货地址',
+            	frame:'addressList'
+            },
+            bounces:false,
+            animation:{
+                type:'movein'
+            }
+        })
+  	},
+  	call:function(){
+  		var self = this;
+		api.confirm({
+		    title: '客服电话',
+		    msg: '确定拨打客服电话 0510-85385800',
+		    buttons: [ '取消','确定']
+		},function(ret,err){
+			if(ret.buttonIndex == 2){
+		         api.call({
+				    type: 'tel',
+				    number: '0510-85385800'
+				 });
+		    }
+		});
+  	},
+  	//请求默认地址
+  	ajaxFirst:function(){
+  		var self=this;
+  		api.ajax({
+		    url: baseUrl+'/api/address/first',
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+		    headers:{
+            	Authorization:'Bearer '+$api.getStorage('token'),
+            	Accept:'application/json'
+            }  
+		}, function(ret, err) {
+		    if (ret) {
+		      	self.address= ret          
+		    } else {
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				 });
+		    }
+		});
+  	},
+  	getAddress:function(){
+  		var self=this;
+  		if(typeof $api.getStorage('address')=='undefined'){
+			self.ajaxFirst()
+		}else{
+			self.address=$api.getStorage('address')
+		}
+  	},
+  	//显示支付方式
+  	showModal:function(){
+  		this.hide=1
+  	},
+  	//隐藏支付方式
+  	hideModal:function(){
+  		this.hide=0
+  	},
+  	gotoVerify:function(){
+  		api.openWin({
+            name:'all',
+            pageParam: {
+		        name: '认证中心',
+		        frame:'free_list'
+		    },
+            url:'all.html',
+            bounces:false,
+            animation:{
+                type:'movein'
+            }
+  		})
+  	},
+  	alipay:function(){
+  		var self = this
+  		api.showProgress({
+		    title: '正在申请支付...',
+		    text: '先休息一下...',
+		    modal: true
+		});
+  		var goods={}
+  		for(var i=0;i<self.info.goods.length;i++){
+  			var id =self.info.goods[i].pivot.goods_id;
+  			goods[id] = self.info.goods[i].pivot.number;
+  		}
+		
+  		var value={
+  			id:api.pageParam.id,
+  			goods:goods,
+  			remark:self.remark
+  		}
+  		if(self.sendType==2){
+  			value.address='自提';
+  			value.username='';
+  			value.phone='';
+  		}else{
+  			value.username=self.address.name;
+  			value.phone=self.address.phone;
+  			value.address=self.address.province+self.address.city+self.address.area+self.address.location
+  		}
+		api.ajax({
+		    url: baseUrl+'/api/pay/aliPay',
+		    method: 'post',
+            timeout:200,
+            dataType:"json",
+		    headers:{
+            	Authorization:'Bearer '+$api.getStorage('token'),
+            	Accept:'application/json'
+            },
+            data: {
+		        values: value
+		    }
+		}, function(ret, err) {
+		    if (ret) {
+		    
+		      	var aliPay = api.require('aliPay');
+				aliPay.payOrder(ret, function(result, err) {
+					//api.alert({ msg: JSON.stringify(result) });
+					if(result.code==9000){
+						api.hideProgress();
+							api.toast({
+							    msg: '支付成功',
+							    duration: 2000,
+							    location: 'bottom'
+							});
+							var jsfun2 = 'vm.chooseStatus("2")'
+			    			api.execScript({
+			    			    name: 'all',
+				   			    frameName: 'order',
+				   			    script: jsfun2
+			    			});
+	                        api.openWin({
+					            name:'all',
+					            url:'all.html',
+					            pageParam: {
+					            	name:'我的订单',
+					            	frame:'order',
+					            	data:{
+					            		status: '2'
+					            	}
+					            },
+					            bounces:false,
+					            animation:{
+					                type:'movein'
+					            }
+					        })
+	//						
+					        api.closeWin({
+							    name: 'pay'
+							});
+					}else{
+						api.hideProgress();
+						api.toast({
+						    msg: '支付失败',
+						    duration: 2000,
+						    location: 'bottom'
+						});
+					}
+				    
+				});    
+		    } else {
+		    //api.alert({ msg: JSON.stringify(err) });
+		    //支付请求失败
+		    	api.hideProgress();
+		    	api.toast({
+				    msg: '支付失败',
+				    duration: 2000,
+				    location: 'bottom'
+				});
+		    }
+		});
+  	},
+  	wxpay:function(){
+  		var self = this
+  		api.showProgress({
+		    title: '正在申请支付...',
+		    text: '先休息一下...',
+		    modal: true
+		});
+  		var goods={}
+  		for(var i=0;i<self.info.goods.length;i++){
+  			var id =self.info.goods[i].pivot.goods_id;
+  			goods[id] = self.info.goods[i].pivot.number;
+  		}
+  		var value={
+  			id:api.pageParam.id,
+  			goods:goods,
+  			remark:self.remark
+  		}
+  		if(self.sendType==2){
+  			value.address='自提';
+  			value.username='';
+  			value.phone='';
+  		}else{
+  			value.username=self.address.name;
+  			value.phone=self.address.phone;
+  			value.address=self.address.province+self.address.city+self.address.area+self.address.location
+  		}
+		api.ajax({
+		    url: baseUrl+'/api/pay/wxPay',
+		    method: 'post',
+            timeout:200,
+            dataType:"json",
+		    headers:{
+            	Authorization:'Bearer '+$api.getStorage('token'),
+            	Accept:'application/json'
+            },
+            data: {
+		        values: value
+		    }
+		}, function(ret, err) {
+		    if (ret) {
+		    	var wxPay = api.require('wxPay');
+  				wxPay.payOrder(ret, function(ret, err) {
+  				    if (ret.status) {
+  				    	api.hideProgress();
+  				         api.toast({
+						    msg: '支付成功',
+						    duration: 2000,
+						    location: 'bottom'
+						 });
+						 var jsfun = 'vm.chooseStatus(2);';
+						 api.execScript({
+						     name: 'all',
+						     frameName: 'order',
+						     script: jsfun
+						 });
+    					 api.openWin({
+				            name:'all',
+				            url:'all.html',
+				            pageParam: {
+				            	name:'我的订单',
+				            	frame:'order',
+				            	data:{
+				            		status: '2'
+				            	}
+				            },
+				            bounces:false,
+				            animation:{
+				                type:'movein'
+				            }
+				         })
+				         
+				         api.closeWin({
+						    name: 'pay'
+						 }); 	
+    					
+  				    } else { 
+  				    	api.hideProgress();
+				        api.toast({
+						    msg: '支付失败,请稍后再试',
+						    duration: 2000,
+						    location: 'bottom'
+						});
+  				    }
+  				});  	        
+		    } else {
+		    	api.hideProgress();
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'bottom'
+				});
+		    }
+		});
+  	},
+  	noaddress:function(){
+  		api.toast({
+		    msg: '请补全地址信息',
+		    duration: 2000,
+		    location: 'bottom'
+		});
+  	},
+  	showSendType:function(){
+  		this.hide=2;
+  	},
+  	chooseSendType:function(state){
+  		var self = this;
+  		self.sendType=state;
+		if(state==2){
+			self.address='自提'
+		}else{
+			self.getAddress()
+		}
+		setTimeout(function(){self.hide=0},100)
+  	}
+  },
+  computed:{
+    total: function () {
+    	var totalprice=0;
+    	var self = this;
+    	if(typeof self.info.goods =='undefined'){
+    		totalprice=0;
+    	}else{
+    		var totalprice=0;
+    		for(var i=0;i<self.info.goods.length;i++){
+	    		var startday = new Date(self.info.goods[i].pivot.start).getTime();
+	    		var endtday = new Date(self.info.goods[i].pivot.end).getTime();
+	    		var day=(endtday-startday)/(24*60*60*1000)+1;
+	    		totalprice=totalprice+(self.info.goods[i].price*day+self.info.goods[i].foregift)*self.info.goods[i].pivot.number;
+	    	}
+	    	totalprice=parseFloat(totalprice-self.info.discount_fee).toFixed(2);
+    	}
+      return totalprice
+    },
+    addressFlag:function(){
+    	var self = this;
+    	return isEmptyObject(self.address)
+    }
+  }
+})
+</script>
+</html>

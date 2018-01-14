@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>发现</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	.list_head{
+    		width:6.4rem;
+    		padding-bottom:0.1rem;
+    	}
+		/*排序*/    	
+       	.list_head .row{
+       		background:white;
+       		width:6.4rem;
+       		border-bottom: 1px solid #ededed;
+       	}
+       	.list_head .row .tags{
+       		width:5.744rem;
+       		height:0.764rem;
+      		margin-left:0.328rem;
+       		float:left;
+       		overflow-x:auto;
+       		color:#a4a4a4;
+       	}
+       	.list_head .row .sort{
+       	 	margin-left:0.08rem;
+       		width:2.079rem;
+       		height:0.56rem;
+       		line-height:0.56rem;
+       		margin-top:0.13rem;
+       		float:left;
+       		background:#cdcdcd;
+       		color:white;
+       		text-align:center;
+       	
+       	}
+       	
+       	.list_head .row .tag1{
+	       	margin-right:0.293rem;
+	       	text-align:center;
+       		height:0.764rem;
+       		line-height:0.854rem;
+       		display:inline-block;
+       	}
+       	.list_head .row .tag{
+       		float:left;
+       		margin-right:0.293rem;
+       		font-size:0.23rem;
+       		height:0.46rem;
+       		text-align:center;
+       		line-height: 0.46rem;
+       		color:#a4a4a4;
+        	
+       	}
+       	.list_head .row2 .tag:nth-child(1){
+       		margin-left:0.32rem;
+       	}
+       	.list_head .row2 .tag:nth-child(6){
+       		margin-right:0rem;
+       	}
+       	.list_head .row2 .tag:nth-child(7){
+       		margin-left:0.32rem;
+       	}
+       	.active{
+       		color:#2c2c2c!important;
+       	}
+       	
+       	
+       	
+       	/*头部*/
+       	header{  
+       		position:fixed;
+        	top:0;
+        
+        	width:6.4rem;
+        
+       		z-index:999
+        }
+        .emptySpase{
+        	background:#f4f4f4;
+   			width:6.4rem;
+   			height:0.11rem;
+        }
+     
+        .nav{
+        	width:6.4rem;
+       		margin-left:1.1rem;
+       		
+        }
+        .nav .nav-item{
+        	width:2.1rem;
+        	height:0.5rem;
+        	float: left;
+        	border:2px solid white;
+        	border-right:0;
+        	text-align:center;
+        	line-height: 0.5rem;
+        	color:white;
+        	margin-bottom:10px;
+        }
+        .nav .active{ background:white;color:#2897d7 }
+        .nav .nav-item:nth-child(1){ border-bottom-left-radius: 4px;border-top-left-radius: 4px }
+        .nav .nav-item:nth-child(2){ border-right:2px solid white;border-bottom-right-radius: 4px;border-top-right-radius: 4px }
+		/*列表*/
+		.list{
+			width:6.4rem;
+			height:auto;
+			background:#F4F4F4;
+			position: relative;
+       		z-index:1;
+			
+		}
+		.list .box{
+			background:#fff;
+			width:2.92rem;
+			height:4.01rem;
+			float: left;
+			margin-top:0.18rem;
+			margin-left: 0.18rem;
+			position:relative;
+		}
+		.list .box img{
+			width: 100%;
+			height:2.92rem;
+		}
+		.list .box .name{
+			width:97%;
+			padding-left:0.07rem;
+			margin-top:0.1rem;
+			color: #7e7d7d;
+			line-height: 0.3rem;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			overflow: hidden;
+		}
+		.list .box .info{
+			width:94%;
+			padding-left:0.07rem;
+			color: #7e7d7d;
+			line-height: 0.3rem;
+			text-align:right;
+			position: absolute;
+			bottom:0.05rem
+		}
+		.list .box .price_box{
+			height:0.36rem;
+			border-radius:0.18rem;
+			background:white;
+			position: absolute;
+			top:0.14rem;
+			left:0.07rem;
+		}
+		.list .box .price_box img{
+			width: 0.3rem;
+			height:0.3rem;
+			margin-top:0.03rem;
+			margin-left:0.03rem;
+			display: inline-block;
+			float:left;
+		}
+		.list .box .price_box .price{
+			color: #f47771;
+			height:0.3rem;
+			line-height: 0.3rem;
+			margin:0.05rem;
+			display:inline-block;
+			
+			float:left;
+		}
+		.list .box .zi{
+			padding:0.03rem;
+			border-radius:2px;
+			border:1px solid #2897d7;
+			background:#2897d7;
+			color:white;
+			font-size:0.18rem;
+			position: absolute;
+			top:0.16rem;
+			right:0.1rem;
+		}
+		.emptySpase{
+   			background:white;
+   			width:6.4rem;
+   			height:1rem;
+   		}
+   		
+    </style>
+</head> 
+<body>
+	<div class="warp">
+	   <!--头部筛选-->
+	  <!-- <div class="list_head">
+	       <header class="mainColor">
+		       <div class="nav">
+			       	<div class="nav-item" :class="type=='L'?'active':''" @click="change('L')">按距离</div>
+			       	<div class="nav-item" :class="type=='T'?'active':''" @click="change('T')">按时间</div> 
+		       </div>
+	   	   </header> 
+       </div>   -->
+    <!--<div class="clear"></div>-->
+   <!-- <div class="swiper-container swiper-container-horizontal detail_box">
+        <div class="swiper-wrapper" style="height:3.98rem">
+            <div class="swiper-slide "   v-html="data.introduction"></div>
+            <div class="swiper-slide " >
+            	<img :src='item' v-for="item in mapArray"  v-if="mapArray.length>0"/>
+            	<p v-if="mapArray.length==0" style="text-align:center">未上传实物图</p>
+            </div>
+            <div class="swiper-slide "   v-html="data. supplement"></div>
+        </div>
+    </div>-->
+	<!-- 列表-->    
+    <div class="list clear">
+    	<div class="box"  v-for="(item,index) in listDate" @click="gotoDetail(item.id)">
+    		<img :src="item.cover">
+    		<p class="name">{{item.name}}</p>
+    		<p class="info" v-if='type=="T"'>{{item.created_at.substring(0,10)}}</p>
+    		<p class="info" v-if='type=="L"'><span v-if="item.distance">{{item.distance}}km</span><span v-else>>1000km</span></p>
+    		<div class="price_box">
+    			<img src="../image/price.png">
+    			<p class="price">￥{{item.price}}</p>
+    		</div>
+    		<div class="zi" v-if="item.user_id==0">自营</div>
+    	</div>
+    	
+    </div>
+   	<div class="emptySpase"></div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/swiper-3.4.2.min.js"></script>
+<script type="text/javascript" src="../script/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	date:[],
+  	active_id:0,
+  	first_index:-1,
+  	second_active_id:0,
+  	final_id:0,
+  	listDate:[],
+  	page:1,
+  	order:'',
+  	type:'L',
+  	lon:"",
+  	lat:""
+  },
+  mounted:function(){
+  	var self = this;
+  	apiready = function(){
+		sethead();
+		api.showProgress({
+		    title: '努力加载中...',
+		    text: '先休息一下...',
+		    modal: true
+		});
+	    var aMapLBS = api.require('aMapLBS');
+	    aMapLBS.configManager({
+	        accuracy: 'hundredMeters',
+	        filter: 1
+	    }, function(ret, err) {
+	    });
+	    aMapLBS.singleLocation({
+	        timeout: 10
+	    }, function(ret, err) {
+	        if (ret.status) { 
+     			self.lon=ret.lon,
+     			self.lat=ret.lat
+         		
+	            //ajax请求列表
+				self.ajaxList(1,'orderByDistance','');
+				//上拉加载
+				api.addEventListener({
+		            name:'scrolltobottom',
+		            extra:{
+		                threshold:0 //设置距离底部多少距离时触发，默认值为0，数字类型
+		            }
+		        }, function(ret, err){
+		         	self.page = self.page+1;
+		         	if(self.type=='T'){
+		         		self.ajaxList(self.page,'orderByTime')
+		         		
+		         	}else{
+		         		self.ajaxList(self.page,'orderByDistance')
+		         	}
+		        });
+		        //下拉刷新
+		        api.setRefreshHeaderInfo({
+				    loadingImg: 'widget://image/refresh.png',
+				    bgColor: '#fff',
+				    textColor: '#545454',
+				    textDown: '下拉刷新...',
+				    textUp: '松开刷新...'
+				}, function(ret, err) {
+				    //在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+				    if(self.type=='T'){
+		         		self.ajaxList(1,'orderByTime')
+		         	}else{		
+		         		self.ajaxList(1,'orderByDistance')
+		         	}
+				});
+	        }else{
+	        	//ajax请求列表
+				self.ajaxList(1,'orderByDistance','');
+				//上拉加载
+				api.addEventListener({
+		            name:'scrolltobottom',
+		            extra:{
+		                threshold:0 //设置距离底部多少距离时触发，默认值为0，数字类型
+		            }
+		        }, function(ret, err){
+		         	self.page = self.page+1;
+		         	if(self.type=='T'){
+		         		self.ajaxList(self.page,'orderByTime')
+		         		
+		         	}else{
+		         		self.ajaxList(self.page,'orderByDistance')
+		         	}
+		        });
+		        //下拉刷新
+		        api.setRefreshHeaderInfo({
+				    loadingImg: 'widget://image/refresh.png',
+				    bgColor: '#fff',
+				    textColor: '#545454',
+				    textDown: '下拉刷新...',
+				    textUp: '松开刷新...'
+				}, function(ret, err) {
+				    //在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+				    if(self.type=='T'){
+		         		self.ajaxList(1,'orderByTime')
+		         	}else{		
+		         		self.ajaxList(1,'orderByDistance')
+		         	}
+				});
+	        }
+	     })
+	}
+  },
+  methods:{
+  	
+  	//请求列表
+  	ajaxList:function(page,url){
+  	   var self = this;
+	   api.ajax({
+		    url: baseUrl+'/api/'+url,
+		    method: 'get',
+            timeout:200,
+            dataType:"json",
+	        data: {
+		        values: {
+		            page:page,
+		            lon:self.lon,
+		            lat:self.lat
+		        }
+		    }
+		}, function(ret, err) {
+			
+		    if (ret) { 
+		    	//api.alert({ msg: JSON.stringify(ret) });
+		    	if(page==1){
+		    		self.listDate=ret.data;  
+		    	}else{
+		    		for(var i = 0;i<ret.data.length;i++){
+		    			self.listDate.push(ret.data[i])
+		    		}
+		    	} 
+		    	
+		    	 api.hideProgress();
+		    	 api.refreshHeaderLoadDone()
+		    } else {
+	     		//api.alert({ msg: JSON.stringify(err) });
+	    		api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+				api.hideProgress();
+				api.refreshHeaderLoadDone()
+		    }
+		});	
+  	},
+  	
+	//点击商品跳转到详情页
+	gotoDetail:function(id){
+		api.openWin({
+            name:'detail',
+            url:'detail.html',
+            bounces:true,
+            pageParam: {
+		        id: id
+		    },
+            animation:{
+                type:'movein'
+            }
+        })
+	},
+	change:function(type){
+		this.type=type;
+		if(type=="T"){
+			this.ajaxList(1,'orderByTime')
+		}else{
+			this.ajaxList(1,'orderByDistance')
+		}
+		
+
+	}
+  }
+})
+//function ajaxList(id){
+//	   api.ajax({
+//		    url: baseUrl+'/api/filter',
+//		    method: 'get',
+//          timeout:200,
+//          dataType:"json",
+//	        data: {
+//		        values: {
+//		            category_id : id,
+//		            page:1,
+//		            order:''
+//		        }
+//		    }
+//		}, function(ret, err) {
+//		    if (ret) { 
+//	    		vm.active_id=id
+//	    		vm.listDate=ret.data;  
+//		    } else {
+//		    	api.toast({
+//				    msg: '网络异常，稍后重试',
+//				    duration: 2000,
+//				    location: 'middle'
+//				});
+//		    }
+//		});	
+//	}
+</script>
+</html>

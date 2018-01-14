@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>一简租</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper-3.4.2.min.css"/>
+    <style>
+		/**/    	
+	    body{
+	    	width: 6.4rem;
+	    }
+		/*标题*/
+		.title{
+			width:6.4rem;
+			height:0.65rem;
+		}
+		.title img{
+			width:0.47rem;
+			height:0.42rem;
+			margin-top:0.09rem;
+			margin-left:0.24rem;
+			float:left;
+		}
+		.title .name{
+			color:#4b4d4d;
+			margin-left:0.16rem;
+			float:left;
+			line-height: 0.65rem;
+			display: inline-block;
+		}
+		.title .more{
+			color:#ed9980;
+			float: right;
+			margin-right:0.22rem;
+			line-height: 0.65rem;
+		}        
+		/*热门*/        
+        .hot{
+        	width:100%;
+        	height:2.44rem;
+        	background:white;
+        }
+        .nav{
+	        width:11.8rem;
+	        height:2.28rem;
+   		}
+   		.nav .nav-item{
+   			width:2.28rem;
+   			float:left;
+   			margin-right:0.05rem;
+   			height:2.28rem;
+   			text-align:center;
+   			position: relative;
+   		}
+   		.nav .nav-item img{
+   			width:100%;
+   			height:100%;
+   		}
+   		.nav .nav-item .modal{
+   			width:95%;
+   			padding-left:3.5%;
+			padding-right:1.5%;
+   			height:0.48rem;
+   			position:absolute;
+   			bottom: 0rem;
+   			background:rgba(0,0,0,.4);
+   			text-align:center;
+   			line-height: 0.48rem;
+   			color:#fefbfb;
+   			font-size:0.22rem;
+   			overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+   		}
+   	
+		/*空白*/   		
+   		.emptySpase{
+   			background:#e7e7e7;
+   			width:6.4rem;
+   			height:0.11rem;
+   		}
+		/*内容*/
+		.type1Box{
+			width:6.4rem;
+			height:4.1rem;
+			background:white;
+		}
+		.type1Box .box{
+			width:2.9rem;
+			height:4.1rem;
+			background:white;
+			margin-left:0.21rem;
+			margin-right:-0.03rem;
+			float:left;
+			position: relative;
+		}
+		.type1Box .box:active{
+			background:rgba(244,244,244,.7)
+		}
+		.type1Box .box img{
+			height:2.9rem;
+			width:100%;
+		}
+		.type1Box .box .name{
+			width:100%;
+			color: #7e7d7d;
+			line-height: 0.3rem;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			overflow: hidden;
+		}
+		.type1Box .box .price{
+			text-align:left;
+			color: #f47771;
+			margin-top:0.12rem;
+			font-weight:bold;
+		}
+		.type1Box .box .zi{
+			padding:0.03rem;
+			border-radius:2px;
+			border:1px solid #2897d7;
+			background:#2897d7;
+			color:white;
+			font-size:0.18rem;
+			position: absolute;
+			top:0.16rem;
+			right:0.1rem;
+		}
+    </style>
+</head>
+<body>
+	<div class="warp">
+		<div class="emptySpase" style="margin-top:2.47rem;"></div>
+		<!--热门标题-->
+	    <div class="title" >
+	    	<img src="../image/title1.png" />
+	    	<p class="name">热门单品</p>
+	    	<p class="more" @click="moreHot">查看更多 >></p>
+	    </div>
+		<!--热门-->
+	    <div class="hot swiper-container" id='hotbox'>
+	    	<div class="nav clear swiper-wrapper" id="bar">
+		    	<div class="nav-item swiper-slide"  @click="gotoDetail(item.id)" v-for="item in hots">
+		    		<img :src="item.cover"/>
+		    		<div class="modal">{{item.name}}</div>
+		    	</div>
+	    	</div>
+	    </div> 
+	    <div class="emptySpase"></div>
+		<!--分类标题-->
+		<div v-for="item in categories">  
+			<div class="title">
+		    	<img src="../image/title1.png" />
+		    	<p class="name">{{item.name}}</p>
+		    	<p class="more" @click="more(item.id,item.name)">查看更多 >></p>
+		    </div>
+		    <div class="type1Box">
+		    	<div class="box" @click="gotoDetail(goods.id)" v-for="goods of item.allGoods">
+		    		<img :src="goods.cover"/>
+		    		<p class="name">{{goods.name}}</p>
+		    		<p class="price">￥{{goods.price}}</p>
+		    	</div>
+		    </div>
+		    <div class="clear"></div>
+		     <div class="emptySpase"></div>
+	     </div>  
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/swiper-3.4.2.min.js"></script>
+<script>
+
+var vm = new Vue({
+  el: '.warp',
+  data: function () {
+	  return {
+	  	hots: [{},{},{},{},{}],
+	  	categories: [],
+	  	banner:[],
+	  	bannerAll:[],
+	  	url:[]
+	  }
+  	
+  },
+  mounted: function() {
+	var self = this;
+	apiready = function(){
+		sethead()
+		api.showProgress({
+		    title: '努力加载中...',
+		    text: '先休息一下...',
+		    modal: true
+		});
+		self.ajaxData();
+		self.ajaxBanner();
+
+		
+	   api.setRefreshHeaderInfo({
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#fff',
+		    textColor: '#545454',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...'
+		}, function(ret, err) {
+			
+			self.ajaxData();
+			self.ajaxBanner();
+		    //在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			
+		});
+	}		
+  },
+  methods:{
+  	ajaxData:function(){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/home',
+		    method: 'get',
+            timeout:200,
+            dataType:"json"
+		}, function(ret, err) {
+		    if (ret) {
+		        self.hots=ret.hots;
+		        self.categories = ret.categories; 
+		        var swiper = new Swiper('.swiper-container', {
+			        pagination: '.swiper-pagination',
+			        slidesPerView: 3,
+			        paginationClickable: true,
+			        spaceBetween: 0
+			    });
+			    api.hideProgress();
+			    api.refreshHeaderLoadDone()
+		    } else {
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+				api.refreshHeaderLoadDone()
+				//api.hideProgress();
+		    }
+		});
+  	},
+  	//获得轮播图
+  	ajaxBanner:function(){
+  		var self = this;
+  		api.ajax({
+		    url: baseUrl+'/api/banners',
+		    method: 'get',
+	        timeout:200,
+	        dataType:"json"
+		}, function(ret, err) {
+		    if (ret) {
+		    	api.refreshHeaderLoadDone()
+		    	self.bannerAll=ret
+		        for(var i=0;i<ret.length;i++){
+		        	self.banner.push(ret[i].banner)
+		        	self.url.push(ret[i].post_id)
+		        }
+		        var UIScrollPicture = api.require('UIScrollPicture');
+				//轮播图
+				UIScrollPicture.open({
+				    rect: {
+				        x: 0,
+				        y: 0,
+				        w: api.winWidth,
+				        h: api.winWidth/2.6
+				    },
+				    data: {
+				        paths: self.banner
+				    },
+				    styles: {
+				        indicator: {
+				            align: 'center',
+				            color: '#FFFFFF',
+				            activeColor: '#53c9de'
+				        }
+				    },
+				    placeholderImg: 'widget://res/image/swiper1.png',
+				    contentMode: 'scaleToFill',
+				    interval: 6,
+				    fixedOn: "frame0",
+				    loop: true,
+				    fixed: false
+				}, function(result, err) {
+					if(result.eventType=="click"){
+						//api.alert({ msg: JSON.stringify(result) });
+						if(self.bannerAll[result.index].bannerable_type=="App\\Models\\Post"){
+							api.openWin({
+								name:'all',
+					            url:'all.html',
+					            bounces:false,
+					            pageParam:{
+					            	name:'一简租',
+					            	frame:'other',
+					            	data:{
+					            		url:baseUrl+'/post/mobile/'+self.bannerAll[result.index].bannerable_id
+					            	}
+					            },
+					            animation:{
+					                type:'movein'
+					            }
+							})
+						}else if(self.bannerAll[result.index].bannerable_type=="App\\Models\\Subject"){
+							api.openWin({
+						        name: 'all',
+						        url: 'all.html',
+						        pageParam: {
+							        name: '',
+							        frame:"subject",
+							        data:{id:self.bannerAll[result.index].bannerable_id}
+							    }
+					        });
+						}else if(self.bannerAll[result.index].bannerable_type=="App\\Models\\Goods"){
+							api.openWin({
+						        name:'detail',
+						        url:'detail.html',
+						        bounces:true,
+						        pageParam: {
+							        id: self.bannerAll[result.index].bannerable_id
+							    },
+						        animation:{
+						            type:'movein'
+						        }
+						    })
+						}
+					
+//						
+					}
+				});
+		    } else {
+		    	api.refreshHeaderLoadDone()
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});
+  	},
+  	//查看更多跳转到发现页
+	more:function(id,name){
+//		var jsfun = 'open1('+id+');'
+//		api.execScript({
+//		    name: 'index',
+//		    script: jsfun
+//		});
+		api.openWin({
+	        name: 'all',
+	        url: 'all.html',
+	        pageParam: {
+		        name: name,
+		        frame:"more",
+		        data:{id:id}
+		    }
+		    
+        });
+	},
+	//热门查看更多
+	moreHot:function(){
+		api.openWin({
+	        name: 'all',
+	        url: 'all.html',
+	        pageParam: {
+		        name: '热门精品',
+		        frame:"list",
+		        data:{page:1}
+		    }
+		    })
+		    
+//		api.openWin({
+//	        name:'list',
+//	        url:'list.html',
+//	        bounces:false,
+//	        pageParam: {
+//		        page:1
+//		    },
+//	        animation:{
+//	            type:'movein'
+//	        }
+//	    })
+	},
+	//点击商品跳转到详情页
+	gotoDetail:function(id){
+		api.openWin({
+	        name:'detail',
+	        url:'detail.html',
+	        bounces:true,
+	        pageParam: {
+		        id: id
+		    },
+	        animation:{
+	            type:'movein'
+	        }
+	    })
+	},
+
+  }
+})
+</script>
+</html>

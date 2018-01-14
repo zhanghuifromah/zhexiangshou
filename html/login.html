@@ -1,0 +1,657 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>login</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+  
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<style>
+		.warp{
+			width:6.4rem;
+			background:#f1f1f1;
+			min-height:11.36rem;
+		}
+		 .head{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			color: #fff;
+			text-align: center;
+			height: 50px;
+			line-height: 50px;
+			font-size: 18px;
+			background:#2897D7
+		}
+		.back{
+			position: fixed;
+			width: 50px;
+			height: 50px;
+			top: 20px;
+			left: 0;
+		}
+		.logo{
+			width:1.41rem;
+			height:1.41rem;
+			margin-left:2.45rem;
+			margin-top:1.6rem;
+		}
+		.box{
+			width:4.34rem;
+			margin-right:0;
+			margin-left:1.03rem;
+			margin-top:0.557rem;
+		}
+		.box .row{
+			width: 100%;
+			height:0.63rem;
+			background:white;
+			margin-bottom:0.6rem;
+			border-radius:6px;
+		}
+		.box .row .icon{
+			width:0.67rem;
+			height:0.415rem;
+			border-right:0.035rem solid #f1f1f1;
+			margin-top:0.115rem;
+			float:left;
+		}
+		.box .row .icon img{
+			width: 100%;
+			height:100%;
+			float: left
+		}
+		.box .row input{
+			width:2.041rem;
+			height:0.415rem;
+			line-height:0.415rem;
+			margin-top:0.115rem;
+			float: left;
+			font-size: 0.22rem;
+			margin-left:0.23rem;
+			border:none;
+			outline: none;
+		}
+		.box .row span{
+			color:#f31e1e;
+			float:right;
+			height:0.415rem;
+			line-height:0.415rem;
+			margin-top:0.195rem;
+			font-size: 0.4rem;
+			margin-right:0.22rem
+		}
+		.box .info{
+			width: 100%;
+			height:0.63rem;
+			line-height: 0.63rem;
+		
+		/*	margin-top:2.714rem;*/
+			font-size: 0.22rem;
+			color:#c0c0c0
+		}
+		.box .info span{
+			color:#5aacdd
+		}
+		.box .btn{
+			background:#2996d7;
+			text-align:center;
+			height:0.63rem;
+			line-height: 0.63rem;
+			font-size:0.22rem;
+			color:white;
+			margin-bottom:0.3rem;
+		}
+		.box .oauth{
+			width: 4.34rem;
+			background:none;
+			text-align:center;
+			margin-bottom:0;
+			margin-top:1.2rem;
+		}
+		.box .oauth_box{
+			width:3.27rem;
+			height:0.68rem;
+			margin:0 auto;
+		}
+		.box .oauth_sm_box{
+			width:32%;
+			float:left;
+			height:100%;
+	
+		}
+		.box .oauth_sm_box img{
+			width:100%;
+			height:100%;
+			float:left;
+		}
+		.box .oauth p{
+			font-size: 0.26rem;
+			color:#c0c0c0;
+			margin-top:0.17rem;
+			
+		}
+		
+		/*弹窗*/
+		.modal{
+			width:6.4rem;
+			height:100vh;
+			background:rgba(0,0,0,.6);
+			position: fixed;
+			top: 0;
+			left:0;
+		}
+		.modal_box{
+			width:5.9rem;
+			height:7rem;
+			background:white;
+			position: fixed;
+			top:2rem;
+			left:0.22rem;
+			border-radius:6px;
+			
+		}
+		.modal_box .tanchuang_bg{
+			width:3.44rem;
+			height:2.05rem;
+			position:relative;
+			top:-0.9rem;
+			left:1.3rem;
+		}
+		.modal_box .del{
+			float:right;
+			width:0.2rem;
+			height:0.2rem;
+			margin-right:0.2rem;
+			margin-top:0.2rem;
+		}
+		.modal_box .p_title{
+			position:relative;
+			top:-0.9rem;
+			text-align:center;
+			color:#6d6f6f;
+			line-height: 0.36rem;
+			font-size:0.26rem;
+			width:94%;
+			margin-left:3%;
+			margin-bottom:0.5rem;
+		}
+	/*	.modal_box .p_info{
+			position:relative;
+			top:-0.9rem;
+			text-indent:1.5em;
+			color:#6d6f6f;
+			line-height: 0.36rem;
+			font-size:0.26rem;
+			width:94%;
+			margin-left:3%;
+			overflow-y:auto;
+			height:5rem;
+		}*/
+	</style>
+</head>
+<body>
+   <div class="warp">
+   	  <header class="mainColor clear head">
+	   	   <span class="icon back" @click="closeWin" style="z-index:999">&#xe62c;</span>
+	   	    <p>登录</p>
+	   </header>
+	   
+   		<img class="logo" src="../image/head_icon.png"/>
+   		<div class="box clear">
+   			<div class="row clear">
+   				<div class="icon">
+   					<img src="../image/logicon1.png"/>
+   				</div>
+   				<input placeholder="请输入您的手机号" type="number" v-model="phone">
+   				<span>*</span>
+   			</div>
+   			<div class="row clear">
+   				<div class="icon">
+   					<img src="../image/logicon2.png"/>
+   				</div>
+   				<input placeholder="请输入您的密码" type="password" v-model="password">
+   				<span>*</span>
+   			</div>
+   			<div class="info" style="margin-top:-0.4rem" @click="gotoReg3">
+   				<p style="float:right;text-decoration: underline">忘记密码？</p>
+   			</div>
+   			<div class="info">
+   				<p>登录即表明同意<span @click='show'>用户协议</span></p>
+   			</div>
+   			<div class="row clear btn" @click="login">
+   				登录
+   			</div>
+   			<div class="row clear btn" @click="gotoReg">
+   				注册
+   			</div>
+   			<div class="row oauth" v-if="sanfangShow==1">
+   				<div class="oauth_box">
+   					<div class="oauth_sm_box" @click="wxLog">
+   						<img src="../image/wxshare.png" />
+   					</div>
+   					<div class="oauth_sm_box" @click="qqLog">
+   						<img src="../image/qqshare.png" />
+   					</div>
+   					<div class="oauth_sm_box" @click="wbLog">
+   						<img src="../image/wbshare.png" />
+   					</div>
+   				</div>
+   				<p>第三方登录</p>
+   			</div>
+   			
+   			
+   			
+
+   			<!--<div class="clear">
+   				<img src="../image/phone.png" class="little_icon"/>
+   				<input type="text" v-model="phone">
+   			</div>
+   			<div class="clear" style="margin-top:0.6rem">
+   				<img src="../image/password.png" class="little_icon"/>
+   				<input type="password" v-model="password">
+   			</div>
+   			<div style="font-size: 0.25rem;color:white;text-align: right;margin-top:0.27rem;margin-bottom:0.3rem">
+   				忘记密码？
+   			</div>
+   			
+   			<div class="btn" @click="login">登录</div>
+   			<div class="btn reg" @click="gotoReg">注册</div>
+   			<div style="font-size: 0.25rem;color:white;text-align: center;margin-top:0.37rem;margin-bottom:0.3rem">
+   				登录表示同意<span style="text-decoration: underline" @click='show'>用户协议</span>
+   			</div>-->
+   			<!--<div v-if="sanfangShow==1">
+   			<img src="../image/line.png" class="line clear"/>
+	   			<div>
+	   				<div class="circle" @click="qqLog">
+	   					<img src="../image/qq.png" />
+	   				</div>
+	   				<div class="circle" @click="wbLog">
+						<img src="../image/weibo.png" />
+	   				</div>
+	   				<div class="circle" style="margin-right:0" @click="wxLog"> 
+	   					<img src="../image/weixin.png" />
+	   				</div>
+	   			</div>
+   			</div>-->
+   		</div>
+   		<div class="modal" v-if="hide==1"></div>
+		    <div class="modal_box" v-if="hide==1">
+		   		<img src="../image/tanchuang_bg.png" class="tanchuang_bg"/>
+		   		<img src="../image/del.png" class="del" @click="cancel"/>
+		   		<p class="p_title">登录协议</p>
+		   		
+		    </div>	
+   		</div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+//vue
+var vm = new Vue({
+	  el: '.warp',
+	  data: {
+	  	phone:"",
+	  	password:"",
+	  	sanfangShow:1,
+	  	hide:0,
+	  	registration_id:''
+	  },
+	  mounted: function() {
+	  	var self = this;
+	  	apiready = function(){
+			//IOS  onclick卡顿解决
+			sethead();
+//			api.openFrame({
+//			    name: 'back',
+//			    url: 'back.html',
+//			    rect: {
+//			        x: 10,
+//			        y: 30,
+//			        w: 40,
+//			        h: 40
+//			    },
+//			    bounces: false,
+//			    bgColor:"",
+//			    fixed: true,
+//			    vScrollBarEnabled: false,
+//			    hScrollBarEnabled: false
+//			});
+			api.execScript({
+			    name: 'all',
+			    script: 'vm.closeWin()'
+			});
+			
+			api.execScript({
+			    name: 'index',
+			    script: 'open0()'
+			});
+	  		api.ajax({
+			    url: baseUrl+'/api/hidden',
+			    method: 'get',
+	            timeout:200,
+	            dataType:"json",
+			}, function(ret, err) {
+			    if (ret) {
+			    	self.sanfangShow=ret.oauth;
+					//self.sanfangShow=1
+			    	//api.alert({ msg: JSON.stringify(ret) });
+			    } else {
+					api.toast({
+					    msg: '网络异常，稍后重试',
+					    duration: 2000,
+					    location: 'middle'
+					});
+			    }
+			});	
+			var ajpush = api.require('ajpush');
+			ajpush.getRegistrationId(function(ret) {
+				self.registration_id=ret.id
+			})
+		}	
+	  },
+	  methods:{
+	  //登录
+	  	login:function(){
+	  		var self = this;
+	  		var regphone =/^0?1[3|4|5|7|8][0-9]\d{8}$/
+		    if(regphone.test(self.phone)==false){
+		      api.toast({
+			    msg: '手机号码格式不正确',
+			    duration: 2000,
+			    location: 'bottom'
+			  });
+		      return false;
+		    }
+		    api.execScript({
+			    name: 'changePassword',
+			    script: 'vm.closeWin()'
+			});
+		    api.showProgress({
+			    title: '登录中...',
+			    text: '先休息一下...',
+			    modal: true
+			});
+		   
+		     api.ajax({
+				    url: baseUrl+'/api/login',
+				    method: 'post',
+		            timeout:200,
+		            dataType:"json",
+				    data: {
+				     	values:{
+				  			phone:self.phone,
+				  			password:self.password,
+				  			registration_id:self.registration_id
+				     	} 
+				    }
+				}, function(ret, err) {
+				    if (ret) {
+				    	api.hideProgress();
+				    	if(typeof ret.error=='undefined'){
+				    		$api.setStorage('token',ret.access_token);
+				    		api.toast({
+							    msg: '登陆成功',
+							    duration: 2000,
+							    location: 'bottom'
+							});
+							api.execScript({
+							    name: 'index',
+							    script: 'open4()'
+							});
+				    		api.closeWin();
+				    	}else{
+			    			api.toast({
+							    msg: '手机号或密码错误',
+							    duration: 2000,
+							    location: 'bottom'
+							});
+				    	}
+				    } else {
+				    	api.hideProgress();
+				    	api.toast({
+						    msg: '网络异常，稍后重试',
+						    duration: 2000,
+						    location: 'middle'
+						});
+				    }
+				});
+			
+	  	},
+	  	//  跳转到注册页
+		gotoReg:function(){
+			api.openWin({
+	            name:'reg',
+	            url:'reg.html',
+	            bounces:false,
+	            delay:300,
+	            animation:{
+	                type:'movein'
+           		}
+        	})
+		},
+		gotoReg3:function(){
+			var self= this;
+			api.openWin({
+	            name:'reg3',
+	            url:'reg3.html',
+	            bounces:false,
+	            delay:300,
+	            pageParam: {
+			        phone: self.phone
+			    },
+	            animation:{
+	                type:'movein'
+           		}
+        	})
+		},
+		//微博登陆
+		wbLog:function(){
+			var self = this
+			api.showProgress({
+			    title: '努力加载中...',
+			    text: '先休息一下...',
+			    modal: true
+			});
+			var weibo = api.require('weibo');
+			weibo.auth(function(ret, err) {
+			    if (ret.status) {
+			        weibo.getUserInfo({
+					    token: ret.token,
+					    userId: ret.userId
+					}, function(ret, err) {
+					    if (ret.status) {
+					        $api.setStorage('oauth_id',ret.userInfo.id);
+					        $api.setStorage('name',ret.userInfo.name);
+					        $api.setStorage('avatar',ret.userInfo.profile_image_url);
+					        self.socialiteLogin()
+					    }else{
+					    	api.toast({
+							    msg: '获取信息失败',
+							    duration: 2000,
+							    location: 'middle'
+							});
+					    	api.hideProgress();
+					    }
+					});
+			    }else{
+			    	api.toast({
+					    msg: '登录授权失败',
+					    duration: 2000,
+					    location: 'middle'
+					});
+			    	api.hideProgress();
+			    }
+			});
+		},
+		//微信登陆
+		wxLog:function(){
+			var self = this
+			api.showProgress({
+			    title: '努力加载中...',
+			    text: '先休息一下...',
+			    modal: true
+			});
+			var wx = api.require('weiXin');
+			wx.registerApp(function(ret,err){
+	            if (ret.status) {
+	                wx.auth(function(result,err){
+			            if(result.status){
+			                wx.getUserInfo(function(ret, err) {
+							    if (ret.status) {
+							        $api.setStorage('oauth_id',ret.openid);
+							        $api.setStorage('name',ret.nickname);
+							        $api.setStorage('avatar',ret.headimgurl);
+							        self.socialiteLogin()
+							    } else {
+							    	api.toast({
+									    msg: '获取信息失败',
+									    duration: 2000,
+									    location: 'middle'
+									});
+							        api.hideProgress();
+							    }
+							});
+			            }else{
+			            	api.toast({
+							    msg: '登录授权失败',
+							    duration: 2000,
+							    location: 'middle'
+							});
+			            	api.hideProgress();
+			            }
+			        });
+	            }else{
+	            	api.hideProgress();
+
+	            }
+        	})
+		},
+		//qq登陆
+		qqLog:function(){
+			var self = this;
+			api.showProgress({
+			    title: '努力加载中...',
+			    text: '先休息一下...',
+			    modal: true
+			});
+			var qq = api.require('qq');
+			qq.login(function(ret, err) {
+				//api.alert({ msg: JSON.stringify(ret) });
+			    qq.getUserInfo(function(result, err) {
+				    if (result.status) {
+				        $api.setStorage('oauth_id',ret.openId);
+				        $api.setStorage('name',result.info.nickname);
+				        $api.setStorage('avatar',result.info.figureurl_qq_2);
+				        self.socialiteLogin()
+				    } else {
+				    	api.toast({
+						    msg: '获取信息失败',
+						    duration: 2000,
+						    location: 'middle'
+						});
+				        api.hideProgress();
+				    }
+				});
+				api.toast({
+				    msg: '登录授权失败',
+				    duration: 2000,
+				    location: 'middle'
+				});
+				api.hideProgress();
+			});
+		},
+		cancel:function(){
+	  		this.hide=0
+		  	api.closeFrame({
+			    name: 'words'
+			});
+	  	},
+	  	show:function(){
+	  		this.hide=1
+	  		api.openFrame({
+			    name: 'words',
+			    url: 'words.html',
+			    rect: {
+			        x: api.winWidth*0.1,
+			        y: api.winHeight*0.35,
+			        w: api.winWidth*0.8,
+			        h: api.winHeight*0.4
+			    },
+			});	
+	  	},
+	  	closeWin:function(){	  	
+	  		api.closeWin()
+	  	},
+	  	//第三方登陆验证
+	  	socialiteLogin:function(){
+	  		 var self = this;
+		     api.ajax({
+			    url: baseUrl+'/api/socialiteLogin',
+			    method: 'POST',
+	            timeout:200,
+	            dataType:"json",
+	            data: {
+			        values: {
+			            oauth_id: $api.getStorage('oauth_id'),
+			            name:$api.getStorage('name'),
+			            avatar:$api.getStorage('avatar'),
+			            registration_id:self.registration_id
+			        }
+			    },
+			}, function(ret, err) {
+			    if (ret) {
+			    	api.hideProgress();
+			    	if(ret.error){
+			    		api.toast({
+						    msg: ret.error,
+						    duration: 2000,
+						    location: 'middle'
+						});
+						api.openWin({
+				            name:'reg2',
+				            url:'reg2.html',
+				            bounces:false,
+				            delay:300,
+				            animation:{
+				                type:'movein'
+			           		}
+			        	})
+			    	}else{
+			    		$api.setStorage('token',ret.access_token);
+			    		api.toast({
+						    msg: '登陆成功',
+						    duration: 2000,
+						    location: 'bottom'
+						});
+						api.execScript({
+						    name: 'index',
+						    script: 'open4()'
+						});
+			    		api.closeWin();
+			    	
+			    	}
+			    } else {
+					api.toast({
+					    msg: '网络异常，稍后重试',
+					    duration: 2000,
+					    location: 'middle'
+					});
+					api.hideProgress();
+			    }
+			});	
+		
+			
+	  		
+	  	}
+	  	
+	  }
+	})
+</script>
+</html>

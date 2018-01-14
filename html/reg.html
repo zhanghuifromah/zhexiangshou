@@ -1,0 +1,489 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>login</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+   
+      <link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<style>
+		.warp{
+			width:6.4rem;
+			background:#f1f1f1;
+			min-height:11.36rem;
+		}
+		 .head{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			color: #fff;
+			text-align: center;
+			height: 50px;
+			line-height: 50px;
+			font-size: 18px;
+			background:#2897D7;
+			z-index:999;
+		}
+		.back{
+			position: fixed;
+			width: 50px;
+			height: 50px;
+			top: 20px;
+			left: 0;
+		}
+		.logo{
+			width:1.41rem;
+			height:1.41rem;
+			margin-left:2.45rem;
+			margin-top:1.6rem;
+		}
+		.box{
+			width:4.34rem;
+			margin-right:0;
+			margin-left:1.03rem;
+			margin-top:0.557rem;
+		}
+		.box .row{
+			width: 100%;
+			height:0.63rem;
+			background:white;
+			margin-bottom:0.4rem;
+			border-radius:6px;
+			position: relative;
+			overflow: hidden;
+			z-index: 1;
+		}
+		.box .row .icon{
+			width:0.67rem;
+			height:0.415rem;
+			border-right:0.035rem solid #f1f1f1;
+			margin-top:0.115rem;
+			float:left;
+		}
+		.box .row .icon img{
+			width: 100%;
+			height:100%;
+			float: left
+		}
+		.box .row input{
+			width:2.041rem;
+			height:0.415rem;
+			line-height:0.415rem;
+			margin-top:0.115rem;
+			float: left;
+			font-size: 0.22rem;
+			margin-left:0.23rem;
+			border:none;
+			outline: none;
+		}
+		.box .row span{
+			color:#f31e1e;
+			float:right;
+			height:0.415rem;
+			line-height:0.415rem;
+			margin-top:0.195rem;
+			font-size: 0.4rem;
+			margin-right:0.22rem
+		}
+		.box .row .verify{
+			width:1.15rem;
+			height:0.63rem;
+			position: absolute;
+			right: 0;
+			text-align:center;
+			color:white;
+			font-size: 0.18rem;
+			line-height: 0.63rem;
+			background:#2897D7
+		}
+		.box .info{
+			width: 100%;
+			height:0.63rem;
+			line-height: 0.63rem;
+		
+		/*	margin-top:2.714rem;*/
+			font-size: 0.22rem;
+			color:#c0c0c0
+		}
+		.box .info span{
+			color:#5aacdd
+		}
+		.box .btn{
+			background:#2996d7;
+			text-align:center;
+			height:0.63rem;
+			line-height: 0.63rem;
+			font-size:0.22rem;
+			color:white;
+			
+		}
+		.box .oauth{
+			width: 4.34rem;
+			background:none;
+			text-align:center;
+			margin-bottom:0;
+			margin-top:3rem;
+		}
+		.box .oauth_box{
+			width:3.27rem;
+			height:0.68rem;
+			margin:0 auto;
+		}
+		.box .oauth_sm_box{
+			width:32%;
+			float:left;
+			height:100%;
+	
+		}
+		.box .oauth_sm_box img{
+			width:100%;
+			height:100%;
+			float:left;
+		}
+		.box .oauth p{
+			font-size: 0.26rem;
+			color:#c0c0c0;
+			margin-top:0.17rem;
+			
+		}
+		
+		/*弹窗*/
+		.modal{
+			width:6.4rem;
+			height:100vh;
+			background:rgba(0,0,0,.6);
+			position: fixed;
+			top: 0;
+			left:0;
+			z-index:10;
+		}
+		.modal_box{
+			width:5.9rem;
+			height:7rem;
+			background:white;
+			position: fixed;
+			top:2rem;
+			left:0.22rem;
+			border-radius:6px;
+			z-index:11;
+			
+		}
+		.modal_box .tanchuang_bg{
+			width:3.44rem;
+			height:2.05rem;
+			position:relative;
+			top:-0.9rem;
+			left:1.3rem;
+		}
+		.modal_box .del{
+			float:right;
+			width:0.2rem;
+			height:0.2rem;
+			margin-right:0.2rem;
+			margin-top:0.2rem;
+		}
+		.modal_box .p_title{
+			position:relative;
+			top:-0.9rem;
+			text-align:center;
+			color:#6d6f6f;
+			line-height: 0.36rem;
+			font-size:0.26rem;
+			width:94%;
+			margin-left:3%;
+			margin-bottom:0.5rem;
+		}
+		.modal_box .p_info{
+			position:relative;
+			top:-0.9rem;
+			text-indent:1.5em;
+			color:#6d6f6f;
+			line-height: 0.36rem;
+			font-size:0.26rem;
+			width:94%;
+			margin-left:3%;
+			overflow-y:auto;
+			height:5rem;
+		}
+	</style>
+</head>
+<body>
+   <div class="warp">
+   		<header class="mainColor clear head">
+	   	   <span class="icon back" @click="closeWin" style="z-index:999">&#xe62c;</span>
+	       <p>注册</p>
+	     
+	   </header>
+   		<img class="logo" src="../image/head_icon.png"/>
+   		<div class="box clear">
+   			<div class="row clear">
+   				<div class="icon">
+   					<img src="../image/logicon1.png"/>
+   				</div>
+   				<input placeholder="请输入您的手机号" type="text" v-model="phone">
+   				<span>*</span>
+   			</div>
+   			<div class="row clear">
+   				<div class="icon">
+   					<img src="../image/logicon2.png"/>
+   				</div>
+   				<input placeholder="请输入您的密码" type="password" v-model="password">
+   				<span>*</span>
+   			</div>
+   			<div class="row clear">
+   				<div class="icon">
+   					<img src="../image/logicon3.png"/>
+   				</div>
+   				<input placeholder="请输入手机验证码" type="number" v-model="VerifyCode">
+   				
+   				<div class="verify" v-if="sendstate==0" @click="askVerifyCode">获取验证码</div>
+   				<div class="verify" v-if="sendstate!=0&&sendstate!=1" >{{sendstate-1}}s</div>
+   				<div class="verify" v-if="sendstate==1" @click="askVerifyCode">重发</div>
+   			</div>
+   			<div class="row clear">
+   				<div class="icon">
+   					<img src="../image/logicon4.png"/>
+   				</div>
+   				<input placeholder="请输入推荐人手机号" type="text" v-model="parent_code">
+   				
+   			</div>
+   			<div class="info" @click='show'>
+   				<p>注册即表明同意<span>用户协议</span></p>
+   			</div>
+   			<div class="row clear btn" @click="reg">
+   				注册
+   			</div>
+   		</div>
+   		<div class="modal" v-if="hide==1"></div>
+		    <div class="modal_box" v-if="hide==1">
+		   		<img src="../image/tanchuang_bg.png" class="tanchuang_bg"/>
+		   		<img src="../image/del.png" class="del" @click="cancel"/>
+		   		<p class="p_title">注册协议</p>
+		   		
+		    </div>	
+   		</div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+//vue
+var vm = new Vue({
+	  el: '.warp',
+	  data: {
+	  	sendstate:0,
+	  	phone:"",
+	  	VerifyCode:"",
+	  	password:"",
+	  	parent_code:'',
+	  	hide:0,
+	  	registration_id:''
+	  },
+	  mounted:function(){
+	  	apiready = function(){
+			sethead()
+//	        api.openFrame({
+//			    name: 'back',
+//			    url: './back.html',
+//			    rect: {
+//			        x: 10,
+//			        y: 30,
+//			        w: 40,
+//			        h: 40
+//			    },
+//			    bounces: false,
+//			    bgColor:"",
+//			    fixed: false,
+//			    vScrollBarEnabled: false,
+//			    hScrollBarEnabled: false
+//			});
+ 			var ajpush = api.require('ajpush');
+			ajpush.getRegistrationId(function(ret) {
+				self.registration_id=ret.id
+			})
+	    };
+	  },
+	  methods:{
+	  	askVerifyCode:function(){
+	  		var self = this;
+	  		var regphone =/^0?1[3|4|5|7|8][0-9]\d{8}$/
+		    if(regphone.test(self.phone)==false){
+		      api.toast({
+			    msg: '手机号格式不正确',
+			    duration: 2000,
+			    location: 'middle'
+			  });
+		      return false;
+		    }else{
+		    	self.sendstate=61;
+		    	var timer = setInterval(function(){
+		            self.sendstate -=1;
+		            if(self.sendstate==1){
+		              clearInterval(timer)
+		            }
+		        },1000)
+		    	api.ajax({
+				    url: baseUrl+'/api/verifyCode',
+				    method: 'post',
+		            timeout:200,
+		            dataType:"json",
+				    data: {
+				     	values:{
+				     		phone:self.phone
+				     	} 
+				    }
+				}, function(ret, err) {
+				    if (ret) {
+				      	if(ret.Model){
+				      		api.toast({
+							    msg: '发送成功，请注意查收',
+							    duration: 2000,
+							    location: 'middle'
+							});
+				      	}
+				    } else {
+				    	api.toast({
+						    msg: '网络异常，稍后重试',
+						    duration: 2000,
+						    location: 'middle'
+						 });
+				    }
+				});
+		    }
+	  	},
+	  	reg:function(){
+	  		var self = this;
+	  		var regphone =/^0?1[3|4|5|7|8][0-9]\d{8}$/
+	  		if(regphone.test(self.phone)==false){
+		      api.toast({
+			    msg: '手机号码格式不正确',
+			    duration: 2000,
+			    location: 'bottom'
+			  });
+		      return false;
+		    }
+		    if(self.parent_code!=''){
+		    	if(regphone.test(self.parent_code)==false){
+			      api.toast({
+				    msg: '邀请手机号码格式不正确',
+				    duration: 2000,
+				    location: 'bottom'
+				  });
+			      return false;
+			    }
+		    }
+		    if(self.VerifyCode==''){
+		      api.toast({
+			    msg: '请填写验证码',
+			    duration: 2000,
+			    location: 'bottom'
+			  });
+		      return false;
+		    }
+		    if(self.password.length<6){
+		      api.toast({
+			    msg: '密码不能少于6位',
+			    duration: 2000,
+			    location: 'bottom'
+			  });
+		      return false;
+		    }
+		     api.showProgress({
+			    title: '注册中...',
+			    text: '先休息一下...',
+			    modal: true
+			});
+		   
+	      api.ajax({
+			    url: baseUrl+'/api/register',
+			    method: 'post',
+	            timeout:200,
+	            dataType:"json",
+			    data: {
+			     	values:{
+			     		phone:self.phone,
+			     		password:self.password,
+			     		verify_code:self.VerifyCode,
+			     		registration_id:self.registration_id,
+			     		parent_code:self.parent_code
+			     	} 
+			    }
+			}, function(ret, err) {
+			    if (ret) {
+			    	api.hideProgress();
+			    	if(ret.access_token){
+			    		api.hideProgress();
+			    		api.toast({
+						    msg: '注册成功',
+						    duration: 2000,
+						    location: 'middle'
+						});
+						  api.showProgress({
+						    title: '登陆中...',
+						    text: '先休息一下...',
+						    modal: true
+						});
+			    		$api.setStorage('token',ret.access_token);
+						api.execScript({
+						    name: 'index',
+						    script: 'open4()'
+						});
+						api.closeWin({name:'login'})
+			    		api.closeWin();			
+			    	}else if(ret.error){
+			    		api.hideProgress();
+			    		api.toast({
+						    msg: ret.error,
+						    duration: 2000,
+						    location: 'middle'
+						});
+			    	}else{
+			    		api.toast({
+						    msg: "注册失败",
+						    duration: 2000,
+						    location: 'middle'
+						});
+			    	}
+			    } else {
+			    	api.hideProgress();
+			    	api.toast({
+					    msg: '网络异常，稍后重试',
+					    duration: 2000,
+					    location: 'middle'
+					 });
+			    }
+			});
+		
+	  	},
+	 
+	  	cancel:function(){
+	  		this.hide=0
+		  	api.closeFrame({
+			    name: 'words'
+			});
+	  	},
+	  	closeWin:function(){
+	  		api.closeWin();
+	  	},
+	  	show:function(){
+	  		this.hide=1
+	  		api.openFrame({
+			    name: 'words',
+			    url: 'words.html',
+			    rect: {
+			        x: api.winWidth*0.1,
+			        y: api.winHeight*0.35,
+			        w: api.winWidth*0.8,
+			        h: api.winHeight*0.4
+			    },
+			});	
+	  	},
+	  }
+	})
+</script>
+</html>

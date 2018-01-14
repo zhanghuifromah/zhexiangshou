@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>购物车</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+		
+    <style>
+    	    .head{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			color: #fff;
+			text-align: center;
+			height: 50px;
+			line-height: 50px;
+			font-size: 18px;
+		}
+		.back{
+			position: fixed;
+			width: 50px;
+			height: 50px;
+			top: 20px;
+			left: 0;
+		}
+       .warp{
+	       	width:6.4rem;
+	       	background:#f4f4f4;
+	       	height:100vh;
+       }
+       .info{
+	       	margin-top:1.53rem;
+	       	margin-bottom:0.39rem;
+	       	margin-left:0.49rem;
+	       	font-size:0.26rem;
+	       	float:left;
+       }
+       .row{
+       		width:5.44rem;
+       		float:left;
+       		margin-left:0.49rem;
+       		height:0.89rem;
+       		line-height:0.89rem;
+       		background:white;
+       		border-radius:5px;
+       		color:#9b9b9b;
+       		font-size:0.26rem;
+       		margin-bottom:0.33rem;
+       }
+       .row .level{
+       		margin-left:0.29rem;
+       		float:left
+       }
+       .row .price{
+       		float:right;
+       		margin-right:0.28rem;
+       }
+       .btn{
+       		margin-top:1.06rem;
+       		background:#2797d7;
+       		color:white;
+       		font-size:0.37rem;
+       		text-align:center;
+       }
+       img{
+       	position: fixed;
+       	bottom:0.28rem;
+       	width:1.95rem;
+       	height:0.84rem;
+       	left:2.225rem;
+       }
+       .select{
+       		background:#2797D7;
+       }
+       .select p{
+       	color: white;
+       }
+    </style>
+</head>
+<body>
+	<div class="warp">
+		 <header class="mainColor clear head">
+	   	   <span class="icon back" @click="closeWin" style="z-index:999">&#xe62c;</span>
+	       <p>芝麻信用认证</p>
+	     
+	   </header>
+	  	<p class='info'>请选择芝麻信用分分段</p>
+	  	<div class="row clear" :class="select==index?'select':''" v-for="(item,index) in data" @click='choose(index)'>
+	  		<p class="level">{{index}}分以上</p>
+	  		<p class="price">免压额度{{item}}.00元</p>
+	  	</div>
+	  	<div class="row btn clear" @click="gotoRenzheng">GO!去认证</div>
+	  	<img src="../image/zhimaxinyong.png" />
+   </div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/fastclick.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/swiper.js"></script>
+<script>
+var vm = new Vue({
+  el: '.warp',
+  data: {
+  	data:{
+		    "600": 1500,
+		    "650": 2000,
+		    "700": 4000,
+		    "750": 5000
+		},
+	select:0
+  },
+  mounted: function() {
+  	var self = this;
+  	apiready = function(){
+		//IOS  onclick卡顿解决
+		sethead();
+		api.ajax({
+		    url: baseUrl+'/api/verify/credit',
+		    method: 'get',
+            timeout:200,
+            headers:{
+            	Authorization:'Bearer '+$api.getStorage('token')
+            },
+            dataType:"json",
+		}, function(ret, err) {
+		    if (ret) { 
+		    	self.data=ret; 
+		    } else {
+		    	api.toast({
+				    msg: '网络异常，稍后重试',
+				    duration: 2000,
+				    location: 'middle'
+				});
+		    }
+		});	
+       
+	}
+  },
+  methods:{
+  	closeWin:function(){
+//		var winWidth = api.winWidth;
+//      var winHeight = api.winHeight - 70;
+//      api.openFrame({
+//          name: 'free_list',
+//          url: 'free_list.html',
+//          rect: {
+//              x: 0,
+//              y: 70,
+//              w: winWidth,
+//              h: winHeight
+//          },
+//          vScrollBarEnabled: false,
+//  		hScrollBarEnabled: false
+//      });  
+//      api.closeFrame({
+//		    name: 'zhima'
+//		});;
+		
+		api.closeWin();
+		
+  	},
+  	choose:function(index){
+  		this.select=index
+  	},
+  	gotoRenzheng:function(){
+  		var self = this;
+  		if(self.select!=0){
+  			api.openWin({
+	              name: 'renzheng',
+	              url: 'renzheng.html',
+	              pageParam: {
+				        admittance_score: self.select
+				    },
+				   bounces:false
+              });
+  		}else{
+  			api.toast({
+			    msg: '请选择分段',
+			    duration: 2000,
+			    location: 'middle'
+			});
+  		}
+  	}
+  	
+  }
+})
+</script>
+</html>

@@ -1,0 +1,84 @@
+html,body {  font-size:14px; height:100%; font-size: "Microsoft YaHei" }
+.hover{ opacity: .8; }
+
+.flex-position:relative{ display: -webkit-box;	display: -webkit-flex;	display: flex; }
+.flex-con{     -webkit-box-flex: 1;     -webkit-flex: 1;    flex: 1;}
+.flex-vertical{ -webkit-box-orient: vertical;-webkit-flex-flow: column;flex-flow: column;}
+
+.border-t,
+.border-b{ position:relative;  }
+.border-t:before,
+.border-b:after{     content: '';     position: absolute;     left: 0;  top:0;        right:0;    height: 1px;     -webkit-transform: scaleY(0.5);             transform: scaleY(0.5);     -webkit-transform-origin: 0 0;             transform-origin: 0 0; }
+.border-b:after{ top:auto; bottom:0;  }
+
+.wrap{ position:relative }
+.warp{ position:relative }
+*{
+	margin:0;
+	padding:0;
+}
+header{
+	
+}
+.first{
+	margin-top:1.4rem
+}
+.last{
+	margin-bottom:1rem;
+}
+/*#2897d7*/
+.mainColor{
+	background:#2897d7;
+	color:white;
+}
+.f47771{
+	background:#f47771;
+}
+.gray{
+	color:#A9A9BB;
+}
+.left{
+	float:left!important;
+}
+.right{
+	float:right;
+}
+
+@font-face {
+  font-family: 'iconfont';  /* project id 237620 */
+  src: url('http://at.alicdn.com/t/font_qv8mjr1t5ug6tj4i.eot');
+  src: url('http://at.alicdn.com/t/font_qv8mjr1t5ug6tj4i.eot?#iefix') format('embedded-opentype'),
+  url('http://at.alicdn.com/t/font_qv8mjr1t5ug6tj4i.woff') format('woff'),
+  url('http://at.alicdn.com/t/font_qv8mjr1t5ug6tj4i.ttf') format('truetype'),
+  url('http://at.alicdn.com/t/font_qv8mjr1t5ug6tj4i.svg#iconfont') format('svg');
+}
+.icon{
+	font-family:"iconfont"
+}
+.orange{
+	color:#f47771;
+}
+
+
+.hide{
+	display: none;
+}
+.noborder{
+	border:1px solid #2897d7!important;
+}
+
+header .icon{
+	line-height: 50px;
+    height: 50px;
+    width: 0.66rem;
+	color:white;
+	position:absolute;
+	left:0rem;
+	font-size: 0.3rem;
+	padding-right:0.1rem;
+	text-align:center;
+	z-index:999
+}
+header .icon:active{
+	background:rgba(244,244,244,.5)
+}
